@@ -32,6 +32,10 @@ class AxLine : public AxBorder
         virtual QLineF get_mediatrice();// return 2 points of the mediatrice of the line
         virtual QPointF middle_point();// return the middle point between p1 and p2
         virtual int getObjectType();
+        void set_cw(bool);
+        void set_ccw(bool);
+        bool is_cw();
+        bool is_ccw();
 
         //Plot
 
@@ -46,6 +50,7 @@ class AxLine : public AxBorder
 
 
     private:
+        bool cw;
 };
 
 #endif // AXLINE_H

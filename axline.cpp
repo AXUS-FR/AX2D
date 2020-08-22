@@ -7,6 +7,7 @@ AxLine :: AxLine(const QLine &line_test)
 {
     QLineF line_trans(line_test);
     limits=line_trans;
+
 }
 
 AxLine::AxLine(AxBorder *border)
@@ -47,6 +48,39 @@ QLineF AxLine::get_mediatrice()
     c=pow(limits.p1().x(),2)+pow(limits.p1().y(),2)-pow(limits.p2().x(),2)-pow(limits.p2().y(),2);
     pp2.setX((-c-b*pp2.y())/a);
     return QLineF(pp1,pp2);
+}
+
+bool AxLine::is_cw()
+{
+    return cw;
+}
+
+bool AxLine::is_ccw()
+{
+    return !cw;
+}
+
+void AxLine::set_cw(bool way)
+{
+    if (this->is_cw()!= way)
+    {
+     limits = QLineF(limits.p2(),limits.p1()) ;
+
+    }
+    cw = way;
+
+}
+
+void AxLine::set_ccw(bool way)
+{
+    way = !way;
+    if (this->is_cw()!= way)
+    {
+     limits = QLineF(limits.p2(),limits.p1()) ;
+
+    }
+    cw = way;
+
 }
 
 

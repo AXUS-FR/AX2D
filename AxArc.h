@@ -28,7 +28,8 @@ class AxArc : public AxBorder
         QPointF get_center(); // return the attribute center of the arc
         qreal get_R();  // return the attribute R of the arc
         bool is_clockwise();    // return the attribute clockwise of the arc
-
+        bool is_cw();
+        bool is_ccw();
         virtual QLineF get_mediatrice(); // return the mediatrice of the arc
         virtual QPointF middle_point(); // return the middle point of the arc
         virtual int getObjectType(); // return 1
@@ -38,6 +39,8 @@ class AxArc : public AxBorder
 
         int arc_test(QPointF px); // chack if px in inside the angles form by the arcarc
         qreal angle(QPointF p); // calculate the angle of p based on the center of the arc clockwise
+        void set_cw(bool);
+        void set_ccw(bool);
 
         // plot
 

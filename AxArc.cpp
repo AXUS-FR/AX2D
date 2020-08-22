@@ -79,11 +79,6 @@ QPointF AxArc::middle_point()
     }
 }
 
-//QPointF AxArc::center_point()
-//{
-
-//}
-
 
 
 AxArc:: ~AxArc()
@@ -103,10 +98,37 @@ bool AxArc :: is_clockwise()
     return clockwise ;
 }
 
-//AxBorder AxArc::getObject()
-//{
-//    return *this;
-//}
+bool AxArc::is_cw()
+{
+    return clockwise;
+}
+bool AxArc::is_ccw()
+{
+    return !clockwise;
+}
+
+void AxArc::set_cw(bool way)
+{
+    if (this->is_cw()!= way)
+    {
+     limits = QLineF(limits.p2(),limits.p1()) ;
+
+    }
+    clockwise = way;
+
+}
+
+void AxArc::set_ccw(bool way)
+{
+    way = !way;
+    if (this->is_cw()!= way)
+    {
+     limits = QLineF(limits.p2(),limits.p1()) ;
+
+    }
+    clockwise = way;
+
+}
 
 void AxArc :: affiche(QPaintDevice *device, int width, const QColor &color)
 {
@@ -233,44 +255,7 @@ qreal AxArc :: angle(QPointF p)// Calculate the positive angle of the point base
         teta=teta+2*M_PI;
     }
     return teta;
-    // test for mainwindow.h
 
-    //    // generate 100 random point px
-
-    //        for (int n=0;n<100;n++)
-
-    //        // generate random point px
-    //        {
-    //              px.setX(random(0,width));
-    //              px.setY(random(0,height));
-
-    //        // random point inside arc ?
-
-    //            if (arc.arc_test(px)==1)
-    //            {
-    //                pen.setColor(Qt::green);
-    //            }
-    //            else
-    //            {
-    //                pen.setColor(Qt::red);
-    //            }
-
-
-            // print point
-    //        painter.setPen(pen);
-    //        painter.drawLine(px,pc);
-//           }
-    //        pen.setColor(Qt::black);
-    //        painter.setPen(pen);
-    //        painter.drawLine(p1,pc);
-    //        pen.setColor(Qt::blue);
-    //        painter.setPen(pen);
-    //        painter.drawLine(p2,pc);
-     //       qDebug() << "p1" << p1 << endl;
-    //        qDebug() << "p2"<< p2<< endl;
-    //        qDebug() << "pc"<< pc<< endl;
-    //        qDebug() << "teta1"<< teta1<< endl;
-    //        qDebug() << "teta2"<< teta2<< endl;
 }
 
 
