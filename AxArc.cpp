@@ -36,6 +36,13 @@ AxArc::AxArc(AxBorder *border)
 
 }
 
+AxArc::AxArc(QPointF _center, qreal _R)
+{
+    C=_center;
+    R=_R;
+    clockwise=0;
+    limits=QLineF();
+}
 QPointF AxArc::middle_point()
 {
     // return the point in the middle of the arc

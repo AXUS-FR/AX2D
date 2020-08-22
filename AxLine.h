@@ -15,7 +15,7 @@ class AxLine : public AxBorder
 {
     public:
 
-        //Constructor
+        //CONSTRUCTOR
 
         AxLine(const QLine &line);
         AxLine(AxBorder *border);
@@ -24,33 +24,44 @@ class AxLine : public AxBorder
         AxLine(const QPointF &p1, const QPointF &p2);
         AxLine();
 
-        // Destructor
-        virtual ~AxLine();
 
-        //getters
+        //GETTERS
 
-        virtual QLineF get_mediatrice();// return 2 points of the mediatrice of the line
-        virtual QPointF middle_point();// return the middle point between p1 and p2
+        virtual QLineF get_mediatrice();
+        // return 2 points of the mediatrice of the line
+
+        virtual QPointF middle_point();
+        // return the middle point between p1 and p2
+
         virtual int getObjectType();
-        void set_cw(bool);
+        // return 0
+		
+		void set_cw(bool);
         void set_ccw(bool);
         bool is_cw();
         bool is_ccw();
 
+
         //Plot
 
-        virtual void affiche(QPaintDevice *device, int width, const QColor &color); //graphical plot
-        friend QDebug operator<<(QDebug dbg, const AxLine &type);//command plot
+        virtual void affiche(QPaintDevice *device, int width, const QColor &color);
+        //graphical plot
+
+        friend QDebug operator<<(QDebug dbg, const AxLine &type);
         virtual void f(QDebug& dbg) const;
+        //command plot
 
-        // operator overloading
 
+        // OTHER
+
+        virtual ~AxLine(); // destructor
         bool operator!=(const QLineF &line) const;
         bool operator==(const AxLine &line) const;
 
 
     private:
-        bool cw;
+	
+	bool cw;
 };
 
 #endif // AXLINE_H

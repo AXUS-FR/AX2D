@@ -5,6 +5,10 @@
 #include <iostream>
 using namespace std;
 #include <AxShape.h>
+#include <QMainWindow>
+
+
+
 
 qreal random(qreal min, qreal max)
 {
@@ -12,6 +16,121 @@ qreal random(qreal min, qreal max)
     rd=QRandomGenerator64::securelySeeded();
     return (min+max*std::generate_canonical<qreal, std::numeric_limits<qreal>::digits>(rd));
 }
+
+AxLine bisectrice(AxLine line1, AxLine line2)
+{
+    QVector<QVector<qreal> > cross_test1,cross_test2,cross_test,cross_test0;
+
+    cross_test0=intersect_lignes(line1, line2);
+//    Si les 2 droites se croisent, je je creer 2 points appartenant à line1 et line2 à une même distance D de p1 vers p2
+    // ensuite, je trace la perpendiculaire de ces 2 points et je définie leur intersection
+    if (cross_test0[0][0]==1)
+    {
+        QPointF pp2,pp1;
+        qreal a,b,c;
+
+        qDebug()<<"yatta"<<line1;
+        if (distance(line1.p1(),QPointF(cross_test0[1][0],cross_test0[1][1]))<(distance(line1.p2(),QPointF(cross_test0[1][0],cross_test0[1][1]))))
+        {
+            line1.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+            line1=AxLine(line1.p2(),line1.p1());
+        }
+        else
+        {
+            line1.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+        }
+
+        if (distance(line2.p1(),QPointF(cross_test0[1][0],cross_test0[1][1]))<(distance(line2.p2(),QPointF(cross_test0[1][0],cross_test0[1][1]))))
+        {
+            line2.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+        }
+        else
+        {
+            line2.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+            line2=AxLine(line2.p2(),line2.p1());
+        }
+        
+//        if (not_equal(QPointF(cross_test0[1][0],cross_test0[1][1]),line1.p1()))
+//        {
+//            line1.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//        }
+//        else
+//        {
+//            line1.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//        }
+
+//        if (not_equal(QPointF(cross_test0[1][0],cross_test0[1][1]),line2.p2()))
+//        {
+//            line2.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//        }
+//        else
+//        {
+//            line2.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//        }
+
+
+
+
+        qDebug()<<"yatta"<<line1;
+        qDebug()<<"yatta"<<line2;
+
+        // je creer 2 points appartenant à la droite à une même distance D de p1 vers p2
+
+        cross_test1=intersect_arc_demi_line(AxLine(line1.p2(),line1.p1()),AxArc(line1.p2(),100));
+
+        qDebug()<<"yatta"<<cross_test1<<line1;
+
+        pp1=QPointF(cross_test1[1][0],cross_test1[1][1]);
+
+        pp2.setY(100+pp1.y());
+        if (line1.p1().x()!=line1.p2().x())
+        {
+        pp2.setX(((line1.p1().y()-line1.p2().y())/(line1.p1().x()-line1.p2().x()))*(pp1.y()-pp2.y())+pp1.x());
+        }
+        else
+        {
+            qDebug()<<"erreur in bisectrice";
+        }
+
+
+        AxLine med1(pp1,pp2);
+
+
+        cross_test2=intersect_arc_demi_line(AxLine(line2),AxArc(line2.p1(),100));
+
+
+        qDebug()<<"Yatta"<<cross_test2;
+
+        pp1=QPointF(cross_test2[1][0],cross_test2[1][1]);
+        pp2.setY(100+pp1.y());
+
+
+        if (line2.p1().x()!=line2.p2().x())
+        {
+        pp2.setX(((line2.p1().y()-line2.p2().y())/(line2.p1().x()-line2.p2().x()))*(pp1.y()-pp2.y())+pp1.x());
+        }
+        else
+        {
+            qDebug()<<"erreur in bisectrice";
+        }
+
+        AxLine med2(pp1,pp2);
+
+
+
+
+
+    cross_test=intersect_lignes(med1,med2);
+
+    return AxLine(cross_test[1][0],cross_test[1][1],cross_test0[1][0],cross_test0[1][1]);
+    }
+//    If colinear
+    else
+    {
+        return(AxLine(AxLine(line1.p1(),line2.p1()).center(),AxLine(line1.p2(),line2.p2()).center()));
+    }
+}
+
 
 QVector<QVector<qreal>> intersect_border(AxBorder *border1,AxBorder *border2)
 {
@@ -34,7 +153,6 @@ QVector<QVector<qreal>> intersect_border(AxBorder *border1,AxBorder *border2)
         return intersect(AxArc(border1), AxArc(border2));
     }
 }
-
 
 
 
@@ -65,7 +183,6 @@ QVector<QVector<qreal>> intersect_shape(AxBorder *border, AxShape shape)
 
 bool not_equal(QPointF p1, QPointF p2,double epsilon)
 {
-
 
     if ((fabs(p1.x()-p2.x())<epsilon) && (fabs(p1.y()-p2.y())<epsilon))
     {
@@ -500,7 +617,7 @@ qreal angle(AxBorder *border1, AxBorder *border2)
 
 //}
 
-QVector<QVector<qreal>> intersect_arc_line(QLineF line, AxArc arc)
+QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
 {
     QVector<QVector<qreal>> ret;
     qreal x1,y1,x2,y2,R,xc,yc;
@@ -625,7 +742,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
     QVector<QVector<qreal>> ret;
     qreal x1,y1,x2,y2,R,xc,yc;
     QVector<qreal> ret_line;
-    bool sens;
+    int sens;
 
     x1=line.x1();
     y1=line.y1();
@@ -640,7 +757,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
     qreal a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment almost vertical ?
-     if (float(x2)==float(x1))
+     if (equal(x2,x1))
     {
         // calcul coeficient directeur impossible donc methode géométrique
         sens=sign(y2-y1);
@@ -696,6 +813,8 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
 
             Y1=a*X1+b;
             Y2=a*X2+b;
+
+            qDebug()<<"Hereeeee"<<sens<<sign(X1-x1);
 
             if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
@@ -972,6 +1091,26 @@ QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
     return ret;
 }
 
+int previous_pt(int n, QVector<Vertice>form)
+{
+    int n2=n-1;
+    if (n2==-1)
+    {
+        n2=form.size()-1;
+    }
+    return n2;
+}
+
+int next_pt(int n ,QVector<Vertice> form)
+{
+    int n2=n+1;
+    if (n2==form.size())
+    {
+        n2=0;
+    }
+    return n2;
+}
+
 int next_point(int n, AxShape form)
 {
     int n2=n+1;
@@ -1001,7 +1140,15 @@ int next_point(int n, QVector<AxLine> form)
     }
     return n2;
 }
-
+int next_pt(int n, QVector<AxLine> form)
+{
+    int n2=n+1;
+    if (n2==form.size())
+    {
+        n2=0;
+    }
+    return n2;
+}
 
 QVector <QVector<qreal>> intersect_line_segment(QLineF line, QLineF segment)
 {
@@ -2567,6 +2714,10 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
     ret_line=QVector<qreal>();
     return ret;
 }
+
+
+//-----------------------------------------------------------------------------------------------------------------------
+// Delaunay
 
 QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a)
 {

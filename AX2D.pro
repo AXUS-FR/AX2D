@@ -27,10 +27,13 @@ CONFIG += c++11
 SOURCES += \
         AxArc.cpp \
         AxBorder.cpp \
+        Vertice.cpp \
         axcircle.cpp \
         axline.cpp \
         axshape.cpp \
         axtriangle.cpp \
+        bisection_intersection.cpp \
+        clipper.cpp \
         common_functions.cpp \
         delaunay.cpp \
         main.cpp \
@@ -40,9 +43,12 @@ HEADERS += \
         AxArc.h \
         AxBorder.h \
         AxLine.h \
+        Vertice.h \
         axcircle.h \
         axshape.h \
         axtriangle.h \
+        bisection_intersection.h \
+        clipper.hpp \
         common_functions.h \
         delaunay.h \
         main.h \

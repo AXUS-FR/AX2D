@@ -9,10 +9,13 @@
 #include <axcircle.h>
 #include <common_functions.h>
 #include <QDebug>
-#include <delaunay.h>
-#include <expand_form.h>
 #include <math.h>
 #include <axshape.h>
+#include <Vertice.h>
+#include <bisection_intersection.h>
+#include <clipper.hpp>
+using namespace ClipperLib;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,22 +25,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // set the size of window
     QSize availableSize = qApp->desktop()->availableGeometry(this).size();
-        int width = availableSize.width();
-        int height = availableSize.height();
-        qDebug() << "Available dimensions " << width << "x" << height;
-        width *= 0.7; // 70% of the screen size
-        height *= 0.7; // 70% of the screen size
-        qDebug() << "Computed dimensions " << width << "x" << height;
-        QSize newSize( width, height );
+    int width = availableSize.width();
+    int height = availableSize.height();
+    qDebug() << "Available dimensions " << width << "x" << height;
+    width *= 0.7; // 70% of the screen size
+    height *= 0.7; // 70% of the screen size
+    qDebug() << "Computed dimensions " << width << "x" << height;
+    QSize newSize( width, height );
 
-        setGeometry(
-            QStyle::alignedRect(
-                Qt::LeftToRight,
-                Qt::AlignCenter,
-                newSize,
-                qApp->desktop()->availableGeometry(this)
-            )
-        );
+    setGeometry(
+                QStyle::alignedRect(
+                    Qt::LeftToRight,
+                    Qt::AlignCenter,
+                    newSize,
+                    qApp->desktop()->availableGeometry(this)
+                    )
+                );
 }
 
 MainWindow::~MainWindow()
@@ -51,8 +54,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
     QSize availableSize = qApp->desktop()->availableGeometry(this).size();
     int width = int(availableSize.width()*0.7);
     int height = int(availableSize.height()*0.7);
-//-----------------------------------------------------------------------------------------------
-/* //   Cross functions test
+    //-----------------------------------------------------------------------------------------------
+    /* //   Cross functions test
 
 
     // variables
@@ -197,9 +200,9 @@ pts to angle
         line_trans=QVector<qreal>();
     }
 */
- //   --------------------------------------------------------------------------------------------------
+    //   --------------------------------------------------------------------------------------------------
 
-/* //    //cercle_inscrit test
+    /* //    //cercle_inscrit test
  //   Initialisation
     QPointF p1,p2,p3;
 
@@ -237,144 +240,139 @@ pts to angle
     painter.setPen(pen2);
 
      painter.drawEllipse(C.get_center(), C.get_R(), C.get_R());*/
-//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-/*//     // delaunay test
+/*    // delaunay test
 
-    //Generate a list of random pts
-    QVector<QPointF> nuage;
-    QPolygonF polygon;
-    QVector<AxTriangle> triangle_list_bis,triangle_list;
-    QVector<QVector<qreal>>test_vector;
-    int next_point, number_of_pts,test;
-    AxCircle cross_med,cross_med1,cross_med2;
-    QPointF random_point,pc1,pc2;
+       //Generate a list of random pts
+       QVector<QPointF> nuage;
+       QPolygonF polygon;
+       QVector<AxTriangle> triangle_list_bis,triangle_list;
+       QVector<QVector<qreal>>test_vector;
+       int next_point, number_of_pts,test;
+       AxCircle cross_med,cross_med1,cross_med2;
+       QPointF random_point,pc1,pc2;
 
-    QPainter painter(this);
-    QPen pen,pen1,pen2;
-    pen.setWidth(10);
-    pen.setColor(Qt::red);
-    pen.setCapStyle(Qt::RoundCap);
+       QPainter painter(this);
+       QPen pen,pen1,pen2;
+       pen.setWidth(10);
+       pen.setColor(Qt::red);
+       pen.setCapStyle(Qt::RoundCap);
 
-    painter.setPen(pen);
+       painter.setPen(pen);
 
-    pen2.setWidth(3);
-    pen2.setColor(Qt::green);
-    number_of_pts=int(random(3,20));
-    number_of_pts=5;
-
-
-    // figure
-//    for (int k=0;k<number_of_pts;k++)
-//    {
-//        test=0;
-
-//        random_point=QPointF(random(-100+width/2,+100+width/2),random(-100+height/2,+100+height/2));
-
-//        // polygon aleatoire wip (ne marche pas)
-//        if (k>2)
-//        {
-//            while (test==0)
-//            {
-//                test=1;
-//                random_point=QPointF(random(-100+width/2,+100+width/2),random(-100+height/2,+100+height/2));
-//                    for (int q=1;q<k;q++)
-//                    {
-//                        test_vector=intersect(QLineF(random_point, nuage[k-1]),QLineF(nuage[q],nuage[q-1]));
-//                        // si colision détéctée,
-//                        if (k==number_of_pts-1)
-//                        {
-//                            test_vector=intersect(QLineF(random_point, nuage[0]),QLineF(nuage[q],nuage[q-1]));
-//                        }
-//                        qDebug() << "test_vector" << test_vector[0][0] << endl;
-//                        if (test_vector[0][0]!=0)
-//                        {
-//                            test=0;
-//                            qDebug() << "out" << endl;
-
-//                        }
-//                    }
-//                    qDebug() << "fin" << endl;
-
-//            }
-//        }
-//        nuage.append(random_point);
-
-//        pen1.setWidth(5);
-//        pen1.setColor(Qt::blue);
-//        painter.setPen(pen1);
-//        if (k>0)
-//        {
-//            painter.drawLine(nuage[k],nuage[k-1]);
-//        }
-//    }
+       pen2.setWidth(3);
+       pen2.setColor(Qt::green);
+       number_of_pts=int(random(3,20));
+       number_of_pts=10;
 
 
-     nuage.append(QPointF(2,4)*100);
-//     nuage.append(QPointF(1.5,7.1)*100);
-     nuage.append(QPointF(1,1)*100);
-     nuage.append(QPointF(5,1)*100);
-     nuage.append(QPointF(2,2)*100);
-     nuage.append(QPointF(5.5,5.2)*100);
+       // figure
+       for (int k=0;k<number_of_pts;k++)
+       {
+           test=0;
+
+           random_point=QPointF(random(-100+width/2,+100+width/2),random(-100+height/2,+100+height/2));
+
+           // polygon aleatoire wip (ne marche pas)
+           if (k>2)
+           {
+               while (test==0)
+               {
+                   test=1;
+                   random_point=QPointF(random(-100+width/2,+100+width/2),random(-100+height/2,+100+height/2));
+                       for (int q=1;q<k;q++)
+                       {
+                           test_vector=intersect(QLineF(random_point, nuage[k-1]),QLineF(nuage[q],nuage[q-1]));
+                           // si colision détéctée,
+                           if (k==number_of_pts-1)
+                           {
+                               test_vector=intersect(QLineF(random_point, nuage[0]),QLineF(nuage[q],nuage[q-1]));
+                           }
+                           if (test_vector[0][0]!=0)
+                           {
+                               test=0;
+                           }
+                       }
+               }
+           }
+           nuage.append(random_point);
+
+           pen1.setWidth(5);
+           pen1.setColor(Qt::blue);
+           painter.setPen(pen1);
+           if (k>0)
+           {
+   //            painter.drawLine(nuage[k],nuage[k-1]);
+           }
+       }
+
+
+   //     nuage.append(QPointF(2,4)*100);
+   ////     nuage.append(QPointF(1.5,7.1)*100);
+   //     nuage.append(QPointF(1,1)*100);
+   //     nuage.append(QPointF(5,1)*100);
+   //     nuage.append(QPointF(2,2)*100);
+   //     nuage.append(QPointF(5.5,5.2)*100);
 
 
 
-    pen1.setWidth(10);
-    pen1.setColor(Qt::red);
-    painter.setPen(pen1);
+   //    pen1.setWidth(5);
+   //    pen1.setColor(Qt::black);
+   //    painter.setPen(pen1);
 
-    painter.drawLine(nuage[0],nuage[nuage.size()-1]);
+   //    painter.drawLine(nuage[0],nuage[nuage.size()-1]);
 
- //plot polygon (le programme avec delaunay ne peut pas donner un bon resultat)
-    for (int k=1;k<nuage.size();k++)
-    {
-        painter.drawLine(nuage[k-1],nuage[k]);
-    }
+    //plot polygon (le programme avec delaunay ne peut pas donner un bon resultat)
+       for (int k=1;k<nuage.size();k++)
+       {
+   //        painter.drawLine(nuage[k-1],nuage[k]);
+       }
 
-    triangle_list=delaunay(nuage);
+       triangle_list=delaunay(nuage,1);
 
- //   qDebug() << "triangle_list" <<triangle_list << endl;
+    //   qDebug() << "triangle_list" <<triangle_list << endl;
 
-    for (int k=0;k<triangle_list.size();k++)
-    {
-        for (k=0;k<triangle_list.size();k++)
-        {
-            triangle_list[k].affiche(this, 5, "black");
-        }
-    }
+       for (int k=0;k<triangle_list.size();k++)
+       {
+           for (k=0;k<triangle_list.size();k++)
+           {
+               triangle_list[k].affiche(this, 5, "black");
+           }
+       }
 
-    polygon=nuage;
-    triangle_list_bis=delaunay(polygon);
- //    qDebug() << "polygon" << polygon << endl;
+       polygon=nuage;
+       triangle_list_bis=delaunay(polygon);
+    //    qDebug() << "polygon" << polygon << endl;
 
 
-    for (int k=0;k<triangle_list_bis.size();k++)
-    {
-        triangle_list[k].affiche(this, 5,"blue");
-    }
+       for (int k=0;k<triangle_list_bis.size();k++)
+       {
+   //        triangle_list[k].affiche(this, 5,"blue");
+       }
 
-    // cercle conscrit
-    for (int k=0;k<triangle_list.size();k++)
-    {
-        cross_med=triangle_list[k].cercle_inscrit();
+       // cercle conscrit
+       for (int k=0;k<triangle_list.size();k++)
+       {
+           cross_med=triangle_list[k].cercle_inscrit();
 
-        QPointF pc=cross_med.get_center();
-        qreal R=cross_med.get_R();
+           QPointF pc=cross_med.get_center();
+           qreal R=cross_med.get_R();
 
-        AxCircle C= AxCircle(R,pc);
-        //painter.drawEllipse(C.get_center(), C.get_R(), C.get_R());
-        AxLine (C.get_center(),C.get_center()).affiche(this,10,"red");
-    }
+           AxCircle C= AxCircle(R,pc);
+   //        painter.drawEllipse(C.get_center(), C.get_R(), C.get_R());
+   //        AxLine (C.get_center(),C.get_center()).affiche(this,10,"red");
+       }
 
-    QVector<AxLine> voro=voronoi(triangle_list);
-    for (int k=0;k<voro.size();k++)
-    {
-        voro[k].affiche(this, 5 ,"black");
-    }
+       QVector<AxLine> voro=voronoi(triangle_list);
+       for (int k=0;k<voro.size();k++)
+       {
+           voro[k].affiche(this, 5 ,"red");
+       }
+*/
+//-------------------------------------------------------------------------------------------------------------------
 
-*///-------------------------------------------------------------------------------------------------------------------
-
-   /* // concave/ convexe form extraction
+    /* // concave/ convexe form extraction
 
     AxShape form;
 //    form.append(new AxLine(150,220,266.47,220));
@@ -593,32 +591,353 @@ qDebug()<< "shape_concave" << shape_concave ;
 */
     //----------------------------------------------------------------------------------------------
 
-    /*
-// Motor cycle graph and staith squeletton
+/*
+    // Motor cycle graph and staigth skeletton
 
-
+    AxBorder *brut_segment_1,*brut_segment_2;
+    QVector<QVector<qreal> > cross_test,cross_test1,cross_test2;
+    QVector<AxLine> bisectrice_list;
+    QPointF closest_cross,p1,p2;
+    QVector<Vertice> Vertice_list;
+    int k2, q1,q0,q2;
+    qreal closest_distance, cross_distance,cross_distance1,cross_distance2,angle1,angle2;
+    int k1_cross,k2_cross,k0, kprev, knext;
+    AxLine segments_bisectrice;
     AxShape form;
-    form.append(new AxLine(393.922,444.612,300,370));
-    form.append(new AxLine(300,370,329.874,304.121));
-    form.append(new AxLine(329.874,304.121,360.357,283.799));
-    form.append(new AxLine(360.357,283.799,450,420));
+    QVector<QPointF>form_const;
+    int next_o;
 
-    form.append(new AxLine(450,420,393.922,444.612));
-    form.affiche(this, 3,"red");
+    form_const.append(QPointF(3.5,1.5));
+    form_const.append(QPointF(1,2));
+    form_const.append(QPointF(4,2));
+    form_const.append(QPointF(1.3,7));
+    form_const.append(QPointF(5.8,6.1));
+    form_const.append(QPointF(4,4));
+    form_const.append(QPointF(5.5,3));
+    form_const.append(QPointF(6,6));
+    form_const.append(QPointF(7,6));
+    form_const.append(QPointF(8,1));
+    form_const.append(QPointF(2,0.5));
+    form_const.append(QPointF(0.5,1.75));
 
-// calcul de la bisectrice
 
-    int k2;
-    for (int k1=0;k1<form.size();k1++)
+
+//        form_const.append(QPointF(8,3));
+//        form_const.append(QPointF(9,6));
+//        form_const.append(QPointF(7,9));
+//        form_const.append(QPointF(2,8.5));
+//        form_const.append(QPointF(6,4));
+
+
+
+    for (int o=0;o<form_const.size();o++)
     {
-        k2=form.next_point(k1);
+        next_o=next_pt(o,form_const);
+        form.append(new AxLine(QPointF(100,100)+form_const[o]*50,QPointF(100,100)+form_const[next_o]*50));
     }
-// motorcycle algorithme
 
+    form.affiche(this, 5,"red");
+
+
+    ETAPE 1 : // Liste de sommets et calcul des bisectrices
+    
+    brut_segment_1=form.segment_brut_intern_expand(form[0],10);
+    for (int k=1;k<form.size();k++)
+    {
+        brut_segment_2=form.segment_brut_intern_expand(form[k],10);
+        
+        cross_test=intersect_lignes(brut_segment_1,brut_segment_2);
+
+        Vertice_list.append(Vertice(AxLine(form[k]->p1(),QPointF(cross_test[1][0],cross_test[1][1])),dynamic_cast<AxLine*>(form[k-1]),dynamic_cast<AxLine*>(form[k])));
+        bisectrice_list.append(AxLine(form[k]->p1(),QPointF(cross_test[1][0],cross_test[1][1])));
+
+        brut_segment_1=brut_segment_2;
+    }
+    brut_segment_2=form.segment_brut_intern_expand(form[0],10);
+    cross_test=intersect_lignes(brut_segment_1,brut_segment_2);
+    bisectrice_list.append(AxLine(form[0]->p1(),QPointF(cross_test[1][0],cross_test[1][1])));
+    Vertice_list.append(Vertice(AxLine(form[0]->p1(),QPointF(cross_test[1][0],cross_test[1][1])),dynamic_cast<AxLine*>(form[form.size()-1]),dynamic_cast<AxLine*>(form[0])));
+
+
+    ETAPE 2 : MOTOYCYCLE
+// calcul des pts de croisement des bisectrices
+    QVector<bisection_intersection> bisection_intersection_list,bisection_intersection_list_unsorted;
+    QVector<Vertice> priority_queue;
+
+    for (int k1=0;k1<Vertice_list.size();k1++)
+    {
+        k0=previous_pt(k1,Vertice_list);
+        k2=next_pt(k1,Vertice_list);
+
+        cross_test1=intersect_demi_lines(Vertice_list[k1].get_bisection(),Vertice_list[k2].get_bisection());
+        cross_test2=intersect_demi_lines(Vertice_list[k1].get_bisection(),Vertice_list[k0].get_bisection());
+
+        if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==1))
+        {
+
+            cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+            cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+
+            if (cross_distance1<cross_distance2)
+            {
+                knext=previous_pt(k2,Vertice_list);
+                bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+            }
+            else
+            {
+                kprev=previous_pt(k0,Vertice_list);
+                bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+            }
+        }
+        else if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==0))
+        {
+            cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+            bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+
+        }
+        else if ((cross_test1[0][0]==0)&&(cross_test2[0][0]==1))
+        {
+            cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+            bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+        }
+
+
+    }
+    qDebug()<<"Avant tri :"<<endl<<bisection_intersection_list<<endl;
+
+    bisection_intersection_list_unsorted=bisection_intersection_list;
+    // je trie mes vertex du plus petit au plus grand suivant le critère de la distance du cross points
+    std::sort(bisection_intersection_list.begin(), bisection_intersection_list.end(), [](const bisection_intersection& lhs, const bisection_intersection& rhs)
+    {
+        return(lhs.get_distance() < rhs.get_distance());
+    });
+
+
+    qDebug()<<"Apres tri :"<<endl<<bisection_intersection_list;
+    AxLine bisection1;
+    AxLine bisection2;
+    qreal a,y2,y1,x2,x1,b,x3,y3;
+    QVector<AxLine> Skeletton;
+
+// ETAPE 3 :
+
+    for (int mimi=0;mimi<4;mimi++)
+//    while (Vertice_list.size()>2)
+    {
+
+        bisection1=bisection_intersection_list[0].get_vertice1().get_bisection();
+        bisection1.setP2(bisection_intersection_list[0].get_cross_point());
+
+        bisection2=bisection_intersection_list[0].get_vertice2().get_bisection();
+        bisection2.setP2(bisection_intersection_list[0].get_cross_point());
+
+        // add new bisectrice
+
+        cross_test=intersect_lignes(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
+
+        x1=bisection_intersection_list[0].get_cross_point().x();
+        y1=bisection_intersection_list[0].get_cross_point().y();
+
+        if (cross_test[0][0]==1)
+        {
+
+            segments_bisectrice=bisectrice(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
+
+
+            p1=segments_bisectrice.p1();
+            p2=segments_bisectrice.p2();
+
+            if ((p2.x()-p1.x())!=0)
+            {
+                x2=cross_test[1][0];
+                y2=cross_test[1][1];
+
+                a=(p2.y()-p1.y())/(p2.x()-p1.x());
+                b = y1-(a*x1);
+                x3=x1+10;
+                y3=a*x3+b;
+
+                // détermination du sens de la bisectrice TODO : redéfinir/ améliorer
+                qreal angle0=angle(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
+
+                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1());
+                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)), bisection_intersection_list[0].get_vertice2().get_edge2());
+
+                qDebug()<<"angle0"<<angle0<<"angle1"<<angle1<<"angle2"<<angle2;
+
+                //if aigu
+                if (angle0<M_PI && (angle1<M_PI/2 || angle2<M_PI/2))
+                {
+                    x3=x1-10;
+                    y3=a*x3+b;
+                }
+                //if obtu
+                if (angle0>M_PI && (angle1>M_PI/2 || angle2>M_PI/2))
+                {
+                    x3=x1-10;
+                    y3=a*x3+b;
+                }
+
+                  // fin de la détermination du sens de la bisectrice
+
+            }
+            else
+            {
+                x3=x1;
+                y3=y1+10;
+
+                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
+                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
+
+                if ((angle1<M_PI/2)||(angle2<M_PI/2))
+                {
+                    x3=x1;
+                    y3=y1-10;
+                }
+            }
+        }
+        // new bissector colinear ?
+        else if (cross_test[0][0]==2)
+        {
+            p1=bisection_intersection_list[0].get_vertice2().get_edge2()->p1();
+            p2=bisection_intersection_list[0].get_vertice2().get_edge2()->p2();
+
+            if ((p2.x()-p1.x())!=0)
+            {
+
+                a=(p2.y()-p1.y())/(p2.x()-p1.x());
+                b = y1-(a*x1);
+                x3=x1+10;
+                y3=a*x3+b;
+
+                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
+                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
+
+                if ((angle1<M_PI/2)||(angle2<M_PI/2))
+                {
+                    x3=x1-10;
+                    y3=a*x3+b;
+                }
+            }
+            else
+            {
+                x3=x1;
+                y3=y1+10;
+
+                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
+                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
+
+                if ((angle1<M_PI/2)||(angle2<M_PI/2))
+                {
+                    x3=x1;
+                    y3=y1-10;
+                }
+            }
+        }
+
+        Vertice newVertice=(Vertice(AxLine(bisection_intersection_list[0].get_cross_point(),QPointF(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2()));
+
+        q1=Vertice_list.indexOf(bisection_intersection_list[0].get_vertice1());
+        q0=previous_pt(q1,Vertice_list);
+        Vertice previousvertice=Vertice_list[q0];
+        Vertice_list.remove(q1);
+
+        qDebug()<<Vertice_list;
+
+
+        q1=Vertice_list.indexOf(bisection_intersection_list[0].get_vertice2());
+        q2=next_pt(q1,Vertice_list);
+
+        qDebug()<<"q1"<<q1<<bisection_intersection_list[0].get_vertice2();
+
+
+        Vertice nextvertice=Vertice_list[q2];
+
+        qDebug()<<"crash1"<<Vertice_list << endl << bisection_intersection_list[0].get_vertice2();
+
+        Vertice_list.remove(q1);
+
+        qDebug()<<"avant"<<Vertice_list;
+        Vertice_list.insert(q1, newVertice);
+        qDebug()<<"après"<<Vertice_list;
+        qDebug()<<"crash2"<<"q0"<<q0<<"q2"<<q2<<"size"<<Vertice_list.size();
+
+        // bisection_intersection_list redefinition
+        bisection_intersection_list.clear();
+
+        for (int k1=0;k1<Vertice_list.size();k1++)
+        {
+            k0=previous_pt(k1,Vertice_list);
+            k2=next_pt(k1,Vertice_list);
+
+            cross_test1=intersect_demi_lines(Vertice_list[k1].get_bisection(),Vertice_list[k2].get_bisection());
+            cross_test2=intersect_demi_lines(Vertice_list[k1].get_bisection(),Vertice_list[k0].get_bisection());
+
+
+
+            if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==1))
+            {
+//                cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+//                cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+
+
+                cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),newVertice.get_bisection().p1());
+                cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),newVertice.get_bisection().p1());
+
+                if (cross_distance1<cross_distance2)
+                {
+                    bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+                }
+                else
+                {
+                    bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+                }
+            }
+            else if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==0))
+            {
+                cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+                bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+            }
+            else if ((cross_test1[0][0]==0)&&(cross_test2[0][0]==1))
+            {
+                cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+                bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+            }
+        }
+        Skeletton.append(bisection1);
+        Skeletton.append(bisection2);
+
+        std::sort(bisection_intersection_list.begin(), bisection_intersection_list.end(), [](const bisection_intersection& lhs, const bisection_intersection& rhs)
+        {
+            return(lhs.get_distance() < rhs.get_distance());
+        });
+    }
+    // finalisation je relie les 2 dernières parties du squelette :
+
+//    Skeletton.append(AxLine(Vertice_list[0].get_bisection().p1(),Vertice_list[1].get_bisection().p1()));
+
+    // affichage du squelette
+
+    for (int k=0;k<Skeletton.size();k++)
+    {
+        Skeletton[k].affiche(this, 5,"blue");
+    }
+
+    for (int k=0;k<Vertice_list.size();k++)
+    {
+        Vertice_list[k].get_bisection().affiche(this, 5,"green");
+    }
+
+    qDebug()<<Vertice_list;
+
+    for (int k=0;k<bisection_intersection_list.size();k++)
+    {
+//        AxLine(bisection_intersection_list[k].get_cross_point(),bisection_intersection_list[k].get_cross_point()).affiche(this, 10,"pink");
+    }
 */
-//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-/*//   // Expand form test V1
+    /*//   // Expand form test V1
 
     // painter initialisation & definition
 
@@ -840,7 +1159,7 @@ qDebug()<< "shape_concave" << shape_concave ;
     qDebug() <<"test"<< mich;
 
     mich.clear(); // je libère la mémoire */
- //   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // Arc_arc cross test
     /*
                 // Generate a random arc
@@ -901,7 +1220,7 @@ qDebug()<< "shape_concave" << shape_concave ;
                 */
 
 
-//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
     /*// closest_pt_to_p1_border test
 
@@ -958,7 +1277,7 @@ qDebug()<< "shape_concave" << shape_concave ;
     }*/
 
     //-------------------------------------------------------------------
-/*//  Expand form test V2
+    /*//  Expand form test V2
 
 //ETAPE 1: construction de la forme
 
@@ -1511,7 +1830,8 @@ stock_parallels.affiche(this, 2,"green");
             stock_parallels.clear();
         }
 */
-//  Expand form test V3
+    
+    /*//  Expand form test V3
 
     //ETAPE 0: construction de la forme
 
@@ -1645,41 +1965,45 @@ stock_parallels.affiche(this, 2,"green");
 
     for (int n=0;n<concave.size();n++)
     {
-//        concave[n]=concave[n].straight_squeletton(); // suppr segments problématiques
         brut_segment_1=form.segment_brut_expand(concave[n][0],R);
 
         concave_expand.append(brut_segment_1);
 
         for (int k=1;k<concave[n].size();k++)
         {
-            brut_segment_2=form.segment_brut_expand(concave[n][k],R);
-            cross_test=intersect_border(brut_segment_1,brut_segment_2);
+            expantion_limits=concave[n].get_expantion_limits();        // TO DO
 
-            // si croisement
-            if (cross_test[0][0]==1)
+            if (expantion_limits<R)
             {
-                // redéfinir les segments
+                brut_segment_2=form.segment_brut_expand(concave[n][k],R);
+                cross_test=intersect_border(brut_segment_1,brut_segment_2);
 
-                brut_segment_1->setP2(QPointF(cross_test[1][0],cross_test[1][1]));
-                brut_segment_2->setP1(QPointF(cross_test[1][0],cross_test[1][1]));
-            }
-            else
-            {
-                // define a new arc between the two segments
-
-                if (not_equal(brut_segment_1->p2(), brut_segment_2->p1()))
+                // si croisement
+                if (cross_test[0][0]==1)
                 {
-                    arc_limits_=QLineF(brut_segment_1->p2(),brut_segment_2->p1());
-                    center_=concave[n][k]->p1();
-                    R_=distance(brut_segment_1->p2(),center_);
-                    clockwise_=1;
-                    concave_expand.append(new AxArc(arc_limits_,center_,R_,clockwise_));
+                    // redéfinir les segments
 
+                    brut_segment_1->setP2(QPointF(cross_test[1][0],cross_test[1][1]));
+                    brut_segment_2->setP1(QPointF(cross_test[1][0],cross_test[1][1]));
                 }
-            }
+                else
+                {
+                    // define a new arc between the two segments
 
-            brut_segment_1=brut_segment_2;
-            concave_expand.append(brut_segment_2);
+                    if (not_equal(brut_segment_1->p2(), brut_segment_2->p1()))
+                    {
+                        arc_limits_=QLineF(brut_segment_1->p2(),brut_segment_2->p1());
+                        center_=concave[n][k]->p1();
+                        R_=distance(brut_segment_1->p2(),center_);
+                        clockwise_=1;
+                        concave_expand.append(new AxArc(arc_limits_,center_,R_,clockwise_));
+
+                    }
+                }
+
+                brut_segment_1=brut_segment_2;
+                concave_expand.append(brut_segment_2);
+            }
 
         }
         concave_expand_list.append(concave_expand);
@@ -1694,7 +2018,6 @@ stock_parallels.affiche(this, 2,"green");
     {
         convexe_expand_list[k].affiche(this, 5,"green");
     }
-/*
     QVector<AxLine> bisectrice_list;
 
     for(int n=0;n<concave.size();n++)
@@ -1769,33 +2092,15 @@ stock_parallels.affiche(this, 2,"green");
 
 */
 
-    QVector<AxLine> bisectrice_list;
-
-    for(int n=0;n<concave.size();n++)
-    {
-        brut_segment_1=form.segment_brut_expand(concave[n][0],10);
-
-        for (int k=1;k<concave[n].size();k++)
-        {
-            brut_segment_2=form.segment_brut_expand(concave[n][k],10);
-
-            cross_test=intersect_lignes(brut_segment_1,brut_segment_2);
-
-            bisectrice_list.append(AxLine(concave[n][k]->p1(),QPointF(cross_test[1][0],cross_test[1][1])));
-
-            brut_segment_1=brut_segment_2;
-            brut_segment_2->affiche(this, 10, "black");
-        }
-    }
-//    ETAPE 4 finition
-//for (int k=0;k<convexe_expand_list.size();k++);
-//{
-//    p1=convexe_expand_list[][];
-//}
+    //    ETAPE 4 finition
+    //for (int k=0;k<convexe_expand_list.size();k++);
+    //{
+    //    p1=convexe_expand_list[][];
+    //}
 
 
-//    qDebug()<<"convexe_expand_list"<<convexe_expand_list;
-/*
+    //    qDebug()<<"convexe_expand_list"<<convexe_expand_list;
+    /*
     //           stock_parallels.affiche(this, 8 ,"blue");
 
     // ETAPE 3 : ajustement des extentions : ajout d'un arc quand les segments extendus ne se croisent pas
@@ -2062,6 +2367,46 @@ stock_parallels.affiche(this, 2,"green");
 
     expand.clear();
 
-    stock_parallels.clear();*/
-}
+    stock_parallels.clear();
 
+*/
+    /*expand test
+
+    AxShape shape, transit_shape;
+    QVector<AxShape> expanded_shape;
+    QVector<QPointF>shape_const ;
+    int next_o;
+    QPoint p1,p2;
+    int D=-20.0;
+
+
+    Path subj;
+    Paths solution;
+
+    shape_const.append(QPointF(348,257));
+    shape_const.append(QPointF(364,148));
+    shape_const.append(QPointF(362,148));
+    shape_const.append(QPointF(326,241));
+    shape_const.append(QPointF(295,219));
+    shape_const.append(QPointF(258,88));
+    shape_const.append(QPointF(440,129));
+    shape_const.append(QPointF(370,196));
+    shape_const.append(QPointF(372,275));
+
+
+    for (int o=0;o<shape_const.size();o++)
+    {
+        next_o=next_point(o,shape_const);
+        shape.append(new AxLine(shape_const[o],shape_const[next_o]));
+    }
+
+    shape.affiche(this, 2,"blue");
+
+    expanded_shape=shape.expand(10);
+
+    for (int k=0;k<expanded_shape.size();k++)
+    {
+        expanded_shape[k].affiche(this, 2,"red");
+    }
+*/
+}

@@ -1,4 +1,4 @@
-#include "AxTriangle.h"
+#include "axtriangle.h"
 #include "math.h"
 #include "common_functions.h"
 #include <QPainter>
