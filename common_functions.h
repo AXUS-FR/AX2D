@@ -39,7 +39,7 @@ qreal random(qreal min, qreal max);
 
 //---------------------------------------------------------------------------------------------
 
-bool not_equal(QPoint p1, QPoint p2,double epsilon=0.0001);
+bool not_equal(QPoint p1, QPoint p2);
 //return true if p1, and p2 are not equal with a deflaut tolerence of 0.0001 or return false else
 
 bool equal(AxBorder *border1, AxBorder *border2);

@@ -181,9 +181,9 @@ QVector<QVector<qreal>> intersect_shape(AxBorder *border, AxShape shape)
 }
 
 
-bool not_equal(QPoint p1, QPoint p2,double epsilon)
+bool not_equal(QPoint p1, QPoint p2)
 {
-
+    int epsilon = 10;
     if ((fabs(p1.x()-p2.x())<epsilon) && (fabs(p1.y()-p2.y())<epsilon))
     {
         return false;
@@ -194,14 +194,14 @@ bool not_equal(QPoint p1, QPoint p2,double epsilon)
 
 bool not_equal(qreal a,qreal b)
 {
-    double epsilon=0.0001;
+    int epsilon = 10;
 
     return !(fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon));
 }
 
 bool equal(qreal a,qreal b)
 {
-    double epsilon=0.0001;
+    int epsilon = 10;
 
     return (fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon));
 }
