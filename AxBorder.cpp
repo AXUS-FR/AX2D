@@ -4,7 +4,7 @@
 AxBorder:: ~AxBorder()
 {};
 
-void AxBorder::affiche(QPaintDevice *device, int width, const QColor &color)
+void AxBorder::display(QPaintDevice *device, int width, const QColor &color)
 {}
 
 void AxBorder::f(QDebug &dbg) const
@@ -71,10 +71,24 @@ QLine AxBorder::get_limits()
     return limits;
 }
 
+void AxBorder::set_cw(bool c)
+{
+
+}
+
+void AxBorder::set_ccw(bool c)
+{
+
+}
+
 QPoint AxBorder::middle_point()
 {
 }
 
+void AxBorder::translate(int offset)
+{
+
+}
 
 QLine AxBorder::get_mediatrice()
 {

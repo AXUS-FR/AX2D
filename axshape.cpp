@@ -15,16 +15,18 @@ AxShape:: AxShape()
     shape=QVector<AxBorder*>();
 }
 
-void AxShape::append(AxBorder* border)
+void AxShape::append(AxBorder *border)
 {
+
     shape.append(border);
 
 }
 
 
 
-void AxShape::insert(int k,AxBorder* border)
+void AxShape::insert(int k,AxBorder *border)
 {
+
     shape.insert(k,border);
 }
 
@@ -35,6 +37,7 @@ void AxShape::remove(int k)
 
 void AxShape::replace(int k, AxBorder *border)
 {
+
     shape.replace(k, border);
 };
 
@@ -48,7 +51,7 @@ AxShape:: ~AxShape()
 {
     for (int k=0;k<shape.size();k++)
     {
-        shape[k]=0;
+        shape[k]=nullptr;
     }
 }
 
@@ -1223,7 +1226,7 @@ AxShape AxShape::expand_unfinished(int R)
             // ETAPE 4 : ajustement des bords : a faire
 
 }
-
+/*
 //int AxShape::bord_externe()
 //{
 //    // renvoie le numéro de ligne du premier bord externe de l'axShape que l'on détecte
@@ -1309,7 +1312,7 @@ AxShape AxShape::expand_unfinished(int R)
 //            }
 //        }
 //    }
-
+*/
 int AxShape::previous_point(int n)
 {
     int n2=n-1;
@@ -1320,9 +1323,10 @@ int AxShape::previous_point(int n)
     return n2;
 }
 
-QVector<AxShape> AxShape::expand(int D)
+QVector<AxShape> AxShape::expand(int offset)
 {
 
+/*
     AxShape shape, transit_shape;
     QVector<AxShape> expanded_shape;
     QVector<QPoint>shape_const ;
@@ -1393,15 +1397,15 @@ QVector<AxShape> AxShape::expand(int D)
     }
 
     return expanded_shape;
-
+*/
 }
 
 
-void AxShape::affiche(QPaintDevice *device, int width, const QColor &color)
+void AxShape::display(QPaintDevice *device, int width, const QColor &color)
 {
     for (int k=0;k<shape.size();k++)
     {
-        shape[k]->affiche(device, width, color);
+        shape[k]->display(device, width, color);
     }
 }
 

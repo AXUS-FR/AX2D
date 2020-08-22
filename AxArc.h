@@ -45,6 +45,7 @@ class AxArc : public AxBorder
         virtual int getObjectType();
         // return 1
 
+       void translate(int offset);
 
         // FUNCTIONS
 
@@ -57,7 +58,7 @@ class AxArc : public AxBorder
 
         // PLOT
 
-        virtual void affiche(QPaintDevice *device, int width, const QColor &color);
+        virtual void display(QPaintDevice *device, int width, const QColor &color);
         // graphical plot
 
         friend QDebug operator<<(QDebug dbg, const AxArc &type);

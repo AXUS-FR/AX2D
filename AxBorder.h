@@ -44,6 +44,8 @@ public:
     virtual int getObjectType();
     // return border type : if (border==line) return 0 if (border==arc) return 0
 
+    void set_cw(bool);
+    void set_ccw(bool);
 
     // SETTERS
 
@@ -56,10 +58,19 @@ public:
     void setP2(QPoint p);
     // change the value of the 2nd border point
 
+    virtual void translate(int offset);
+    // for AxLines
+    // translate the line of offset value in perpendicular direction
+    // + direction offset right from line
+    // - direction offset left from line
+
+    //for AxArc
+    //adapt radius to offset
+
 
     // PLOT
 
-    virtual void affiche(QPaintDevice *device, int width, const QColor &color);
+    virtual void display(QPaintDevice *device, int width, const QColor &color);
     // graphical plot
 
     friend QDebug operator<<(QDebug dbg, AxBorder *type);
@@ -74,6 +85,7 @@ public:
 protected:
 
     QLine limits;
+    QLine last;
 
 };
 

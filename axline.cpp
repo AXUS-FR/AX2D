@@ -83,6 +83,142 @@ void AxLine::set_ccw(bool way)
 
 }
 
+void AxLine::translate(int offset)
+{
+
+    qDebug() << cw ;
+    // process offset x and y value
+    int x_offset = abs(dy()*offset);
+    int y_offset = abs(dx()*offset);
+
+    qDebug() << "x" << x_offset;
+    qDebug() << "y" << y_offset;
+
+    qDebug() << "p1:" << this->p1();
+    qDebug() << "p2:" << this->p2();
+
+
+    qDebug() << "dx" << dx();
+    qDebug() << "dy" << dy();
+
+
+    if (dx() > 0 && dy() == 0)
+    {
+        //qDebug() << "1" ;
+
+        x_offset = 0;
+        y_offset = - y_offset;
+    }
+
+    else if (dx() < 0 && dy() == 0)
+    {
+        //qDebug() << "2" ;
+        x_offset = 0;
+        //y_offset = - y_offset;
+    }
+
+    else if (dx() == 0 && dy() > 0)
+    {
+        //qDebug() << "3" ;
+        x_offset = x_offset;
+        y_offset = 0;
+    }
+
+    else if (dx() == 0 && dy() < 0)
+    {
+        //qDebug() << "4" ;
+        x_offset = -x_offset;
+        y_offset = 0;
+    }
+
+    else if (dx() > 0 && dy() > 0)
+    {
+        //qDebug() << "5" ;
+        x_offset = +x_offset;
+        y_offset = -y_offset;
+    }
+
+    else if (dx() > 0 && dy() < 0)
+    {
+        //qDebug() << "6" ;
+        x_offset = -x_offset;
+        y_offset = -y_offset;
+    }
+
+    else if (dx() < 0 && dy() > 0)
+    {
+        //qDebug() << "7" ;
+        x_offset = x_offset;
+        y_offset = y_offset;
+    }
+
+    else if (dx() < 0 && dy() < 0)
+    {
+        //qDebug() << "8" ;
+        x_offset = -x_offset;
+        y_offset = y_offset;
+    }
+
+    qDebug() << "x" << x_offset;
+    qDebug() << "y" << y_offset;
+
+    //----------------------------------------------------------------
+    if (this->is_ccw())
+    {
+       qDebug() << "9" ;
+        x_offset = - x_offset;
+        y_offset = - y_offset;
+    }
+
+    int l = sqrt(dx()*dx()+dy()*dy());
+
+    qDebug() << "l" << l;
+
+    x_offset = x_offset / l;
+    y_offset = y_offset / l;
+
+    qDebug() << "x" << x_offset;
+    qDebug() << "y" << y_offset;
+
+
+
+    translate(x_offset,y_offset);
+
+    qDebug() << "p1:" << this->p1();
+    qDebug() << "p2:" << this->p2();
+
+    qDebug() << "------------------------------" ;
+
+
+}
+
+void AxLine::translate(int x,int y)
+{
+    last = limits; // save position before move
+    limits.translate(x,y);
+
+
+    //limits.p1().setX(limits.p1().x()+x);
+    //limits.p1().setY(limits.p1().y()+y);
+    //limits.p2().setX(limits.p2().x()+x);
+   // limits.p2().setY(limits.p2().y()+y);
+
+    //limits.setLine(limits.p1().x()+x,limits.p1().y()+y,limits.p2().x()+x,limits.p2().y()+y);
+
+
+}
+int AxLine::dx()
+{
+    return (p2().x()-p1().x());
+}
+
+int AxLine::dy()
+{
+    return (p2().y()-p1().y());
+}
+
+
+
 
 AxLine :: AxLine()
 {
@@ -96,7 +232,7 @@ QPoint AxLine::middle_point()
     return limits.center();
 }
 
-void AxLine::affiche(QPaintDevice *device, int width, const QColor &color)
+void AxLine::display(QPaintDevice *device, int width, const QColor &color)
 {
     QPainter painter(device);
     QPen pen;

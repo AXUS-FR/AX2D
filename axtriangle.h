@@ -27,7 +27,7 @@ class AxTriangle : public QPolygon
 
         //plot
 
-        void affiche(QPaintDevice *device, int width, const QColor &color);
+        void display(QPaintDevice *device, int width, const QColor &color);
         friend QDebug operator<<(QDebug dbg, const AxTriangle &type);
 
     private:

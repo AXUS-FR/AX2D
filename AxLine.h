@@ -42,9 +42,19 @@ class AxLine : public AxBorder
         bool is_ccw();
 
 
+        int dx();
+        int dy();
+
+        virtual void translate(int offset);
+        // translate of offset value in offset direction
+        // +  = right hand
+        // - is left hand
+
+        void translate(int x, int y);
+
         //Plot
 
-        virtual void affiche(QPaintDevice *device, int width, const QColor &color);
+        virtual void display(QPaintDevice *device, int width, const QColor &color);
         //graphical plot
 
         friend QDebug operator<<(QDebug dbg, const AxLine &type);

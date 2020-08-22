@@ -55,7 +55,7 @@ QPoint AxArc::middle_point()
 
     if (segment.center()==C)
     {
-        qDebug()<<"possibly a problem in AxAc-> middle_point ";
+        qDebug()<<"possibly a problem in AxArc-> middle_point ";
     }
 
     else
@@ -137,9 +137,9 @@ void AxArc::set_ccw(bool way)
 
 }
 
-void AxArc :: affiche(QPaintDevice *device, int width, const QColor &color)
+void AxArc :: display(QPaintDevice *device, int width, const QColor &color)
 {
-    // affiche l'arc associé
+    // display l'arc associé
 
     int startAngle,spanAngle,teta1,teta2;
     QPoint p1=limits.p1();
@@ -221,6 +221,10 @@ void AxArc::f(QDebug& dbg) const
     dbg.nospace() << "AxArc("<< limits << "," << C  << ","<< R << ", " <<clockwise<<")"<<endl;
 }
 
+void AxArc::translate(int offset)
+{
+
+}
 
 bool AxArc::operator==(const AxArc &arc) const
 {

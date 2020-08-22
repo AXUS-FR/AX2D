@@ -78,7 +78,7 @@ AxCircle AxTriangle::cercle_inscrit()
     return AxCircle(R,pc);
 }
 
-void AxTriangle::affiche(QPaintDevice *device, int width, const QColor &color)
+void AxTriangle::display(QPaintDevice *device, int width, const QColor &color)
 {
     QPainter painter(device);
     QPen pen;
