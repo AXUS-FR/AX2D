@@ -10,11 +10,11 @@ class AxCircle
 public:
     AxCircle();
     virtual ~AxCircle(); //destructeur de classe
-    AxCircle(qreal _R, QPoint _center);
+    AxCircle(int _R, QPoint _center);
     QPoint get_center();
-    qreal get_R();
+    int get_R();
 private:
-    qreal R;
+    int R;
     QPoint center;
 };
 

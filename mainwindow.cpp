@@ -61,10 +61,10 @@ void MainWindow::paintEvent(QPaintEvent *event)
     // variables
     QLine arc_limits, line_trans1;
     QPoint pc,px,p1,p2;
-    qreal R,teta1,teta2,startAngle,spanAngle;
+    int R,teta1,teta2,startAngle,spanAngle;
     int clockwise;
-    QVector<QVector<qreal>> segment_stock,cross_test;
-    QVector<qreal> line_trans;
+    QVector<QVector<int>> segment_stock,cross_test;
+    QVector<int> line_trans;
 
 
 
@@ -146,12 +146,12 @@ pts to angle
 
     arc.affiche(this,5,"red");
 
-//    QVector<qreal> plot_arc=arc.affiche();
+//    QVector<int> plot_arc=arc.affiche();
 //    painter.drawArc(plot_arc[0],plot_arc[1],plot_arc[2],plot_arc[3], plot_arc[4], plot_arc[5]);
 
        // segment arc cross test
 
-    QVector<QVector<qreal>> cross_pts;
+    QVector<QVector<int>> cross_pts;
     for (int n=0;n<20;n++)
     {
         // generate a random line
@@ -197,7 +197,7 @@ pts to angle
         line_trans.append(p2.x());
         line_trans.append(p2.y());
         segment_stock.append(line_trans);
-        line_trans=QVector<qreal>();
+        line_trans=QVector<int>();
     }
 */
     //   --------------------------------------------------------------------------------------------------
@@ -217,7 +217,7 @@ pts to angle
     QPoint pc;
     QPen pen1, pen2;
     AxCircle cross_med;
-    qreal R;
+    int R;
 
     pen1.setColor(Qt::red);
     pen1.setWidth(10);
@@ -248,7 +248,7 @@ pts to angle
        QVector<QPoint> nuage;
        QPolygon polygon;
        QVector<AxTriangle> triangle_list_bis,triangle_list;
-       QVector<QVector<qreal>>test_vector;
+       QVector<QVector<int>>test_vector;
        int next_point, number_of_pts,test;
        AxCircle cross_med,cross_med1,cross_med2;
        QPoint random_point,pc1,pc2;
@@ -357,7 +357,7 @@ pts to angle
            cross_med=triangle_list[k].cercle_inscrit();
 
            QPoint pc=cross_med.get_center();
-           qreal R=cross_med.get_R();
+           int R=cross_med.get_R();
 
            AxCircle C= AxCircle(R,pc);
    //        painter.drawEllipse(C.get_center(), C.get_R(), C.get_R());
@@ -414,7 +414,7 @@ pts to angle
 //    form.append(new AxArc(QLine(QPoint(131.333,207.179),QPoint(150,220)),QPoint(150,200),20, 1));
 
     int k2,k1=0;
-    qreal teta;
+    int teta;
     QVector<AxShape> concave_list;
     AxShape segments_concave;
     AxShape convexe(form);
@@ -595,12 +595,12 @@ qDebug()<< "shape_concave" << shape_concave ;
     // Motor cycle graph and staigth skeletton
 
     AxBorder *brut_segment_1,*brut_segment_2;
-    QVector<QVector<qreal> > cross_test,cross_test1,cross_test2;
+    QVector<QVector<int> > cross_test,cross_test1,cross_test2;
     QVector<AxLine> bisectrice_list;
     QPoint closest_cross,p1,p2;
     QVector<Vertice> Vertice_list;
     int k2, q1,q0,q2;
-    qreal closest_distance, cross_distance,cross_distance1,cross_distance2,angle1,angle2;
+    int closest_distance, cross_distance,cross_distance1,cross_distance2,angle1,angle2;
     int k1_cross,k2_cross,k0, kprev, knext;
     AxLine segments_bisectrice;
     AxShape form;
@@ -716,7 +716,7 @@ qDebug()<< "shape_concave" << shape_concave ;
     qDebug()<<"Apres tri :"<<endl<<bisection_intersection_list;
     AxLine bisection1;
     AxLine bisection2;
-    qreal a,y2,y1,x2,x1,b,x3,y3;
+    int a,y2,y1,x2,x1,b,x3,y3;
     QVector<AxLine> Skeletton;
 
 // ETAPE 3 :
@@ -758,7 +758,7 @@ qDebug()<< "shape_concave" << shape_concave ;
                 y3=a*x3+b;
 
                 // détermination du sens de la bisectrice TODO : redéfinir/ améliorer
-                qreal angle0=angle(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
+                int angle0=angle(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
 
                 angle1=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1());
                 angle2=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)), bisection_intersection_list[0].get_vertice2().get_edge2());
@@ -956,7 +956,7 @@ qDebug()<< "shape_concave" << shape_concave ;
     // variables initialisation
 
     QVector<QPoint> form,expand,useless_test;
-    qreal R=50;
+    int R=50;
 
 
     int m2;
@@ -980,8 +980,8 @@ qDebug()<< "shape_concave" << shape_concave ;
 
     QPoint pm, p1, p2,pp1,pp2,p1_para,p2_para;
     QLine segment;
-    qreal a,b,c,a_para,b_para,D;
-    QVector<QVector<qreal>>cross_test;
+    int a,b,c,a_para,b_para,D;
+    QVector<QVector<int>>cross_test;
     QVector<QLine> stock_parallels;
     QVector<QPoint> expand_form;
     int left_cross,sens,n2,k2;
@@ -1164,7 +1164,7 @@ qDebug()<< "shape_concave" << shape_concave ;
     /*
                 // Generate a random arc
                 QVector<AxArc> arc_stock;
-                QVector<QVector<qreal>> cross_arc;
+                QVector<QVector<int>> cross_arc;
 
                 // painter initialisation & definition
 
@@ -1183,7 +1183,7 @@ qDebug()<< "shape_concave" << shape_concave ;
                 for (int k=0;k<5;k++)
                 {
                     int clockwise=1;
-                    qreal _R=300;
+                    int _R=300;
                     QPoint p1_(random(0,width),random(0,height));
                     QPoint p2_(random(0,width),random(0,height));
                     // Generate a random center
@@ -1226,7 +1226,7 @@ qDebug()<< "shape_concave" << shape_concave ;
 
                 // Generate a random arc
                 QVector<QPoint> arc_stock;
-                QVector<QVector<qreal>> cross_arc;
+                QVector<QVector<int>> cross_arc;
                 int nearest_pos;
                 QPoint p ;
                 AxLine line;
@@ -1235,7 +1235,7 @@ qDebug()<< "shape_concave" << shape_concave ;
 
                 int clockwise=0;
                 AxBorder *arc;
-                qreal _R=300;
+                int _R=300;
                 QPoint p1_(random(0,width),random(0,height));
                 QPoint p2_(random(0,width),random(0,height));
                 // Generate a random center
@@ -1327,15 +1327,15 @@ qDebug()<< "shape_concave" << shape_concave ;
 
 
         form.affiche(this, 2, "red");
-        qreal R=10;
+        int R=10;
 
 
         //   le programme aggrandis d'un rayon R la forme
 
             QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
             AxLine segment, segment1, segment2, segment_previous, segment_next;
-            qreal a,b,a_para,b_para,D,R_;
-            QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
+            int a,b,a_para,b_para,D,R_;
+            QVector<QVector<int>>cross_test,cross_med,cross_test1,cross_test2;
             AxShape stock_parallels,expand;
             QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
             QLine arc_limits_,med;
@@ -1881,15 +1881,15 @@ stock_parallels.affiche(this, 2,"green");
 
 
     form.affiche(this, 2, "red");
-    qreal R=10;
+    int R=10;
 
 
     //   le programme aggrandis d'un rayon R la forme
 
     QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
     AxLine segment, segment1, segment2, segment_previous, segment_next;
-    qreal a,b,a_para,b_para,D,R_;
-    QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
+    int a,b,a_para,b_para,D,R_;
+    QVector<QVector<int>>cross_test,cross_med,cross_test1,cross_test2;
     AxShape stock_parallels,expand, brut_expland;
     QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
     QLine arc_limits_,med;
@@ -2044,7 +2044,7 @@ stock_parallels.affiche(this, 2,"green");
         bisectrice_list[k].affiche(this, 5,"blue");
     }
 
-    qreal closest_distance, cross_distance;
+    int closest_distance, cross_distance;
     int k1_cross,k2_cross,k2;
 
     for (int k=0;k<bisectrice_list.size();k++)

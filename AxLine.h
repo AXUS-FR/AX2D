@@ -20,7 +20,7 @@ class AxLine : public AxBorder
         //AxLine(const QLine &line);
         AxLine(AxBorder *border);
         AxLine(QLine _line);
-        AxLine(qreal x1, qreal y1, qreal x2, qreal y2);
+        AxLine(int x1, int y1, int x2, int y2);
         AxLine(const QPoint &p1, const QPoint &p2);
         AxLine();
 

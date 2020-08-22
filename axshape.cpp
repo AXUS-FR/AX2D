@@ -64,7 +64,7 @@ QVector<QVector<AxShape>> AxShape::convexe_concave()
     // note : pour que les pointeurs soient commun remplacer tous les form par *this
     AxShape form=*this;
     int k2,k1=0;
-    qreal teta;
+    int teta;
     QVector<AxShape> concave_list;
     AxShape segments_concave;
     AxShape convexe(*this);
@@ -183,14 +183,14 @@ QVector<QVector<AxShape>> AxShape::convexe_concave()
 
 }
 
-AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
+AxBorder* AxShape::segment_brut_expand(AxBorder *border, int R)
 {
     AxShape form=*this;
 
     QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
     AxLine segment, segment1, segment2, segment_previous, segment_next;
-    qreal a,b,a_para,b_para,D,R_;
-    QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
+    int a,b,a_para,b_para,D,R_;
+    QVector<QVector<int>>cross_test,cross_med,cross_test1,cross_test2;
     AxShape stock_parallels,expand, brut_expland;
     QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
     QLine arc_limits_,med;
@@ -413,14 +413,14 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
 }
 
 
-AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
+AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, int R)
 {
     AxShape form=*this;
 
     QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
     AxLine segment, segment1, segment2, segment_previous, segment_next;
-    qreal a,b,a_para,b_para,D,R_;
-    QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
+    int a,b,a_para,b_para,D,R_;
+    QVector<QVector<int>>cross_test,cross_med,cross_test1,cross_test2;
     AxShape stock_parallels,expand, brut_expland;
     QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
     QLine arc_limits_,med;
@@ -675,7 +675,7 @@ int AxShape::next_point(int n)
 int AxShape::bord_externe()
 {
     AxShape form=*this;
-    QVector<QVector<qreal>>cross_test;
+    QVector<QVector<int>>cross_test;
     QPoint pm;
     for (int q=0;q<form.size();q++)
     {
@@ -724,12 +724,12 @@ int AxShape::bord_externe()
 QVector<AxLine> AxShape::straight_skeletton()
 {
     AxBorder *brut_segment_1,*brut_segment_2;
-    QVector<QVector<qreal> > cross_test,cross_test1,cross_test2;
+    QVector<QVector<int> > cross_test,cross_test1,cross_test2;
     QVector<AxLine> bisectrice_list;
     QPoint closest_cross,p1,p2;
     QVector<Vertice> Vertice_list;
     int k2, q1,q0,q2;
-    qreal closest_distance, cross_distance,cross_distance1,cross_distance2,angle1,angle2;
+    int closest_distance, cross_distance,cross_distance1,cross_distance2,angle1,angle2;
     int k1_cross,k2_cross,k0, kprev, knext;
     AxLine segments_bisectrice;
     AxShape form;
@@ -817,7 +817,7 @@ QVector<AxLine> AxShape::straight_skeletton()
     qDebug()<<"Apres tri :"<<endl<<bisection_intersection_list;
     AxLine bisection1;
     AxLine bisection2;
-    qreal a,y2,y1,x2,x1,b,x3,y3;
+    int a,y2,y1,x2,x1,b,x3,y3;
     QVector<AxLine> Skeletton;
 
 // ETAPE 3 :
@@ -859,7 +859,7 @@ QVector<AxLine> AxShape::straight_skeletton()
                 y3=a*x3+b;
 
                 // détermination du sens de la bisectrice TODO : redéfinir/ améliorer
-                qreal angle0=angle(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
+                int angle0=angle(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
 
                 angle1=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1());
                 angle2=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)), bisection_intersection_list[0].get_vertice2().get_edge2());
@@ -1021,7 +1021,7 @@ QVector<AxLine> AxShape::straight_skeletton()
     return Skeletton;
 }
 
-AxShape AxShape::expand_unfinished(qreal R)
+AxShape AxShape::expand_unfinished(int R)
 {
 
         AxShape form=*this;
@@ -1031,8 +1031,8 @@ AxShape AxShape::expand_unfinished(qreal R)
 
         QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
         AxLine segment, segment1, segment2, segment_previous, segment_next;
-        qreal a,b,a_para,b_para,D,R_;
-        QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
+        int a,b,a_para,b_para,D,R_;
+        QVector<QVector<int>>cross_test,cross_med,cross_test1,cross_test2;
         AxShape stock_parallels,expand, brut_expland;
         QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
         QLine arc_limits_,med;
@@ -1174,7 +1174,7 @@ AxShape AxShape::expand_unfinished(qreal R)
 
 
 
-        qreal closest_distance, cross_distance;
+        int closest_distance, cross_distance;
         int k1_cross,k2_cross,k2;
 
         for (int k=0;k<bisectrice_list.size();k++)
@@ -1232,7 +1232,7 @@ AxShape AxShape::expand_unfinished(qreal R)
 //    QPoint p1,p2,pp1,pp2,pm;
 //    AxLine segment;
 //    QLine med;
-//    QVector<QVector<qreal>>cross_test;
+//    QVector<QVector<int>>cross_test;
 //    QVector<QPoint> cross_pts;
 
 //    for (int n=0;n<shape.size();n++)// for all border of form
@@ -1320,13 +1320,13 @@ int AxShape::previous_point(int n)
     return n2;
 }
 
-QVector<AxShape> AxShape::expand(qreal D)
+QVector<AxShape> AxShape::expand(int D)
 {
 
     AxShape shape, transit_shape;
     QVector<AxShape> expanded_shape;
     QVector<QPoint>shape_const ;
-    QVector<QVector<qreal>> cross_test;
+    QVector<QVector<int>> cross_test;
     int next_o;
     QPoint p1,p2;
     int k_prev, k_next;
@@ -1409,7 +1409,7 @@ void AxShape::affiche(QPaintDevice *device, int width, const QColor &color)
 bool AxShape::contain(QPoint pm)
 {
     AxShape form=*this;
-    QVector<QVector<qreal>>cross_test;
+    QVector<QVector<int>>cross_test;
     int left_cross=0;
     QPoint pm_line=QPoint(pm.x()+10.0,pm.y()+10.0);
 
@@ -1451,7 +1451,7 @@ bool AxShape::contain(QPoint pm)
       }
 }
 
-//AxShape AxShape::operator=(const qreal k)
+//AxShape AxShape::operator=(const int k)
 //{
 //}
 

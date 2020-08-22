@@ -21,7 +21,7 @@ AxLine::AxLine(QLine _line)
     limits=_line;
 }
 
-AxLine ::AxLine(qreal x1, qreal y1, qreal x2, qreal y2)
+AxLine ::AxLine(int x1, int y1, int x2, int y2)
 {
     QLine line_trans(x1,y1,x2,y2);
     limits=line_trans;
@@ -40,7 +40,7 @@ AxLine:: ~AxLine()
 QLine AxLine::get_mediatrice()
 {
     QPoint pp2;
-    qreal a,b,c;
+    int a,b,c;
     QPoint pp1((limits.p1().x()+limits.p2().x())/2,((limits.p1().y()+limits.p2().y())/2));
     pp2.setY(100+pp1.y());
     a=2*(limits.p2().x()-limits.p1().x());

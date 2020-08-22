@@ -26,22 +26,22 @@ QPoint AxBorder::p2() const
     return limits.p2();
 }
 
-qreal AxBorder::x1() const
+int AxBorder::x1() const
 {
     return limits.p1().x();
 }
 
-qreal AxBorder::x2() const
+int AxBorder::x2() const
 {
     return limits.p2().x();
 }
 
-qreal AxBorder::y1() const
+int AxBorder::y1() const
 {
     return limits.p1().y();
 }
 
-qreal AxBorder::y2() const
+int AxBorder::y2() const
 {
     return limits.p2().y();
 }

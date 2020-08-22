@@ -16,7 +16,7 @@ AxArc:: AxArc()
     clockwise=0;
 };
 
-AxArc:: AxArc(QLine _limits, QPoint _center, qreal _R, int _clockwise)
+AxArc:: AxArc(QLine _limits, QPoint _center, int _R, int _clockwise)
 {
     limits=_limits;
     C=_center;
@@ -36,7 +36,7 @@ AxArc::AxArc(AxBorder *border)
 
 }
 
-AxArc::AxArc(QPoint _center, qreal _R)
+AxArc::AxArc(QPoint _center, int _R)
 {
     C=_center;
     R=_R;
@@ -60,7 +60,7 @@ QPoint AxArc::middle_point()
 
     else
     {
-        QVector<QVector<qreal>> cross_med=intersect_arc_line(QLine(C,segment.center()),AxArc(*this));
+        QVector<QVector<int>> cross_med=intersect_arc_line(QLine(C,segment.center()),AxArc(*this));
 
         cross_pts=intersecting_points(cross_med);
         if (p1!=p2)
@@ -96,7 +96,7 @@ QPoint AxArc :: get_center()
 {
     return C;
 }
-qreal AxArc :: get_R()
+int AxArc :: get_R()
 {
     return R;
 }
@@ -141,7 +141,7 @@ void AxArc :: affiche(QPaintDevice *device, int width, const QColor &color)
 {
     // affiche l'arc associé
 
-    qreal startAngle,spanAngle,teta1,teta2;
+    int startAngle,spanAngle,teta1,teta2;
     QPoint p1=limits.p1();
     QPoint p2=limits.p2();
     QPoint pc=C;
@@ -190,7 +190,7 @@ void AxArc :: affiche(QPaintDevice *device, int width, const QColor &color)
     }
     QRectF rectangle(pc.x()-R, pc.y()-R, 2*R, 2*R);
 
-    QVector<qreal> rect_angle;
+    QVector<int> rect_angle;
 
     rect_angle.append(pc.x()-R);
     rect_angle.append(pc.y()-R);
@@ -240,10 +240,10 @@ QDebug operator<<(QDebug dbg, const AxArc &type)
     return dbg.maybeSpace();
 }
 
-qreal AxArc :: angle(QPoint p)// Calculate the positive angle of the point based on the certer of my arc
+int AxArc :: angle(QPoint p)// Calculate the positive angle of the point based on the certer of my arc
 {
     QPoint pc = this->get_center();
-    qreal teta;
+    int teta;
 
     // I calculate my reals angle in positive
 
@@ -270,7 +270,7 @@ int AxArc :: arc_test(QPoint px)// test si l'angle d'un point selon l'arc de cer
 {
 
     // prend un un arc de cercle et un point appartement au cercle en argument et défini si le point se situe sur l'arc
-    qreal teta1, teta2, tetax;
+    int teta1, teta2, tetax;
     QPoint p1= limits.p1();
     QPoint p2= limits.p2();
     int clockwise = this->is_clockwise();

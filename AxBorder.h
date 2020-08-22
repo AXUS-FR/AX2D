@@ -20,16 +20,16 @@ public:
     QPoint p2() const;
     // return the 2nd point of the border
 
-    qreal x1() const;
+    int x1() const;
     // return the x coordinate of the 1st point of the border
 
-    qreal x2() const;
+    int x2() const;
     // return the x coordinate of the 2st point of the border
 
-    qreal y1() const;
+    int y1() const;
     // return the y coordinate of the 1st point of the border
 
-    qreal y2() const;
+    int y2() const;
     // return the y coordinate of the 2st point of the border
 
     QPoint center() const;

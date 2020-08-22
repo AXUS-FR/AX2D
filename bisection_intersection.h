@@ -7,11 +7,11 @@ class bisection_intersection
 {
 public:
     bisection_intersection();
-    bisection_intersection(qreal distance, QPoint cross_point,Vertice *vertice1, Vertice *vertice2);
+    bisection_intersection(int distance, QPoint cross_point,Vertice *vertice1, Vertice *vertice2);
 
     friend QDebug operator<<(QDebug dbg, const bisection_intersection &type);// operator overloading
 
-    qreal get_distance() const;
+    int get_distance() const;
     Vertice get_vertice1() const;
     Vertice get_vertice2() const;
     Vertice get_previous_vertrice() const;
@@ -20,7 +20,7 @@ public:
 
 
 private:
-    qreal distance;
+    int distance;
     QPoint cross_point;
     Vertice *vertice1;
     Vertice *vertice2;

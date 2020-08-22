@@ -16,9 +16,9 @@ class AxArc : public AxBorder
         // CONSTRUCTOR
 
         AxArc();
-        AxArc(QLine _arc_limits, QPoint _center, qreal _R, int clockwise);
+        AxArc(QLine _arc_limits, QPoint _center, int _R, int clockwise);
         AxArc(AxBorder *border);
-        AxArc(QPoint _center, qreal _R);
+        AxArc(QPoint _center, int _R);
 
 
         //GETTERS
@@ -26,7 +26,7 @@ class AxArc : public AxBorder
         QPoint get_center();
         // return the attribute C of the arc
 
-        qreal get_R();
+        int get_R();
         // return the attribute R of the arc
 		bool is_cw();
         bool is_ccw();		
@@ -51,7 +51,7 @@ class AxArc : public AxBorder
         int arc_test(QPoint px);
         // check if px is on arc (WARNING check only angles)
 
-        qreal angle(QPoint p);
+        int angle(QPoint p);
         // calculate the angle of p based on the center of the arc clockwise
 
 
@@ -73,7 +73,7 @@ class AxArc : public AxBorder
 private:
 
         QPoint C;
-        qreal R;
+        int R;
         int clockwise;
 };
 

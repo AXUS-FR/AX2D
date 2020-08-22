@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 //    line2 = QLine(p3,p4);
 
 
-//    QVector<qreal> result = intersect(line1,line2);
+//    QVector<int> result = intersect(line1,line2);
 
 //    qDebug() << result << endl;
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 //    p1=QPoint(286.5,58);// random+plot
 //    p2=QPoint(100,277);
 //    pc=QPoint(250,250);
-//    qreal R=100;
+//    int R=100;
 
 //    QLine arc_limits=QLine(p1,p2);
 

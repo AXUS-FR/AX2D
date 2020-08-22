@@ -48,8 +48,8 @@ AxLine AxTriangle::getline3()
 AxCircle AxTriangle::cercle_inscrit()
 {
     QPoint pm1,pm2,pm3,pm4,pc;
-    qreal a,b,c,R;
-    QVector<QVector<qreal>> cross_med;
+    int a,b,c,R;
+    QVector<QVector<int>> cross_med;
 
     //  calcul de 2 pts appartement aux médiatrice
 

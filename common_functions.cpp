@@ -9,17 +9,17 @@ using namespace std;
 
 
 
-
-qreal random(qreal min, qreal max)
+/*
+int random(int min, int max)
 {
     QRandomGenerator64 rd;
     rd=QRandomGenerator64::securelySeeded();
-    return (min+max*std::generate_canonical<qreal, std::numeric_limits<qreal>::digits>(rd));
-}
+    return (min+max*std::generate_canonical<int, std::numeric_limits<int>::digits>(rd));
+}*/
 
 AxLine bisectrice(AxLine line1, AxLine line2)
 {
-    QVector<QVector<qreal> > cross_test1,cross_test2,cross_test,cross_test0;
+    QVector<QVector<int> > cross_test1,cross_test2,cross_test,cross_test0;
 
     cross_test0=intersect_lignes(line1, line2);
 //    Si les 2 droites se croisent, je je creer 2 points appartenant à line1 et line2 à une même distance D de p1 vers p2
@@ -27,7 +27,7 @@ AxLine bisectrice(AxLine line1, AxLine line2)
     if (cross_test0[0][0]==1)
     {
         QPoint pp2,pp1;
-        qreal a,b,c;
+        int a,b,c;
 
         qDebug()<<"yatta"<<line1;
         if (distance(line1.p1(),QPoint(cross_test0[1][0],cross_test0[1][1]))<(distance(line1.p2(),QPoint(cross_test0[1][0],cross_test0[1][1]))))
@@ -132,7 +132,7 @@ AxLine bisectrice(AxLine line1, AxLine line2)
 }
 
 
-QVector<QVector<qreal>> intersect_border(AxBorder *border1,AxBorder *border2)
+QVector<QVector<int>> intersect_border(AxBorder *border1,AxBorder *border2)
 {
     // detect the intersection between 2 borders
 
@@ -156,12 +156,12 @@ QVector<QVector<qreal>> intersect_border(AxBorder *border1,AxBorder *border2)
 
 
 
-QVector<QVector<qreal>> intersect_shape(AxBorder *border, AxShape shape)
+QVector<QVector<int>> intersect_shape(AxBorder *border, AxShape shape)
 {
     // detect the intersection between a border and a shape
-    QVector<QVector<qreal>> cross_test,cross_list;
+    QVector<QVector<int>> cross_test,cross_list;
     int cross=0;
-    QVector<qreal> vect;
+    QVector<int> vect;
     for (int k=0;k<shape.size();k++)
     {
         cross_test=intersect_border(border,shape[k]);
@@ -192,14 +192,14 @@ bool not_equal(QPoint p1, QPoint p2)
     return true;
 }
 
-bool not_equal(qreal a,qreal b)
+bool not_equal(int a,int b)
 {
     int epsilon = 10;
 
     return !(fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon));
 }
 
-bool equal(qreal a,qreal b)
+bool equal(int a,int b)
 {
     int epsilon = 10;
 
@@ -230,12 +230,12 @@ int toggle(int a)
     }
 }
 
-qreal distance(QPoint p1, QPoint p2)
+int distance(QPoint p1, QPoint p2)
 {
     return(sqrt(pow((p1.x()-p2.x()),2)+pow((p1.y()-p2.y()),2)));
 }
 
-int sign(qreal a)
+int sign(int a)
 {
     if (a<0)
     {
@@ -251,7 +251,7 @@ int sign(qreal a)
     }
 }
 
-QVector<QPoint> intersecting_points(QVector<QVector<qreal>> cross_test)
+QVector<QPoint> intersecting_points(QVector<QVector<int>> cross_test)
 {
     // extract the cross pts of a intersect fct
     QVector<QPoint> cross_pts;
@@ -268,14 +268,14 @@ QVector<QPoint> intersecting_points(QVector<QVector<qreal>> cross_test)
 }
 
 
-QPoint closest_cross_to_pt(QVector<QVector<qreal>> cross_test, QPoint pm)
+QPoint closest_cross_to_pt(QVector<QVector<int>> cross_test, QPoint pm)
 {
 //    return the closest point to pm
     QPoint closest_point=QPoint(cross_test[1][0],cross_test[1][1]);
-    qreal closest_distance=distance(closest_point,pm);
+    int closest_distance=distance(closest_point,pm);
     for  (int k=2;k<cross_test.size();k++)
     {
-        qreal d2=distance(QPoint(cross_test[k][0],cross_test[k][1]),pm);
+        int d2=distance(QPoint(cross_test[k][0],cross_test[k][1]),pm);
         if (d2<closest_distance)
         {
             closest_distance=d2;
@@ -291,7 +291,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
     // return the position of the closest point on the list to the border (based on the 1st point on the border)
     // cas particuliers pas pris en compte
     QPoint pm=border->p1();
-    qreal closest_distance;
+    int closest_distance;
     int closest_pos;
     // border = segment ?
     if (border->getObjectType()==0)
@@ -300,7 +300,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
         closest_distance=distance(cross_list[closest_pos],pm);
         for  (int k=1;k<cross_list.size();k++)
         {
-            qreal d2=distance(cross_list[k],pm);
+            int d2=distance(cross_list[k],pm);
             if (d2<closest_distance)
             {
                 closest_distance=d2;
@@ -311,8 +311,8 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
 // border= arc
     else
     {
-        qreal tetax, dteta;
-        qreal teta1=AxArc(border).angle(border->p1());
+        int tetax, dteta;
+        int teta1=AxArc(border).angle(border->p1());
 
         tetax=AxArc(border).angle(cross_list[0]);
 
@@ -391,7 +391,7 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
     // return the position of the closest point on the list to the border (based on the 1st point on the border)
     // cas particuliers pas pris en compte
     QPoint pm=border->p2();
-    qreal closest_distance;
+    int closest_distance;
     int closest_pos;
     // border = segment ?
     if (border->getObjectType()==0)
@@ -400,7 +400,7 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
         closest_distance=distance(cross_list[closest_pos],pm);
         for  (int k=1;k<cross_list.size();k++)
         {
-            qreal d2=distance(cross_list[k],pm);
+            int d2=distance(cross_list[k],pm);
             if (d2<closest_distance)
             {
                 closest_distance=d2;
@@ -411,8 +411,8 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
 // border= arc
     else
     {
-        qreal tetax, dteta;
-        qreal teta1=AxArc(border).angle(border->p1());
+        int tetax, dteta;
+        int teta1=AxArc(border).angle(border->p1());
 
         tetax=AxArc(border).angle(cross_list[0]);
 
@@ -530,14 +530,14 @@ bool equal(AxBorder *border1, AxBorder *border2)
 
 }
 
-qreal angle(AxBorder *border1, AxBorder *border2)
+int angle(AxBorder *border1, AxBorder *border2)
 {
     QPoint p11 = border1->p1();
     QPoint p12 = border1->p2();
     QPoint p21 = border2->p1();
     QPoint p22 = border2->p2();
 
-    qreal teta1,teta2,teta;
+    int teta1,teta2,teta;
 
     // I calculate my reals angle in positive
 
@@ -578,7 +578,7 @@ qreal angle(AxBorder *border1, AxBorder *border2)
 //int inside_form(QPoint pm, AxShape form)
 //{
 //    QPoint p2=QPoint(pm.x(),pm.y());
-//    QVector<QVector<qreal>>cross_test;
+//    QVector<QVector<int>>cross_test;
 //    int left_cross=0;
 //    // count the number of time the segment pm-p2 cross the object
 
@@ -617,11 +617,11 @@ qreal angle(AxBorder *border1, AxBorder *border2)
 
 //}
 
-QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
+QVector<QVector<int>> intersect_arc_line(AxLine line, AxArc arc)
 {
-    QVector<QVector<qreal>> ret;
-    qreal x1,y1,x2,y2,R,xc,yc;
-    QVector<qreal> ret_line;
+    QVector<QVector<int>> ret;
+    int x1,y1,x2,y2,R,xc,yc;
+    QVector<int> ret_line;
 
     x1=line.x1();
     y1=line.y1();
@@ -633,7 +633,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
     yc=arc.get_center().y();
 
     int cross=0;
-    qreal a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
+    int a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment almost vertical ?
      if (float(x2)==float(x1))
@@ -656,7 +656,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
@@ -667,7 +667,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -699,7 +699,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
@@ -710,7 +710,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     }
                 }
             }
@@ -726,7 +726,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
                     ret_line.append(X);
                     ret_line.append(Y);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -737,11 +737,11 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
 }
 
 
-QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
+QVector<QVector<int>> intersect_arc_demi_line(AxLine line, AxArc arc)
 {
-    QVector<QVector<qreal>> ret;
-    qreal x1,y1,x2,y2,R,xc,yc;
-    QVector<qreal> ret_line;
+    QVector<QVector<int>> ret;
+    int x1,y1,x2,y2,R,xc,yc;
+    QVector<int> ret_line;
     int sens;
 
     x1=line.x1();
@@ -754,7 +754,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
     yc=arc.get_center().y();
 
     int cross=0;
-    qreal a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
+    int a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment almost vertical ?
      if (equal(x2,x1))
@@ -778,7 +778,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
@@ -789,7 +789,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -824,7 +824,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
@@ -835,7 +835,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     }
                 }
             }
@@ -851,7 +851,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
                     ret_line.append(X);
                     ret_line.append(Y);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -861,12 +861,12 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
     return ret;
 }
 
-QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
+QVector <QVector<int>> intersect_lignes(QLine line1, QLine line2)
 {
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=line1.x1();
     y1=line1.y1();
@@ -878,7 +878,7 @@ QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
     x4=line2.x2();
     y4=line2.y2();
 
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -900,10 +900,10 @@ QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
             ret_line.append(yc);
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
 
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
 
          }
@@ -917,11 +917,11 @@ QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
 
@@ -936,11 +936,11 @@ QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
 
         ret_line.append(cross);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         ret_line.append(xc);
         ret_line.append(yc);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         return ret;
     }
     else if (x2!=x1 && x4==x3)
@@ -953,11 +953,11 @@ QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
 
         ret_line.append(cross);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         ret_line.append(xc);
         ret_line.append(yc);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         return ret;
     }
     else if (x2==x1 && x4==x3)
@@ -968,20 +968,20 @@ QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
-QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
+QVector <QVector<int>> intersect_lignes(AxLine line1, AxLine line2)
 {
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=line1.x1();
     y1=line1.y1();
@@ -993,7 +993,7 @@ QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
     x4=line2.x2();
     y4=line2.y2();
 
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -1015,10 +1015,10 @@ QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
             ret_line.append(yc);
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
 
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
 
          }
@@ -1032,11 +1032,11 @@ QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
 
@@ -1051,11 +1051,11 @@ QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
 
         ret_line.append(cross);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         ret_line.append(xc);
         ret_line.append(yc);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         return ret;
     }
     else if (x2!=x1 && x4==x3)
@@ -1068,11 +1068,11 @@ QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
 
         ret_line.append(cross);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         ret_line.append(xc);
         ret_line.append(yc);
         ret.append(ret_line);
-        ret_line=QVector<qreal>();
+        ret_line=QVector<int>();
         return ret;
     }
     else if (x2==x1 && x4==x3)
@@ -1083,11 +1083,11 @@ QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2)
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
@@ -1150,12 +1150,12 @@ int next_pt(int n, QVector<AxLine> form)
     return n2;
 }
 
-QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
+QVector <QVector<int>> intersect_line_segment(QLine line, QLine segment)
 {
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc_temp =0, yc_temp =0,xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc_temp =0, yc_temp =0,xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=line.x1();
     y1=line.y1();
@@ -1167,7 +1167,7 @@ QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
     x4=segment.x2();
     y4=segment.y2();
 
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -1193,11 +1193,11 @@ QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
                 else
@@ -1209,11 +1209,11 @@ QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
 
@@ -1237,11 +1237,11 @@ QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
 
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
             }
         }
@@ -1262,11 +1262,11 @@ QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1284,11 +1284,11 @@ QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1305,21 +1305,21 @@ QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
 
-QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
+QVector <QVector<int>> intersect_line_segment(AxLine line, AxLine segment)
 {
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc_temp =0, yc_temp =0,xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc_temp =0, yc_temp =0,xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=line.x1();
     y1=line.y1();
@@ -1331,7 +1331,7 @@ QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
     x4=segment.x2();
     y4=segment.y2();
 
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -1357,11 +1357,11 @@ QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
                 else
@@ -1373,11 +1373,11 @@ QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
 
@@ -1401,11 +1401,11 @@ QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
 
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
             }
         }
@@ -1426,11 +1426,11 @@ QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1448,11 +1448,11 @@ QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1469,20 +1469,20 @@ QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment)
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
 int border_sens(AxBorder *border)
 {
-    qreal x1(border->x1());
-    qreal x2(border->x2());
-    qreal y1(border->y1());
-    qreal y2(border->y2());
+    int x1(border->x1());
+    int x2(border->x2());
+    int y1(border->y1());
+    int y2(border->y2());
     if (border->getObjectType()==0)
     {
         if (x1!=x2)
@@ -1501,12 +1501,12 @@ int border_sens(AxBorder *border)
 }
 
 
-QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
+QVector <QVector<int>> intersect_demi_line_line(AxLine demi_line, AxLine line)
 {
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=demi_line.x1();
     y1=demi_line.y1();
@@ -1519,7 +1519,7 @@ QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
     y4=line.y2();
 
     int sens=sign(x2-x1);
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -1541,10 +1541,10 @@ QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
             ret_line.append(yc);
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
 
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
 
          }
@@ -1559,11 +1559,11 @@ QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
                 cross =1;
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
             }
         }
@@ -1581,11 +1581,11 @@ QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
             cross =1;
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1600,11 +1600,11 @@ QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
         {
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1616,20 +1616,20 @@ QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
-QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
+QVector <QVector<int>> intersect(QLine line1, QLine line2)
 {
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc_temp =0, yc_temp =0,xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc_temp =0, yc_temp =0,xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=line1.x1();
     y1=line1.y1();
@@ -1641,7 +1641,7 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
     x4=line2.x2();
     y4=line2.y2();
 
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -1671,11 +1671,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
                         }
                         else
@@ -1686,11 +1686,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
 
                         }
@@ -1706,11 +1706,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
                         }
                         else
@@ -1721,11 +1721,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
                         }
                     }
@@ -1738,11 +1738,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
         }
@@ -1764,11 +1764,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
             }
         }
@@ -1789,11 +1789,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1811,11 +1811,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -1837,11 +1837,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
                 }
                 else
@@ -1852,11 +1852,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
             }
@@ -1870,11 +1870,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
                 else
@@ -1885,11 +1885,11 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
             }
@@ -1898,22 +1898,22 @@ QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
 //---------------------------------------------------------------------------------------------------------
 
-QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
+QVector <QVector<int>> intersect(AxLine line1, AxLine line2)
 {
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc_temp =0, yc_temp =0,xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc_temp =0, yc_temp =0,xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=line1.x1();
     y1=line1.y1();
@@ -1925,7 +1925,7 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
     x4=line2.x2();
     y4=line2.y2();
 
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -1955,11 +1955,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
                         }
                         else
@@ -1970,11 +1970,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
 
                         }
@@ -1990,11 +1990,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
                         }
                         else
@@ -2005,11 +2005,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                             ret_line.append(cross);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             ret_line.append(xc);
                             ret_line.append(yc);
                             ret.append(ret_line);
-                            ret_line=QVector<qreal>();
+                            ret_line=QVector<int>();
                             return ret;
                         }
                     }
@@ -2022,11 +2022,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
         }
@@ -2048,11 +2048,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
             }
         }
@@ -2073,11 +2073,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -2095,11 +2095,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -2121,11 +2121,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
                 }
                 else
@@ -2136,11 +2136,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
             }
@@ -2154,11 +2154,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
                 else
@@ -2169,11 +2169,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 
                     ret_line.append(cross);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     ret_line.append(xc);
                     ret_line.append(yc);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     return ret;
                 }
             }
@@ -2182,11 +2182,11 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
@@ -2195,8 +2195,8 @@ AxCircle cercle_inscrit(QPoint p1, QPoint p2, QPoint p3)
 {
     //prend 3 point et renvoir le rayon et le centre de leur cercle inscrit
     QPoint pm1,pm2,pm3,pm4,pc;
-    qreal a,b,c,R;
-    QVector<QVector<qreal>> cross_med;
+    int a,b,c,R;
+    QVector<QVector<int>> cross_med;
 //  calcul de 2 pts appartement aux médiatrice
 
 // equation mediatrice : 2(x2-x1)*x+2(y2-y1)*y+(x1^2+y1^2-x2^2-y2^2)=0
@@ -2224,11 +2224,11 @@ AxCircle cercle_inscrit(QPoint p1, QPoint p2, QPoint p3)
     return AxCircle(R,pc);
 }
 
-QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
+QVector<QVector<int>> intersect(QLine line,AxArc arc)
 {
-    QVector<QVector<qreal>> ret;
-    qreal x1,y1,x2,y2,R,xc,yc;
-    QVector<qreal> ret_line;
+    QVector<QVector<int>> ret;
+    int x1,y1,x2,y2,R,xc,yc;
+    QVector<int> ret_line;
 
     x1=line.x1();
     y1=line.y1();
@@ -2240,7 +2240,7 @@ QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
     yc=arc.get_center().y();
 
     int cross=0;
-    qreal a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
+    int a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment vertical ?
     if (float(x2)==float(x1))
@@ -2266,7 +2266,7 @@ QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
@@ -2277,7 +2277,7 @@ QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -2309,7 +2309,7 @@ QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
@@ -2320,7 +2320,7 @@ QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     }
                 }
             }
@@ -2336,7 +2336,7 @@ QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
                     ret_line.append(X);
                     ret_line.append(Y);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -2347,11 +2347,11 @@ QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
 }
 
 
-QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
+QVector<QVector<int>> intersect(AxLine line,AxArc arc)
 {
-    QVector<QVector<qreal>> ret;
-    qreal x1,y1,x2,y2,R,xc,yc;
-    QVector<qreal> ret_line;
+    QVector<QVector<int>> ret;
+    int x1,y1,x2,y2,R,xc,yc;
+    QVector<int> ret_line;
 
     x1=line.x1();
     y1=line.y1();
@@ -2363,7 +2363,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
     yc=arc.get_center().y();
 
     int cross=0;
-    qreal a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
+    int a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment vertical ?
     if (float(x2)==float(x1))
@@ -2389,7 +2389,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
@@ -2400,7 +2400,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -2432,7 +2432,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
                     ret_line.append(X1);
                     ret_line.append(Y1);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
             if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
@@ -2443,7 +2443,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
                     ret_line.append(X2);
                     ret_line.append(Y2);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                     }
                 }
             }
@@ -2459,7 +2459,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
                     ret_line.append(X);
                     ret_line.append(Y);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
         }
@@ -2470,11 +2470,11 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
 }
 
 
-QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
+QVector<QVector<int>> intersect(AxArc arc1, AxArc arc2)
 {
-    qreal Yc1,Yc2,Xc1,Xc2,XIb,Rc2,Rc1;
-    QVector<QVector<qreal>> ret;
-    QVector<qreal> ret_line;
+    int Yc1,Yc2,Xc1,Xc2,XIb,Rc2,Rc1;
+    QVector<QVector<int>> ret;
+    QVector<int> ret_line;
     int cross=0;
 
     Xc1=arc1.get_center().x();
@@ -2492,20 +2492,20 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
         }
         else
         {
-            qreal a = abs(Xc1-Xc2);
-            qreal XIa = XIb = ((pow(Rc2,2)-pow(a,2)-pow(Rc1,2))/(-2*a))+min(Xc1,Xc2);
+            int a = abs(Xc1-Xc2);
+            int XIa = XIb = ((pow(Rc2,2)-pow(a,2)-pow(Rc1,2))/(-2*a))+min(Xc1,Xc2);
 
             if (pow(Rc1,2)-pow(XIa-Xc1,2)>0)
             {
-                qreal YIa = Yc1+sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
-                qreal YIb = Yc1-sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
+                int YIa = Yc1+sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
+                int YIb = Yc1-sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
                 if (arc1.arc_test(QPoint(XIa,YIa)) && arc2.arc_test(QPoint(XIa,YIa))) // if cross point inside both arc
                 {
                     cross=1;
                     ret_line.append(XIa);
                     ret_line.append(YIa);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
                 if (arc1.arc_test(QPoint(XIb,YIb)) && arc2.arc_test(QPoint(XIb,YIb))) // if cross point inside both arc
                 {
@@ -2513,14 +2513,14 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                     ret_line.append(XIb);
                     ret_line.append(YIb);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
 
             }
             if (pow(Rc1,2)-pow(XIa-Xc1,2)==0)
             {
-                qreal YI = Yc1;
-                qreal XI=XIa;
+                int YI = Yc1;
+                int XI=XIa;
 
                 if (arc1.arc_test(QPoint(XI,YI)) && arc2.arc_test(QPoint(XI,YI))) // if cross point inside both arc
                 {
@@ -2528,7 +2528,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                     ret_line.append(XI);
                     ret_line.append(YI);
                     ret.append(ret_line);
-                    ret_line=QVector<qreal>();
+                    ret_line=QVector<int>();
                 }
             }
 
@@ -2538,18 +2538,18 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
     }
     else // ...sinon, un peu de trigo des familles !
     {
-        qreal a = (-pow(Xc1,2)-pow(Yc1,2)+pow(Xc2,2)+pow(Yc2,2)+pow(Rc1,2)-pow(Rc2,2))/(2*(Yc2-Yc1));
-        qreal d = (Xc2-Xc1)/(Yc2-Yc1);
-        qreal A = pow(d,2)+1;
-        qreal B = -2*Xc1+2*Yc1*d-2*a*d;
-        qreal C = pow(Xc1,2)+pow(Yc1,2)-2*Yc1*a+pow(a,2)-pow(Rc1,2);
-        qreal delta = pow(B,2)-4*A*C;
+        int a = (-pow(Xc1,2)-pow(Yc1,2)+pow(Xc2,2)+pow(Yc2,2)+pow(Rc1,2)-pow(Rc2,2))/(2*(Yc2-Yc1));
+        int d = (Xc2-Xc1)/(Yc2-Yc1);
+        int A = pow(d,2)+1;
+        int B = -2*Xc1+2*Yc1*d-2*a*d;
+        int C = pow(Xc1,2)+pow(Yc1,2)-2*Yc1*a+pow(a,2)-pow(Rc1,2);
+        int delta = pow(B,2)-4*A*C;
         if (delta>0)
         {
-            qreal XIa = (-B+sqrt(delta))/(2*A);
-            qreal XIb = (-B-sqrt(delta))/(2*A);
-            qreal YIa = a-((-B+sqrt(delta))/(2*A))*d;
-            qreal YIb = a-((-B-sqrt(delta))/(2*A))*d;
+            int XIa = (-B+sqrt(delta))/(2*A);
+            int XIb = (-B-sqrt(delta))/(2*A);
+            int YIa = a-((-B+sqrt(delta))/(2*A))*d;
+            int YIb = a-((-B-sqrt(delta))/(2*A))*d;
 
 
             if (arc1.arc_test(QPoint(XIa,YIa)) && arc2.arc_test(QPoint(XIa,YIa))) // if cross point inside both arc
@@ -2558,7 +2558,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                 ret_line.append(XIa);
                 ret_line.append(YIa);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
             }
             if (arc1.arc_test(QPoint(XIb,YIb)) && arc2.arc_test(QPoint(XIb,YIb))) // if cross point inside both arc
             {
@@ -2566,13 +2566,13 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                 ret_line.append(XIb);
                 ret_line.append(YIb);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
             }
         }
         else if (delta==0)
         {
-            qreal XI = (-B)/(2*A);
-            qreal YI = (-B)/(2*A);
+            int XI = (-B)/(2*A);
+            int YI = (-B)/(2*A);
 
             if (arc1.arc_test(QPoint(XI,YI)) && arc2.arc_test(QPoint(XI,YI))) // if cross point inside both arc
             {
@@ -2580,7 +2580,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                 ret_line.append(XI);
                 ret_line.append(YI);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
             }
         }
     }
@@ -2589,13 +2589,13 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
     return ret;
 }
 
-QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_line2)
+QVector<QVector<int> > intersect_demi_lines(AxLine demi_line1, AxLine demi_line2)
 {
 
     int cross=0;
-    qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
-    qreal xc =0,yc =0;
-    QVector<qreal> ret_line;
+    int x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
+    int xc =0,yc =0;
+    QVector<int> ret_line;
 
     x1=demi_line1.x1();
     y1=demi_line1.y1();
@@ -2609,7 +2609,7 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
 
     int sens1=sign(x2-x1);
     int sens2=sign(x2-x3);
-    QVector<QVector<qreal>> ret;
+    QVector<QVector<int>> ret;
 
     cross =0;
     xc=0;
@@ -2631,10 +2631,10 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
             ret_line.append(yc);
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
 
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
 
          }
@@ -2649,11 +2649,11 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
                 cross =1;
                 ret_line.append(cross);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 ret_line.append(xc);
                 ret_line.append(yc);
                 ret.append(ret_line);
-                ret_line=QVector<qreal>();
+                ret_line=QVector<int>();
                 return ret;
             }
         }
@@ -2671,11 +2671,11 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
             cross =1;
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -2691,11 +2691,11 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
         {
             ret_line.append(cross);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             ret_line.append(xc);
             ret_line.append(yc);
             ret.append(ret_line);
-            ret_line=QVector<qreal>();
+            ret_line=QVector<int>();
             return ret;
         }
     }
@@ -2707,11 +2707,11 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
     }
     ret_line.append(cross);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     ret_line.append(xc);
     ret_line.append(yc);
     ret.append(ret_line);
-    ret_line=QVector<qreal>();
+    ret_line=QVector<int>();
     return ret;
 }
 
@@ -2734,7 +2734,7 @@ QVector<AxTriangle> delaunay(QVector<QPoint> nuage, int a)
     AxCircle cercle_inscrit_test;
     QVector <QVector<QPoint>> triangle_list;
     QVector<QPoint> triangle;
-    qreal R;
+    int R;
     int keep_triangle;
     QVector<AxTriangle> tri_list;
 
@@ -2808,7 +2808,7 @@ QVector<QVector<QPoint>> delaunay(QVector<QPoint> nuage)
     AxCircle cercle_inscrit_test;
     QVector <QVector<QPoint>> triangle_list;
     QVector<QPoint> triangle;
-    qreal R;
+    int R;
     int keep_triangle;
     QVector<AxTriangle> tri_list;
 
@@ -2878,11 +2878,11 @@ QVector<AxTriangle> delaunay(QPolygon nuage)
     AxCircle cercle_inscrit_test;
     QVector <QVector<QPoint>> triangle_list;
     QVector<QPoint> triangle;
-    qreal R;
+    int R;
     int keep_triangle;
     QLine L1,L2,L3;
     bool test;
-    QVector<QVector<qreal>> cross_test;
+    QVector<QVector<int>> cross_test;
     QVector<AxTriangle> tri_list;
 
     // For all possible triangle on nuage:

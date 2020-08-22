@@ -12,10 +12,10 @@
 #include <Vertice.h>
 #include <axtriangle.h>
 
-qreal distance(QPoint p1, QPoint p2);
+int distance(QPoint p1, QPoint p2);
 // return the distance between p1 and p2
 
-int sign(qreal a);
+int sign(int a);
 // return 1 if a>0, -1 if a<0, 0 if a=0
 
 AxLine bisectrice(AxLine line1, AxLine line2);
@@ -24,18 +24,18 @@ AxLine bisectrice(AxLine line1, AxLine line2);
 int border_sens(AxBorder *border);
 // return 1 if(p1.x<p2.x) OR if(p1.x<p2.x && p1.y<p2.y), return 0 else.
 
-qreal angle(AxBorder *border1, AxBorder *border2);
+int angle(AxBorder *border1, AxBorder *border2);
 // return the angle between the two arc moving clockwise (border1.p2 must be equal to border2.p1)
 
 AxCircle cercle_inscrit(QPoint p1, QPoint p2, QPoint p3);
 //take 3 points in argument and return the center and the radius of their inscribe circle
 
-QVector<QPoint> intersecting_points(QVector<QVector<qreal>> cross_test);
+QVector<QPoint> intersecting_points(QVector<QVector<int>> cross_test);
 // take in argument the output of a intersect function and return the cross points on a list
 
 
-qreal random(qreal min, qreal max);
-// generate a random qreal  between min and max
+//int random(int min, int max);
+// generate a random int  between min and max
 
 //---------------------------------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border);
 int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border);
 // return the closest point of cross list to p2 follwing the border from p1 to p2
 
-QPoint closest_cross_to_pt(QVector<QVector<qreal>> cross_test, QPoint pm);
+QPoint closest_cross_to_pt(QVector<QVector<int>> cross_test, QPoint pm);
 // return the closest cross point contain in cross_test to pm
 
 //-------------------------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ int next_pt(int n, QVector<Vertice> vertice_list);
 // INTERSECT FUNCTIONS
 
 /*
-the intersect functions returns a QVector <QVector<qreal>> composed this way :
+the intersect functions returns a QVector <QVector<int>> composed this way :
 ( intersection ?           -        )
 (x intersection 1   y intersection 1)
 (x intersection 2   y intersection 2)
@@ -88,41 +88,41 @@ if the two objects, are neither cossing nor parallel intersection=2
 
 then, each additional line correspond to a cross between the two objects
 */
-QVector <QVector<qreal>> intersect(QLine line1, QLine line2);
-QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2);
+QVector <QVector<int>> intersect(QLine line1, QLine line2);
+QVector <QVector<int>> intersect(AxLine line1, AxLine line2);
 // between 2 segments
 
-QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2);
+QVector<QVector<int>> intersect(AxArc arc1, AxArc arc2);
 // between two arcs
 
-QVector<QVector<qreal>> intersect(QLine line, AxArc arc);
-QVector<QVector<qreal>> intersect(AxLine line,AxArc arc);
+QVector<QVector<int>> intersect(QLine line, AxArc arc);
+QVector<QVector<int>> intersect(AxLine line,AxArc arc);
 // between a segment and a arc
 
 
-QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2);
-QVector <QVector<qreal>> intersect_lignes(AxLine line1, AxLine line2);
+QVector <QVector<int>> intersect_lignes(QLine line1, QLine line2);
+QVector <QVector<int>> intersect_lignes(AxLine line1, AxLine line2);
 // between 2 lines
 
-QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc);
+QVector<QVector<int>> intersect_arc_demi_line(AxLine line, AxArc arc);
 
-QVector<QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line);
+QVector<QVector<int>> intersect_demi_line_line(AxLine demi_line, AxLine line);
 // between a line and a half-line
 
-QVector<QVector<qreal>> intersect_demi_lines(AxLine demi_line1, AxLine demi_line);
+QVector<QVector<int>> intersect_demi_lines(AxLine demi_line1, AxLine demi_line);
 // between two half-lines
 
-QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment);
-QVector <QVector<qreal>> intersect_line_segment(AxLine line, AxLine segment);
+QVector <QVector<int>> intersect_line_segment(QLine line, QLine segment);
+QVector <QVector<int>> intersect_line_segment(AxLine line, AxLine segment);
 // between a line and a segment
 
-QVector<QVector<qreal>> intersect_shape(AxBorder *border, AxShape shape);
+QVector<QVector<int>> intersect_shape(AxBorder *border, AxShape shape);
 // between a border and a shape
 
-QVector<QVector<qreal>> intersect_border(AxBorder *border1,AxBorder *border2);
+QVector<QVector<int>> intersect_border(AxBorder *border1,AxBorder *border2);
 // between two borders
 
-QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc);
+QVector<QVector<int>> intersect_arc_line(AxLine line, AxArc arc);
 // between a arc and a line
 
 

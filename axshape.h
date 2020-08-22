@@ -52,7 +52,7 @@ class AxShape
 
         // FUNCTIONS
 
-        QVector<AxShape> expand(qreal R);
+        QVector<AxShape> expand(int R);
         // return a QVector of AxShape composed of the expantion of the shape :
         // Warning the final Shape is composed of lines only.
         // There can be arc in the initial shape but their previous and next border must be AxLine and they must cross in arc direction
@@ -60,10 +60,10 @@ class AxShape
         QVector<QVector<AxShape>> convexe_concave();
         // return a QVector of all set of convexe border and all concave border
 
-        AxBorder* segment_brut_expand(AxBorder *border, qreal R);
+        AxBorder* segment_brut_expand(AxBorder *border, int R);
         // return the associated expanded border out of the shape with a distance of R (note : the border must be part of the shape)
 
-        AxBorder* segment_brut_intern_expand(AxBorder *border, qreal R);
+        AxBorder* segment_brut_intern_expand(AxBorder *border, int R);
         // return the associated expanded border out of the shape with a distance of R (note : the border must be part of the shape)
 
         QVector<QPoint> from_shape_to_pts();
@@ -78,7 +78,7 @@ class AxShape
         //WARNING function unfished !
         // return the skeletton of the polygon
 
-        AxShape expand_unfinished(qreal R);
+        AxShape expand_unfinished(int R);
 
 
 
