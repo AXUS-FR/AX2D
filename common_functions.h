@@ -7,8 +7,19 @@
 #include <QPointF>
 #include <QLine>
 #include <QVector>
+#include <QPolygonF>
 #include <axshape.h>
 #include <axcircle.h>
+#include <axtriangle.h>
+
+
+QVector<QVector<QPointF>> delaunay(QVector<QPointF> nuage); // return Delaunay's triangle points organized 3 by 3 in the QVector
+
+QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a); // a is useless //return Delaunay's triangle
+
+QVector<AxTriangle> delaunay(QPolygonF nuage); // return Delaunay's of a polygon, the polygon must be convexe !
+
+QVector<AxLine> voronoi(QVector<AxTriangle> triangle_list); // voronoy'segment based on Delaunay's triangl
 
 qreal distance(QPointF p1, QPointF p2); // return the distance between p1 and p2
 
@@ -69,6 +80,13 @@ QVector<QVector<qreal>> intersect_border(AxBorder *border1,AxBorder *border2); /
 
 QVector<QVector<qreal>> intersect_arc_line(QLineF line, AxArc arc); // return the potential cross point between the line and the arc
 
+QVector<QVector<QPointF>> delaunay(QVector<QPointF> nuage); // return Delaunay's triangle points organized 3 by 3 in the QVector
+
+QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a); // a is useless //return Delaunay's triangle
+
+QVector<AxTriangle> delaunay(QPolygonF nuage); // return Delaunay's of a polygon, the polygon must be convexe !
+
+QVector<AxLine> voronoi(QVector<AxTriangle> triangle_list); // voronoy'segment based on Delaunay's triangle
 
 
 
