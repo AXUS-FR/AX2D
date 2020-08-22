@@ -1,8 +1,8 @@
 #ifndef AXARC_H
 #define AXARC_H
 
-#include <QLineF>
-#include <QPointF>
+#include <QLine>
+#include <QPoint>
 #include <QVector>
 #include <QStyle>
 #include <AxBorder.h>
@@ -16,14 +16,14 @@ class AxArc : public AxBorder
         // CONSTRUCTOR
 
         AxArc();
-        AxArc(QLineF _arc_limits, QPointF _center, qreal _R, int clockwise);
+        AxArc(QLine _arc_limits, QPoint _center, qreal _R, int clockwise);
         AxArc(AxBorder *border);
-        AxArc(QPointF _center, qreal _R);
+        AxArc(QPoint _center, qreal _R);
 
 
         //GETTERS
 
-        QPointF get_center();
+        QPoint get_center();
         // return the attribute C of the arc
 
         qreal get_R();
@@ -36,10 +36,10 @@ class AxArc : public AxBorder
         bool is_clockwise();
         // return the attribute clockwise of the arc
 
-        virtual QLineF get_mediatrice();
+        virtual QLine get_mediatrice();
         // return the mediatrice of the arc
 
-        virtual QPointF middle_point();
+        virtual QPoint middle_point();
         // return the middle point of the arc
 
         virtual int getObjectType();
@@ -48,10 +48,10 @@ class AxArc : public AxBorder
 
         // FUNCTIONS
 
-        int arc_test(QPointF px);
+        int arc_test(QPoint px);
         // check if px is on arc (WARNING check only angles)
 
-        qreal angle(QPointF p);
+        qreal angle(QPoint p);
         // calculate the angle of p based on the center of the arc clockwise
 
 
@@ -72,7 +72,7 @@ class AxArc : public AxBorder
 
 private:
 
-        QPointF C;
+        QPoint C;
         qreal R;
         int clockwise;
 };

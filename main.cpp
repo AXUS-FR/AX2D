@@ -14,17 +14,17 @@ int main(int argc, char *argv[])
 {
     // test intersect
 
-//    QLineF line1,line2;
+//    QLine line1,line2;
 
-//    QPointF p1,p2,p3,p4,pc;
+//    QPoint p1,p2,p3,p4,pc;
 
-//    p1 = QPointF(0,0);
-//    p2 = QPointF(3,3);
-//    p3 = QPointF(5,5);
-//    p4 = QPointF(9,9);
+//    p1 = QPoint(0,0);
+//    p2 = QPoint(3,3);
+//    p3 = QPoint(5,5);
+//    p4 = QPoint(9,9);
 
-//    line1 = QLineF(p1,p2);
-//    line2 = QLineF(p3,p4);
+//    line1 = QLine(p1,p2);
+//    line2 = QLine(p3,p4);
 
 
 //    QVector<qreal> result = intersect(line1,line2);
@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
 
 //    // test angle
 //    int clockwise=1;
-//    p1=QPointF(286.5,58);// random+plot
-//    p2=QPointF(100,277);
-//    pc=QPointF(250,250);
+//    p1=QPoint(286.5,58);// random+plot
+//    p2=QPoint(100,277);
+//    pc=QPoint(250,250);
 //    qreal R=100;
 
-//    QLineF arc_limits=QLineF(p1,p2);
+//    QLine arc_limits=QLine(p1,p2);
 
 //    AxArc arc(arc_limits,pc,R,clockwise);
 

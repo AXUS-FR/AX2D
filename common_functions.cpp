@@ -26,46 +26,46 @@ AxLine bisectrice(AxLine line1, AxLine line2)
     // ensuite, je trace la perpendiculaire de ces 2 points et je définie leur intersection
     if (cross_test0[0][0]==1)
     {
-        QPointF pp2,pp1;
+        QPoint pp2,pp1;
         qreal a,b,c;
 
         qDebug()<<"yatta"<<line1;
-        if (distance(line1.p1(),QPointF(cross_test0[1][0],cross_test0[1][1]))<(distance(line1.p2(),QPointF(cross_test0[1][0],cross_test0[1][1]))))
+        if (distance(line1.p1(),QPoint(cross_test0[1][0],cross_test0[1][1]))<(distance(line1.p2(),QPoint(cross_test0[1][0],cross_test0[1][1]))))
         {
-            line1.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+            line1.setP1(QPoint(cross_test0[1][0],cross_test0[1][1]));
             line1=AxLine(line1.p2(),line1.p1());
         }
         else
         {
-            line1.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+            line1.setP2(QPoint(cross_test0[1][0],cross_test0[1][1]));
         }
 
-        if (distance(line2.p1(),QPointF(cross_test0[1][0],cross_test0[1][1]))<(distance(line2.p2(),QPointF(cross_test0[1][0],cross_test0[1][1]))))
+        if (distance(line2.p1(),QPoint(cross_test0[1][0],cross_test0[1][1]))<(distance(line2.p2(),QPoint(cross_test0[1][0],cross_test0[1][1]))))
         {
-            line2.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+            line2.setP1(QPoint(cross_test0[1][0],cross_test0[1][1]));
         }
         else
         {
-            line2.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+            line2.setP2(QPoint(cross_test0[1][0],cross_test0[1][1]));
             line2=AxLine(line2.p2(),line2.p1());
         }
         
-//        if (not_equal(QPointF(cross_test0[1][0],cross_test0[1][1]),line1.p1()))
+//        if (not_equal(QPoint(cross_test0[1][0],cross_test0[1][1]),line1.p1()))
 //        {
-//            line1.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//            line1.setP2(QPoint(cross_test0[1][0],cross_test0[1][1]));
 //        }
 //        else
 //        {
-//            line1.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//            line1.setP1(QPoint(cross_test0[1][0],cross_test0[1][1]));
 //        }
 
-//        if (not_equal(QPointF(cross_test0[1][0],cross_test0[1][1]),line2.p2()))
+//        if (not_equal(QPoint(cross_test0[1][0],cross_test0[1][1]),line2.p2()))
 //        {
-//            line2.setP1(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//            line2.setP1(QPoint(cross_test0[1][0],cross_test0[1][1]));
 //        }
 //        else
 //        {
-//            line2.setP2(QPointF(cross_test0[1][0],cross_test0[1][1]));
+//            line2.setP2(QPoint(cross_test0[1][0],cross_test0[1][1]));
 //        }
 
 
@@ -80,7 +80,7 @@ AxLine bisectrice(AxLine line1, AxLine line2)
 
         qDebug()<<"yatta"<<cross_test1<<line1;
 
-        pp1=QPointF(cross_test1[1][0],cross_test1[1][1]);
+        pp1=QPoint(cross_test1[1][0],cross_test1[1][1]);
 
         pp2.setY(100+pp1.y());
         if (line1.p1().x()!=line1.p2().x())
@@ -101,7 +101,7 @@ AxLine bisectrice(AxLine line1, AxLine line2)
 
         qDebug()<<"Yatta"<<cross_test2;
 
-        pp1=QPointF(cross_test2[1][0],cross_test2[1][1]);
+        pp1=QPoint(cross_test2[1][0],cross_test2[1][1]);
         pp2.setY(100+pp1.y());
 
 
@@ -181,7 +181,7 @@ QVector<QVector<qreal>> intersect_shape(AxBorder *border, AxShape shape)
 }
 
 
-bool not_equal(QPointF p1, QPointF p2,double epsilon)
+bool not_equal(QPoint p1, QPoint p2,double epsilon)
 {
 
     if ((fabs(p1.x()-p2.x())<epsilon) && (fabs(p1.y()-p2.y())<epsilon))
@@ -230,7 +230,7 @@ int toggle(int a)
     }
 }
 
-qreal distance(QPointF p1, QPointF p2)
+qreal distance(QPoint p1, QPoint p2)
 {
     return(sqrt(pow((p1.x()-p2.x()),2)+pow((p1.y()-p2.y()),2)));
 }
@@ -251,46 +251,46 @@ int sign(qreal a)
     }
 }
 
-QVector<QPointF> intersecting_points(QVector<QVector<qreal>> cross_test)
+QVector<QPoint> intersecting_points(QVector<QVector<qreal>> cross_test)
 {
     // extract the cross pts of a intersect fct
-    QVector<QPointF> cross_pts;
+    QVector<QPoint> cross_pts;
     if(cross_test[0][0]==0)
     {
         return cross_pts;
     }
     for (int k=0;k<cross_test.size()-1;k++)
     {
-        cross_pts.append(QPointF(cross_test[k+1][0],cross_test[k+1][1]));
+        cross_pts.append(QPoint(cross_test[k+1][0],cross_test[k+1][1]));
     }
 
     return cross_pts;
 }
 
 
-QPointF closest_cross_to_pt(QVector<QVector<qreal>> cross_test, QPointF pm)
+QPoint closest_cross_to_pt(QVector<QVector<qreal>> cross_test, QPoint pm)
 {
 //    return the closest point to pm
-    QPointF closest_point=QPointF(cross_test[1][0],cross_test[1][1]);
+    QPoint closest_point=QPoint(cross_test[1][0],cross_test[1][1]);
     qreal closest_distance=distance(closest_point,pm);
     for  (int k=2;k<cross_test.size();k++)
     {
-        qreal d2=distance(QPointF(cross_test[k][0],cross_test[k][1]),pm);
+        qreal d2=distance(QPoint(cross_test[k][0],cross_test[k][1]),pm);
         if (d2<closest_distance)
         {
             closest_distance=d2;
-            closest_point=QPointF(cross_test[k][0],cross_test[k][1]);
+            closest_point=QPoint(cross_test[k][0],cross_test[k][1]);
         }
     }
     return closest_point;
 }
 
 
-int closest_pt_to_p1_border(QVector<QPointF> cross_list, AxBorder *border)
+int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
 {
     // return the position of the closest point on the list to the border (based on the 1st point on the border)
     // cas particuliers pas pris en compte
-    QPointF pm=border->p1();
+    QPoint pm=border->p1();
     qreal closest_distance;
     int closest_pos;
     // border = segment ?
@@ -386,11 +386,11 @@ int closest_pt_to_p1_border(QVector<QPointF> cross_list, AxBorder *border)
     return closest_pos;
 }
 
-int closest_pt_to_p2_border(QVector<QPointF> cross_list, AxBorder *border)
+int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
 {
     // return the position of the closest point on the list to the border (based on the 1st point on the border)
     // cas particuliers pas pris en compte
-    QPointF pm=border->p2();
+    QPoint pm=border->p2();
     qreal closest_distance;
     int closest_pos;
     // border = segment ?
@@ -532,10 +532,10 @@ bool equal(AxBorder *border1, AxBorder *border2)
 
 qreal angle(AxBorder *border1, AxBorder *border2)
 {
-    QPointF p11 = border1->p1();
-    QPointF p12 = border1->p2();
-    QPointF p21 = border2->p1();
-    QPointF p22 = border2->p2();
+    QPoint p11 = border1->p1();
+    QPoint p12 = border1->p2();
+    QPoint p21 = border2->p1();
+    QPoint p22 = border2->p2();
 
     qreal teta1,teta2,teta;
 
@@ -575,9 +575,9 @@ qreal angle(AxBorder *border1, AxBorder *border2)
     return teta;
 }
 
-//int inside_form(QPointF pm, AxShape form)
+//int inside_form(QPoint pm, AxShape form)
 //{
-//    QPointF p2=QPointF(pm.x(),pm.y());
+//    QPoint p2=QPoint(pm.x(),pm.y());
 //    QVector<QVector<qreal>>cross_test;
 //    int left_cross=0;
 //    // count the number of time the segment pm-p2 cross the object
@@ -587,12 +587,12 @@ qreal angle(AxBorder *border1, AxBorder *border2)
 //        // if border = line
 //        if (form[k]->getObjectType()==0)
 //        {
-//        cross_test=intersect_line_segment(QLineF(pp1,pp2),QLineF(form[k]->p1(),form[k]->p2()));
+//        cross_test=intersect_line_segment(QLine(pp1,pp2),QLine(form[k]->p1(),form[k]->p2()));
 //        }
 //        // if border = arc
 //        else
 //            {
-//                cross_test=intersect(QLineF(pp1,pp2),AxArc(form[k]));
+//                cross_test=intersect(QLine(pp1,pp2),AxArc(form[k]));
 //            }
 //            if (cross_test[0][0]==1)
 //            {
@@ -648,7 +648,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
             Y2=-sqrt(pow(R,2)-pow((x1-xc),2))+yc;
 
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
 //                if ((Y1<y1 && Y1>y2) || (Y1<y2 && Y1>y1)) // le point d'intersection appartient au segment ?
                 {
@@ -659,7 +659,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
             {
 //                if ((Y2<y1 && Y2>y2) || (Y2<y2 && Y2>y1)) // le point d'intersection appartient au segment ?
                 {
@@ -691,7 +691,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
             Y1=a*X1+b;
             Y2=a*X2+b;
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
 //                if ((X1<x1 && X1>x2) || (X1<x2 && X1>x1)) //point de croisement sur le segment ?
                 {
@@ -702,7 +702,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 2 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
             {
 //                if ((X2<x1 && X2>x2) || (X2<x2 && X2>x1)) //point de croisement sur le segment ?
                 {
@@ -718,7 +718,7 @@ QVector<QVector<qreal>> intersect_arc_line(AxLine line, AxArc arc)
         {
             X=(-B)/(2*A);
             Y=a*X+b;
-            if (arc.arc_test(QPointF(X,Y))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X,Y))) // point de croisement 1 sur arc de cercle ?
             {
 //                if ((X<x1 && X>x2) || (X<x2 && X>x1)) //point de croisement sur le segment ?
                 {
@@ -770,7 +770,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
             Y2=-sqrt(pow(R,2)-pow((x1-xc),2))+yc;
 
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
                 if (sign(Y1-y1)==sens) // point d'intersection dans le bon sens ?
                 {
@@ -781,7 +781,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
             {
                 if (sign(Y2-y1)==sens) // le point d'intersection appartient au segment ?
                 {
@@ -816,7 +816,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
 
             qDebug()<<"Hereeeee"<<sens<<sign(X1-x1);
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
                 if (sign(X1-x1)==sens) //point de croisement sur le segment ?
                 {
@@ -827,7 +827,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 2 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
             {
                 if (sign(X2-x1)==sens) //point de croisement sur le segment ?
                 {
@@ -843,7 +843,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
         {
             X=(-B)/(2*A);
             Y=a*X+b;
-            if (arc.arc_test(QPointF(X,Y))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X,Y))) // point de croisement 1 sur arc de cercle ?
             {
                 if (sign(X-x1)==sens)
                 {
@@ -861,7 +861,7 @@ QVector<QVector<qreal>> intersect_arc_demi_line(AxLine line, AxArc arc)
     return ret;
 }
 
-QVector <QVector<qreal>> intersect_lignes(QLineF line1, QLineF line2)
+QVector <QVector<qreal>> intersect_lignes(QLine line1, QLine line2)
 {
     int cross=0;
     qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
@@ -1121,7 +1121,7 @@ int next_point(int n, AxShape form)
     return n2;
 }
 
-int next_point(int n, QVector<QPointF> form)
+int next_point(int n, QVector<QPoint> form)
 {
     int n2=n+1;
     if (n2==form.size())
@@ -1150,7 +1150,7 @@ int next_pt(int n, QVector<AxLine> form)
     return n2;
 }
 
-QVector <QVector<qreal>> intersect_line_segment(QLineF line, QLineF segment)
+QVector <QVector<qreal>> intersect_line_segment(QLine line, QLine segment)
 {
     int cross=0;
     qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
@@ -1624,7 +1624,7 @@ QVector <QVector<qreal>> intersect_demi_line_line(AxLine demi_line, AxLine line)
     return ret;
 }
 
-QVector <QVector<qreal>> intersect(QLineF line1, QLineF line2)
+QVector <QVector<qreal>> intersect(QLine line1, QLine line2)
 {
     int cross=0;
     qreal x1, y1, x2, y2, x3, y3, x4, y4,a1,a2,b1,b2;
@@ -2191,10 +2191,10 @@ QVector <QVector<qreal>> intersect(AxLine line1, AxLine line2)
 }
 
 
-AxCircle cercle_inscrit(QPointF p1, QPointF p2, QPointF p3)
+AxCircle cercle_inscrit(QPoint p1, QPoint p2, QPoint p3)
 {
     //prend 3 point et renvoir le rayon et le centre de leur cercle inscrit
-    QPointF pm1,pm2,pm3,pm4,pc;
+    QPoint pm1,pm2,pm3,pm4,pc;
     qreal a,b,c,R;
     QVector<QVector<qreal>> cross_med;
 //  calcul de 2 pts appartement aux médiatrice
@@ -2202,7 +2202,7 @@ AxCircle cercle_inscrit(QPointF p1, QPointF p2, QPointF p3)
 // equation mediatrice : 2(x2-x1)*x+2(y2-y1)*y+(x1^2+y1^2-x2^2-y2^2)=0
 
  // mediatrice 1:
-    pm1=QPointF((p1.x()+p2.x())/2,((p1.y()+p2.y())/2));
+    pm1=QPoint((p1.x()+p2.x())/2,((p1.y()+p2.y())/2));
     pm2.setY(100);
     a=2*(p2.x()-p1.x());
     b=2*(p2.y()-p1.y());
@@ -2210,21 +2210,21 @@ AxCircle cercle_inscrit(QPointF p1, QPointF p2, QPointF p3)
     pm2.setX((-c-b*pm2.y())/a);
 
 // mediatrice 2:
-    pm3=QPointF((p3.x()+p2.x())/2,(p3.y()+p2.y())/2);
+    pm3=QPoint((p3.x()+p2.x())/2,(p3.y()+p2.y())/2);
     pm4.setY(100);
     a=2*(p2.x()-p3.x());
     b=2*(p2.y()-p3.y());
     c=pow(p3.x(),2)+pow(p3.y(),2)-pow(p2.x(),2)-pow(p2.y(),2);
     pm4.setX((-c-b*pm4.y())/a);
 
-    cross_med=intersect_lignes(QLineF(pm1,pm2),QLineF(pm3,pm4));
-    pc=QPointF(cross_med[1][0],cross_med[1][1]);
+    cross_med=intersect_lignes(QLine(pm1,pm2),QLine(pm3,pm4));
+    pc=QPoint(cross_med[1][0],cross_med[1][1]);
     R=distance(pc,p1);
 
     return AxCircle(R,pc);
 }
 
-QVector<QVector<qreal>> intersect(QLineF line,AxArc arc)
+QVector<QVector<qreal>> intersect(QLine line,AxArc arc)
 {
     QVector<QVector<qreal>> ret;
     qreal x1,y1,x2,y2,R,xc,yc;
@@ -2257,7 +2257,7 @@ QVector<QVector<qreal>> intersect(QLineF line,AxArc arc)
             qDebug() << "Y2=" << Y2 << endl;
 
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
                 qDebug() << "ok" << endl;
                 if ((Y1<y1 && Y1>y2) || (Y1<y2 && Y1>y1)) // le point d'intersection appartient au segment ?
@@ -2269,7 +2269,7 @@ QVector<QVector<qreal>> intersect(QLineF line,AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
             {
                 if ((Y2<y1 && Y2>y2) || (Y2<y2 && Y2>y1)) // le point d'intersection appartient au segment ?
                 {
@@ -2301,7 +2301,7 @@ QVector<QVector<qreal>> intersect(QLineF line,AxArc arc)
             Y1=a*X1+b;
             Y2=a*X2+b;
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
                 if ((X1<x1 && X1>x2) || (X1<x2 && X1>x1)) //point de croisement sur le segment ?
                 {
@@ -2312,7 +2312,7 @@ QVector<QVector<qreal>> intersect(QLineF line,AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 2 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
             {
                 if ((X2<x1 && X2>x2) || (X2<x2 && X2>x1)) //point de croisement sur le segment ?
                 {
@@ -2328,7 +2328,7 @@ QVector<QVector<qreal>> intersect(QLineF line,AxArc arc)
         {
             X=(-B)/(2*A);
             Y=a*X+b;
-            if (arc.arc_test(QPointF(X,Y))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X,Y))) // point de croisement 1 sur arc de cercle ?
             {
                 if ((X<x1 && X>x2) || (X<x2 && X>x1)) //point de croisement sur le segment ?
                 {
@@ -2380,7 +2380,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
             qDebug() << "Y2=" << Y2 << endl;
 
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
                 qDebug() << "ok" << endl;
                 if ((Y1<=y1 && Y1>=y2) || (Y1<=y2 && Y1>=y1)) // le point d'intersection appartient au segment ?
@@ -2392,7 +2392,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 1 sur arc de cercle ?
             {
                 if ((Y2<y1 && Y2>y2) || (Y2<y2 && Y2>y1)) // le point d'intersection appartient au segment ?
                 {
@@ -2424,7 +2424,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
             Y1=a*X1+b;
             Y2=a*X2+b;
 
-            if (arc.arc_test(QPointF(X1,Y1))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
             {
                 if ((X1<x1 && X1>x2) || (X1<x2 && X1>x1)) //point de croisement sur le segment ?
                 {
@@ -2435,7 +2435,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
                     ret_line=QVector<qreal>();
                 }
             }
-            if (arc.arc_test(QPointF(X2,Y2))) // point de croisement 2 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X2,Y2))) // point de croisement 2 sur arc de cercle ?
             {
                 if ((X2<x1 && X2>x2) || (X2<x2 && X2>x1)) //point de croisement sur le segment ?
                 {
@@ -2451,7 +2451,7 @@ QVector<QVector<qreal>> intersect(AxLine line,AxArc arc)
         {
             X=(-B)/(2*A);
             Y=a*X+b;
-            if (arc.arc_test(QPointF(X,Y))) // point de croisement 1 sur arc de cercle ?
+            if (arc.arc_test(QPoint(X,Y))) // point de croisement 1 sur arc de cercle ?
             {
                 if ((X<x1 && X>x2) || (X<x2 && X>x1)) //point de croisement sur le segment ?
                 {
@@ -2499,7 +2499,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
             {
                 qreal YIa = Yc1+sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
                 qreal YIb = Yc1-sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
-                if (arc1.arc_test(QPointF(XIa,YIa)) && arc2.arc_test(QPointF(XIa,YIa))) // if cross point inside both arc
+                if (arc1.arc_test(QPoint(XIa,YIa)) && arc2.arc_test(QPoint(XIa,YIa))) // if cross point inside both arc
                 {
                     cross=1;
                     ret_line.append(XIa);
@@ -2507,7 +2507,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                     ret.append(ret_line);
                     ret_line=QVector<qreal>();
                 }
-                if (arc1.arc_test(QPointF(XIb,YIb)) && arc2.arc_test(QPointF(XIb,YIb))) // if cross point inside both arc
+                if (arc1.arc_test(QPoint(XIb,YIb)) && arc2.arc_test(QPoint(XIb,YIb))) // if cross point inside both arc
                 {
                     cross=1;
                     ret_line.append(XIb);
@@ -2522,7 +2522,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                 qreal YI = Yc1;
                 qreal XI=XIa;
 
-                if (arc1.arc_test(QPointF(XI,YI)) && arc2.arc_test(QPointF(XI,YI))) // if cross point inside both arc
+                if (arc1.arc_test(QPoint(XI,YI)) && arc2.arc_test(QPoint(XI,YI))) // if cross point inside both arc
                 {
                     cross=1;
                     ret_line.append(XI);
@@ -2552,7 +2552,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
             qreal YIb = a-((-B-sqrt(delta))/(2*A))*d;
 
 
-            if (arc1.arc_test(QPointF(XIa,YIa)) && arc2.arc_test(QPointF(XIa,YIa))) // if cross point inside both arc
+            if (arc1.arc_test(QPoint(XIa,YIa)) && arc2.arc_test(QPoint(XIa,YIa))) // if cross point inside both arc
             {
                 cross=1;
                 ret_line.append(XIa);
@@ -2560,7 +2560,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
                 ret.append(ret_line);
                 ret_line=QVector<qreal>();
             }
-            if (arc1.arc_test(QPointF(XIb,YIb)) && arc2.arc_test(QPointF(XIb,YIb))) // if cross point inside both arc
+            if (arc1.arc_test(QPoint(XIb,YIb)) && arc2.arc_test(QPoint(XIb,YIb))) // if cross point inside both arc
             {
                 cross=1;
                 ret_line.append(XIb);
@@ -2574,7 +2574,7 @@ QVector<QVector<qreal>> intersect(AxArc arc1, AxArc arc2)
             qreal XI = (-B)/(2*A);
             qreal YI = (-B)/(2*A);
 
-            if (arc1.arc_test(QPointF(XI,YI)) && arc2.arc_test(QPointF(XI,YI))) // if cross point inside both arc
+            if (arc1.arc_test(QPoint(XI,YI)) && arc2.arc_test(QPoint(XI,YI))) // if cross point inside both arc
             {
                 cross=1;
                 ret_line.append(XI);
@@ -2719,7 +2719,7 @@ QVector<QVector<qreal> > intersect_demi_lines(AxLine demi_line1, AxLine demi_lin
 //-----------------------------------------------------------------------------------------------------------------------
 // Delaunay
 
-QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a)
+QVector<AxTriangle> delaunay(QVector<QPoint> nuage, int a)
 {
     // Je suppose que form est un tableau qui confient une liste de points selon la forme :
 //    [p1
@@ -2730,10 +2730,10 @@ QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a)
 //   le programme applique la methode de delaunay au nuage de pts
 
     // cercle instrit
-    QPointF p1,p2,p3,pc;
+    QPoint p1,p2,p3,pc;
     AxCircle cercle_inscrit_test;
-    QVector <QVector<QPointF>> triangle_list;
-    QVector<QPointF> triangle;
+    QVector <QVector<QPoint>> triangle_list;
+    QVector<QPoint> triangle;
     qreal R;
     int keep_triangle;
     QVector<AxTriangle> tri_list;
@@ -2741,14 +2741,14 @@ QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a)
     // For all possible triangle on nuage:
     for (int n=0;n<nuage.size();n++)
     {
-                p1=QPointF(nuage[n]);
+                p1=QPoint(nuage[n]);
                 for (int k=n+1;k<nuage.size();k++)
                 {
-                    p2=QPointF(nuage[k]);
+                    p2=QPoint(nuage[k]);
                     {
                         for (int q=k+1;q<nuage.size();q++)
                         {
-                            p3=QPointF(nuage[q]);
+                            p3=QPoint(nuage[q]);
                             cercle_inscrit_test=cercle_inscrit(p1,p2,p3);
                             pc=cercle_inscrit_test.get_center();
                             R=cercle_inscrit_test.get_R();
@@ -2777,7 +2777,7 @@ QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a)
                                 triangle.append(p2);
                                 triangle.append(p3);
                                 triangle_list.append(triangle);
-                                triangle=QVector<QPointF>();
+                                triangle=QVector<QPoint>();
                             }
                     }
                 }
@@ -2793,7 +2793,7 @@ QVector<AxTriangle> delaunay(QVector<QPointF> nuage, int a)
     return (tri_list);
 }
 
-QVector<QVector<QPointF>> delaunay(QVector<QPointF> nuage)
+QVector<QVector<QPoint>> delaunay(QVector<QPoint> nuage)
 {
     // Je suppose que form est un tableau qui confient une liste de points selon la forme :
     //    [p1
@@ -2804,10 +2804,10 @@ QVector<QVector<QPointF>> delaunay(QVector<QPointF> nuage)
     //   le programme applique la methode de delaunay au nuage de pts
 
     // cercle instrit
-    QPointF p1,p2,p3,pc;
+    QPoint p1,p2,p3,pc;
     AxCircle cercle_inscrit_test;
-    QVector <QVector<QPointF>> triangle_list;
-    QVector<QPointF> triangle;
+    QVector <QVector<QPoint>> triangle_list;
+    QVector<QPoint> triangle;
     qreal R;
     int keep_triangle;
     QVector<AxTriangle> tri_list;
@@ -2815,14 +2815,14 @@ QVector<QVector<QPointF>> delaunay(QVector<QPointF> nuage)
     // For all possible triangle on nuage:
     for (int n=0;n<nuage.size();n++)
     {
-        p1=QPointF(nuage[n]);
+        p1=QPoint(nuage[n]);
         for (int k=n+1;k<nuage.size();k++)
         {
-            p2=QPointF(nuage[k]);
+            p2=QPoint(nuage[k]);
             {
                 for (int q=k+1;q<nuage.size();q++)
                 {
-                    p3=QPointF(nuage[q]);
+                    p3=QPoint(nuage[q]);
                     cercle_inscrit_test=cercle_inscrit(p1,p2,p3);
                     pc=cercle_inscrit_test.get_center();
                     R=cercle_inscrit_test.get_R();
@@ -2851,7 +2851,7 @@ QVector<QVector<QPointF>> delaunay(QVector<QPointF> nuage)
                         triangle.append(p2);
                         triangle.append(p3);
                         triangle_list.append(triangle);
-                        triangle=QVector<QPointF>();
+                        triangle=QVector<QPoint>();
                     }
                 }
             }
@@ -2863,7 +2863,7 @@ QVector<QVector<QPointF>> delaunay(QVector<QPointF> nuage)
 
 
 //useless
-QVector<AxTriangle> delaunay(QPolygonF nuage)
+QVector<AxTriangle> delaunay(QPolygon nuage)
 {
     // Je suppose que form est un tableau qui confient une liste de points selon la forme :
 //    [p1
@@ -2874,13 +2874,13 @@ QVector<AxTriangle> delaunay(QPolygonF nuage)
 //   le programme applique la methode de delaunay au nuage de pts
 
     // cercle instrit
-    QPointF p1,p2,p3,pc,pm1,pm2,pm3,p_grav;
+    QPoint p1,p2,p3,pc,pm1,pm2,pm3,p_grav;
     AxCircle cercle_inscrit_test;
-    QVector <QVector<QPointF>> triangle_list;
-    QVector<QPointF> triangle;
+    QVector <QVector<QPoint>> triangle_list;
+    QVector<QPoint> triangle;
     qreal R;
     int keep_triangle;
-    QLineF L1,L2,L3;
+    QLine L1,L2,L3;
     bool test;
     QVector<QVector<qreal>> cross_test;
     QVector<AxTriangle> tri_list;
@@ -2888,16 +2888,16 @@ QVector<AxTriangle> delaunay(QPolygonF nuage)
     // For all possible triangle on nuage:
     for (int n=0;n<nuage.size();n++)
     {
-                p1=QPointF(nuage[n]);
+                p1=QPoint(nuage[n]);
                 for (int k=n+1;k<nuage.size();k++)
                 {
-                    p2=QPointF(nuage[k]);
+                    p2=QPoint(nuage[k]);
                     {
                         // Si point milieu n'appartient pas au polygon
 
                         for (int q=k+1;q<nuage.size();q++)
                         {
-                            p3=QPointF(nuage[q]);
+                            p3=QPoint(nuage[q]);
                             cercle_inscrit_test=cercle_inscrit(p1,p2,p3);
                             pc=cercle_inscrit_test.get_center();
                             R=cercle_inscrit_test.get_R();
@@ -2927,7 +2927,7 @@ QVector<AxTriangle> delaunay(QPolygonF nuage)
                                 triangle.append(p2);
                                 triangle.append(p3);
                                 triangle_list.append(triangle);
-                                triangle=QVector<QPointF>();
+                                triangle=QVector<QPoint>();
                             }
                     }
                 }
@@ -2938,9 +2938,9 @@ QVector<AxTriangle> delaunay(QPolygonF nuage)
 
     for (int n=0;n<triangle_list.size();n++)
     {
-        L1=QLineF(triangle_list[n][0],triangle_list[n][1]);
-        L2=QLineF(triangle_list[n][0],triangle_list[n][2]);
-        L3=QLineF(triangle_list[n][1],triangle_list[n][2]);
+        L1=QLine(triangle_list[n][0],triangle_list[n][1]);
+        L2=QLine(triangle_list[n][0],triangle_list[n][2]);
+        L3=QLine(triangle_list[n][1],triangle_list[n][2]);
 
 //        pm1=L1.center();
 //        pm2=L2.center();
@@ -2948,8 +2948,8 @@ QVector<AxTriangle> delaunay(QPolygonF nuage)
 
 
         // centre de grav
-        cross_test=intersect(QLineF(pm1,triangle_list[n][2]),QLineF(pm3,triangle_list[n][0]));
-        p_grav=QPointF(cross_test[1][0],cross_test[1][1]);
+        cross_test=intersect(QLine(pm1,triangle_list[n][2]),QLine(pm3,triangle_list[n][0]));
+        p_grav=QPoint(cross_test[1][0],cross_test[1][1]);
         test=nuage.containsPoint(p_grav,Qt::OddEvenFill);
 
         qDebug() << "pm1"<< pm1 << "pm3 "<<pm3 << "p_grav" << p_grav << endl;
@@ -2963,7 +2963,7 @@ QVector<AxTriangle> delaunay(QPolygonF nuage)
         }
     }
 
-// Convert QVector<QVector<QPointF>> to QVector triangle
+// Convert QVector<QVector<QPoint>> to QVector triangle
     for (int k=0;k<triangle_list.size();k++)
     {
         AxTriangle tri(triangle_list[k][0],triangle_list[k][1],triangle_list[k][2]);
@@ -2976,7 +2976,7 @@ QVector<AxTriangle> delaunay(QPolygonF nuage)
 
 QVector<AxLine> voronoi(QVector<AxTriangle> triangle_list)
 {
-    QPointF pc1,pc2;
+    QPoint pc1,pc2;
     QVector<AxLine> voronoi;
     for (int k1=0;k1<triangle_list.size();k1++)
     {

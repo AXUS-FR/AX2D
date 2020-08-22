@@ -187,13 +187,13 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
 {
     AxShape form=*this;
 
-    QPointF pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
+    QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
     AxLine segment, segment1, segment2, segment_previous, segment_next;
     qreal a,b,a_para,b_para,D,R_;
     QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
     AxShape stock_parallels,expand, brut_expland;
-    QVector<QPointF> cross_pts,cross_pts1,cross_pts2;
-    QLineF arc_limits_,med;
+    QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
+    QLine arc_limits_,med;
     int left_cross,sens,inside_form,k_next,k_previous,clockwise_,k1=0,k_1=0,k_2=0,interne=0,closest_pos,number_of_cross,bord_externe=0,k,closest_k;
 
     for (int n=0;n<form.size();n++)// for all border of form
@@ -225,7 +225,7 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
                     // if border = line
                     if (form[k]->getObjectType()==0)
                     {
-                        cross_test=intersect_line_segment(med,QLineF(form[k]->p1(),form[k]->p2()));
+                        cross_test=intersect_line_segment(med,QLine(form[k]->p1(),form[k]->p2()));
                     }
                     // if border = arc
                     else
@@ -289,13 +289,13 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
                 //              R*sqrt(1+a*a);
                 if (sens==1)
                 {
-                    p1_para=QPointF((p1.y()+R/sqrt(1+a*a)-b_para)/a,p1.y()+R/sqrt(1+a*a));
-                    p2_para=QPointF((p2.y()+R/sqrt(1+a*a)-b_para)/a,p2.y()+R/sqrt(1+a*a));
+                    p1_para=QPoint((p1.y()+R/sqrt(1+a*a)-b_para)/a,p1.y()+R/sqrt(1+a*a));
+                    p2_para=QPoint((p2.y()+R/sqrt(1+a*a)-b_para)/a,p2.y()+R/sqrt(1+a*a));
                 }
                 else if (sens==-1)
                 {
-                    p1_para=QPointF((p1.y()-R/sqrt(1+a*a)-b_para)/a,p1.y()-R/sqrt(1+a*a));
-                    p2_para=QPointF((p2.y()-R/sqrt(1+a*a)-b_para)/a,p2.y()-R/sqrt(1+a*a));
+                    p1_para=QPoint((p1.y()-R/sqrt(1+a*a)-b_para)/a,p1.y()-R/sqrt(1+a*a));
+                    p2_para=QPoint((p2.y()-R/sqrt(1+a*a)-b_para)/a,p2.y()-R/sqrt(1+a*a));
                 }
 
 
@@ -304,15 +304,15 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
             {
                 D=R;
                 // cas particulier segment vertical
-                p1_para=QPointF(p1.x()+sens*D,p1.y());
-                p2_para=QPointF(p2.x()+sens*D,p2.y());
+                p1_para=QPoint(p1.x()+sens*D,p1.y());
+                p2_para=QPoint(p2.x()+sens*D,p2.y());
             }
             else if (p2.y()==p1.y())
             {
                 D=R;
                 // cas particulier segment horizontal
-                p1_para=QPointF(p1.x(),p1.y()+sens*D);
-                p2_para=QPointF(p2.x(),p2.y()+sens*D);
+                p1_para=QPoint(p1.x(),p1.y()+sens*D);
+                p2_para=QPoint(p2.x(),p2.y()+sens*D);
             }
             // store expanded line
 
@@ -323,7 +323,7 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
         else
         {   // find pm and draw the mediatrice
             pm=border->middle_point();   // point in the middle of the arc
-            pm_line=QPointF(pm.x()+10.0,pm.y()+10.0);
+            pm_line=QPoint(pm.x()+10.0,pm.y()+10.0);
             //find out if arc circle is concave or convexe
 
             // pm inside form ?
@@ -336,19 +336,19 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
                     // if border = line
                     if (form[k]->getObjectType()==0)
                     {
-                        cross_test=intersect_line_segment(QLineF(pm,pm_line),QLineF(form[k]->p1(),form[k]->p2()));
+                        cross_test=intersect_line_segment(QLine(pm,pm_line),QLine(form[k]->p1(),form[k]->p2()));
                     }
                     // if border = arc
                     else
                     {
-                        cross_test=intersect_arc_line(QLineF(pm,pm_line),AxArc(form[k]));
+                        cross_test=intersect_arc_line(QLine(pm,pm_line),AxArc(form[k]));
                     }
                     //border = current arc
                 }
                 else
                 {
                     //Do the cross test with the border of the arc
-                    cross_test=intersect_line_segment(QLineF(pm,pm_line),QLineF(form[k]->get_limits()));
+                    cross_test=intersect_line_segment(QLine(pm,pm_line),QLine(form[k]->get_limits()));
                 }
                 if (cross_test[0][0]==1)
                 {
@@ -382,11 +382,11 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
                 if (AxArc(border).get_R()-R>0)
                 {
 
-                    cross_test=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p1()),AxArc(QLineF(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
-                    cross_test=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p2()),AxArc(QLineF(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
+                    cross_test=intersect_arc_line(QLine(AxArc(border).get_center(),border->p1()),AxArc(QLine(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
+                    cross_test=intersect_arc_line(QLine(AxArc(border).get_center(),border->p2()),AxArc(QLine(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
                     p1_extend=closest_cross_to_pt(cross_test,border->p1());
                     p2_extend=closest_cross_to_pt(cross_test,border->p2());
-                    return (new AxArc(QLineF(p1_extend,p2_extend),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
+                    return (new AxArc(QLine(p1_extend,p2_extend),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
                 }
 
             }
@@ -395,17 +395,17 @@ AxBorder* AxShape::segment_brut_expand(AxBorder *border, qreal R)
                 // store the expanded Arc   // cercle= convexe
 
 
-                //                        cross_test1=intersect_arc_line(QLineF(border->get_center(),border->p1()),AxArc(QLineF(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
-                cross_test1=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p1()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
+                //                        cross_test1=intersect_arc_line(QLine(border->get_center(),border->p1()),AxArc(QLine(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
+                cross_test1=intersect_arc_line(QLine(AxArc(border).get_center(),border->p1()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
                 cross_pts1=intersecting_points(cross_test1);
                 k_1=closest_pt_to_p1_border(cross_pts1, border);
 
-                //cross_test2=intersect_arc_line(QLineF(border->get_center(),border->p2()),AxArc(QLineF(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
-                cross_test2=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p2()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
+                //cross_test2=intersect_arc_line(QLine(border->get_center(),border->p2()),AxArc(QLine(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
+                cross_test2=intersect_arc_line(QLine(AxArc(border).get_center(),border->p2()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
                 cross_pts2=intersecting_points(cross_test2);
                 k_2=closest_pt_to_p2_border(cross_pts2, border);
 
-                return(new AxArc(QLineF(cross_pts1[k_1],cross_pts2[k_2]),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
+                return(new AxArc(QLine(cross_pts1[k_1],cross_pts2[k_2]),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
 
             }
         }
@@ -417,13 +417,13 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
 {
     AxShape form=*this;
 
-    QPointF pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
+    QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
     AxLine segment, segment1, segment2, segment_previous, segment_next;
     qreal a,b,a_para,b_para,D,R_;
     QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
     AxShape stock_parallels,expand, brut_expland;
-    QVector<QPointF> cross_pts,cross_pts1,cross_pts2;
-    QLineF arc_limits_,med;
+    QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
+    QLine arc_limits_,med;
     int left_cross,sens,inside_form,k_next,k_previous,clockwise_,k1=0,k_1=0,k_2=0,interne=0,closest_pos,number_of_cross,bord_externe=0,k,closest_k;
 
     for (int n=0;n<form.size();n++)// for all border of form
@@ -455,7 +455,7 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
                     // if border = line
                     if (form[k]->getObjectType()==0)
                     {
-                        cross_test=intersect_line_segment(med,QLineF(form[k]->p1(),form[k]->p2()));
+                        cross_test=intersect_line_segment(med,QLine(form[k]->p1(),form[k]->p2()));
                     }
                     // if border = arc
                     else
@@ -519,13 +519,13 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
                 //              R*sqrt(1+a*a);
                 if (sens==1)
                 {
-                    p1_para=QPointF((p1.y()+R/sqrt(1+a*a)-b_para)/a,p1.y()+R/sqrt(1+a*a));
-                    p2_para=QPointF((p2.y()+R/sqrt(1+a*a)-b_para)/a,p2.y()+R/sqrt(1+a*a));
+                    p1_para=QPoint((p1.y()+R/sqrt(1+a*a)-b_para)/a,p1.y()+R/sqrt(1+a*a));
+                    p2_para=QPoint((p2.y()+R/sqrt(1+a*a)-b_para)/a,p2.y()+R/sqrt(1+a*a));
                 }
                 else if (sens==-1)
                 {
-                    p1_para=QPointF((p1.y()-R/sqrt(1+a*a)-b_para)/a,p1.y()-R/sqrt(1+a*a));
-                    p2_para=QPointF((p2.y()-R/sqrt(1+a*a)-b_para)/a,p2.y()-R/sqrt(1+a*a));
+                    p1_para=QPoint((p1.y()-R/sqrt(1+a*a)-b_para)/a,p1.y()-R/sqrt(1+a*a));
+                    p2_para=QPoint((p2.y()-R/sqrt(1+a*a)-b_para)/a,p2.y()-R/sqrt(1+a*a));
                 }
 
 
@@ -534,15 +534,15 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
             {
                 D=R;
                 // cas particulier segment vertical
-                p1_para=QPointF(p1.x()+sens*D,p1.y());
-                p2_para=QPointF(p2.x()+sens*D,p2.y());
+                p1_para=QPoint(p1.x()+sens*D,p1.y());
+                p2_para=QPoint(p2.x()+sens*D,p2.y());
             }
             else if (p2.y()==p1.y())
             {
                 D=R;
                 // cas particulier segment horizontal
-                p1_para=QPointF(p1.x(),p1.y()+sens*D);
-                p2_para=QPointF(p2.x(),p2.y()+sens*D);
+                p1_para=QPoint(p1.x(),p1.y()+sens*D);
+                p2_para=QPoint(p2.x(),p2.y()+sens*D);
             }
             // store expanded line
 
@@ -553,7 +553,7 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
         else
         {   // find pm and draw the mediatrice
             pm=border->middle_point();   // point in the middle of the arc
-            pm_line=QPointF(pm.x()+10.0,pm.y()+10.0);
+            pm_line=QPoint(pm.x()+10.0,pm.y()+10.0);
             //find out if arc circle is concave or convexe
 
             // pm inside form ?
@@ -566,19 +566,19 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
                     // if border = line
                     if (form[k]->getObjectType()==0)
                     {
-                        cross_test=intersect_line_segment(QLineF(pm,pm_line),QLineF(form[k]->p1(),form[k]->p2()));
+                        cross_test=intersect_line_segment(QLine(pm,pm_line),QLine(form[k]->p1(),form[k]->p2()));
                     }
                     // if border = arc
                     else
                     {
-                        cross_test=intersect_arc_line(QLineF(pm,pm_line),AxArc(form[k]));
+                        cross_test=intersect_arc_line(QLine(pm,pm_line),AxArc(form[k]));
                     }
                     //border = current arc
                 }
                 else
                 {
                     //Do the cross test with the border of the arc
-                    cross_test=intersect_line_segment(QLineF(pm,pm_line),QLineF(form[k]->get_limits()));
+                    cross_test=intersect_line_segment(QLine(pm,pm_line),QLine(form[k]->get_limits()));
                 }
                 if (cross_test[0][0]==1)
                 {
@@ -612,11 +612,11 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
                 if (AxArc(border).get_R()-R>0)
                 {
 
-                    cross_test=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p1()),AxArc(QLineF(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
-                    cross_test=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p2()),AxArc(QLineF(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
+                    cross_test=intersect_arc_line(QLine(AxArc(border).get_center(),border->p1()),AxArc(QLine(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
+                    cross_test=intersect_arc_line(QLine(AxArc(border).get_center(),border->p2()),AxArc(QLine(0,0,0,0),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
                     p1_extend=closest_cross_to_pt(cross_test,border->p1());
                     p2_extend=closest_cross_to_pt(cross_test,border->p2());
-                    return (new AxArc(QLineF(p1_extend,p2_extend),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
+                    return (new AxArc(QLine(p1_extend,p2_extend),AxArc(border).get_center(),AxArc(border).get_R()-R,AxArc(border).is_clockwise()));
                 }
 
             }
@@ -625,26 +625,26 @@ AxBorder *AxShape::segment_brut_intern_expand(AxBorder *border, qreal R)
                 // store the expanded Arc   // cercle= convexe
 
 
-                //                        cross_test1=intersect_arc_line(QLineF(border->get_center(),border->p1()),AxArc(QLineF(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
-                cross_test1=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p1()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
+                //                        cross_test1=intersect_arc_line(QLine(border->get_center(),border->p1()),AxArc(QLine(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
+                cross_test1=intersect_arc_line(QLine(AxArc(border).get_center(),border->p1()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
                 cross_pts1=intersecting_points(cross_test1);
                 k_1=closest_pt_to_p1_border(cross_pts1, border);
 
-                //cross_test2=intersect_arc_line(QLineF(border->get_center(),border->p2()),AxArc(QLineF(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
-                cross_test2=intersect_arc_line(QLineF(AxArc(border).get_center(),border->p2()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
+                //cross_test2=intersect_arc_line(QLine(border->get_center(),border->p2()),AxArc(QLine(0,0,0,0),border->get_center(),border->get_R()+R,border->get_clockwise()));
+                cross_test2=intersect_arc_line(QLine(AxArc(border).get_center(),border->p2()),AxArc(border->get_limits(),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
                 cross_pts2=intersecting_points(cross_test2);
                 k_2=closest_pt_to_p2_border(cross_pts2, border);
 
-                return(new AxArc(QLineF(cross_pts1[k_1],cross_pts2[k_2]),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
+                return(new AxArc(QLine(cross_pts1[k_1],cross_pts2[k_2]),AxArc(border).get_center(),AxArc(border).get_R()+R,AxArc(border).is_clockwise()));
             }
         }
     }
 }
 
-QVector<QPointF> AxShape::from_shape_to_pts()
+QVector<QPoint> AxShape::from_shape_to_pts()
 {
     // calcule le nuage de point associé à une shape
-    QVector<QPointF> nuage;
+    QVector<QPoint> nuage;
     // si le polygon est pas fermé, je le ferme
     if (shape[0]!=shape[shape.size()-1])
     {
@@ -676,12 +676,12 @@ int AxShape::bord_externe()
 {
     AxShape form=*this;
     QVector<QVector<qreal>>cross_test;
-    QPointF pm;
+    QPoint pm;
     for (int q=0;q<form.size();q++)
     {
         int left_cross=0, right_cross=0;
         pm=form[q]->p1();
-        QPointF pm_line=QPointF(pm.x()+10.0,pm.y()+10.0);
+        QPoint pm_line=QPoint(pm.x()+10.0,pm.y()+10.0);
         for (int k=0;k<form.size();k++)
         {
             if ((k!=q) && (k!=form.previous_point(q)))
@@ -689,12 +689,12 @@ int AxShape::bord_externe()
                 // if border = line
                 if (form[k]->getObjectType()==0)
                 {
-                   cross_test=intersect_line_segment(QLineF(pm,pm_line),QLineF(form[k]->p1(),form[k]->p2()));
+                   cross_test=intersect_line_segment(QLine(pm,pm_line),QLine(form[k]->p1(),form[k]->p2()));
                 }
                 // if border = arc
                 else
                 {
-                    cross_test=intersect_arc_line(QLineF(pm,pm_line),AxArc(form[k]));
+                    cross_test=intersect_arc_line(QLine(pm,pm_line),AxArc(form[k]));
                 }
 
                 if (cross_test[0][0]==1)
@@ -726,14 +726,14 @@ QVector<AxLine> AxShape::straight_skeletton()
     AxBorder *brut_segment_1,*brut_segment_2;
     QVector<QVector<qreal> > cross_test,cross_test1,cross_test2;
     QVector<AxLine> bisectrice_list;
-    QPointF closest_cross,p1,p2;
+    QPoint closest_cross,p1,p2;
     QVector<Vertice> Vertice_list;
     int k2, q1,q0,q2;
     qreal closest_distance, cross_distance,cross_distance1,cross_distance2,angle1,angle2;
     int k1_cross,k2_cross,k0, kprev, knext;
     AxLine segments_bisectrice;
     AxShape form;
-    QVector<QPointF>form_const;
+    QVector<QPoint>form_const;
     int next_o;
 
     form=*this;
@@ -749,15 +749,15 @@ QVector<AxLine> AxShape::straight_skeletton()
 
         cross_test=intersect_lignes(brut_segment_1,brut_segment_2);
 
-        Vertice_list.append(Vertice(AxLine(form[k]->p1(),QPointF(cross_test[1][0],cross_test[1][1])),dynamic_cast<AxLine*>(form[k-1]),dynamic_cast<AxLine*>(form[k])));
-        bisectrice_list.append(AxLine(form[k]->p1(),QPointF(cross_test[1][0],cross_test[1][1])));
+        Vertice_list.append(Vertice(AxLine(form[k]->p1(),QPoint(cross_test[1][0],cross_test[1][1])),dynamic_cast<AxLine*>(form[k-1]),dynamic_cast<AxLine*>(form[k])));
+        bisectrice_list.append(AxLine(form[k]->p1(),QPoint(cross_test[1][0],cross_test[1][1])));
 
         brut_segment_1=brut_segment_2;
     }
     brut_segment_2=form.segment_brut_intern_expand(form[0],10);
     cross_test=intersect_lignes(brut_segment_1,brut_segment_2);
-    bisectrice_list.append(AxLine(form[0]->p1(),QPointF(cross_test[1][0],cross_test[1][1])));
-    Vertice_list.append(Vertice(AxLine(form[0]->p1(),QPointF(cross_test[1][0],cross_test[1][1])),dynamic_cast<AxLine*>(form[form.size()-1]),dynamic_cast<AxLine*>(form[0])));
+    bisectrice_list.append(AxLine(form[0]->p1(),QPoint(cross_test[1][0],cross_test[1][1])));
+    Vertice_list.append(Vertice(AxLine(form[0]->p1(),QPoint(cross_test[1][0],cross_test[1][1])),dynamic_cast<AxLine*>(form[form.size()-1]),dynamic_cast<AxLine*>(form[0])));
 
 
 //    ETAPE 2 : MOTOYCYCLE
@@ -776,30 +776,30 @@ QVector<AxLine> AxShape::straight_skeletton()
         if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==1))
         {
 
-            cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
-            cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+            cross_distance1=distance(QPoint(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+            cross_distance2=distance(QPoint(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
 
             if (cross_distance1<cross_distance2)
             {
                 knext=previous_pt(k2,Vertice_list);
-                bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+                bisection_intersection_list.append(bisection_intersection(cross_distance1,QPoint(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
             }
             else
             {
                 kprev=previous_pt(k0,Vertice_list);
-                bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+                bisection_intersection_list.append(bisection_intersection(cross_distance2,QPoint(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
             }
         }
         else if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==0))
         {
-            cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
-            bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+            cross_distance1=distance(QPoint(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+            bisection_intersection_list.append(bisection_intersection(cross_distance1,QPoint(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
 
         }
         else if ((cross_test1[0][0]==0)&&(cross_test2[0][0]==1))
         {
-            cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
-            bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+            cross_distance2=distance(QPoint(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+            bisection_intersection_list.append(bisection_intersection(cross_distance2,QPoint(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
         }
 
 
@@ -861,8 +861,8 @@ QVector<AxLine> AxShape::straight_skeletton()
                 // détermination du sens de la bisectrice TODO : redéfinir/ améliorer
                 qreal angle0=angle(bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2());
 
-                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1());
-                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)), bisection_intersection_list[0].get_vertice2().get_edge2());
+                angle1=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1());
+                angle2=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)), bisection_intersection_list[0].get_vertice2().get_edge2());
 
                 qDebug()<<"angle0"<<angle0<<"angle1"<<angle1<<"angle2"<<angle2;
 
@@ -887,8 +887,8 @@ QVector<AxLine> AxShape::straight_skeletton()
                 x3=x1;
                 y3=y1+10;
 
-                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
-                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
+                angle1=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
+                angle2=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
 
                 if ((angle1<M_PI/2)||(angle2<M_PI/2))
                 {
@@ -911,8 +911,8 @@ QVector<AxLine> AxShape::straight_skeletton()
                 x3=x1+10;
                 y3=a*x3+b;
 
-                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
-                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
+                angle1=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
+                angle2=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
 
                 if ((angle1<M_PI/2)||(angle2<M_PI/2))
                 {
@@ -925,8 +925,8 @@ QVector<AxLine> AxShape::straight_skeletton()
                 x3=x1;
                 y3=y1+10;
 
-                angle1=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
-                angle2=angle(new AxLine(QPointF(x1,y1),QPointF(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
+                angle1=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)),new AxLine(bisection1.p2(),bisection1.p1()));
+                angle2=angle(new AxLine(QPoint(x1,y1),QPoint(x3,y3)),new AxLine(bisection2.p2(),bisection2.p1()));
 
                 if ((angle1<M_PI/2)||(angle2<M_PI/2))
                 {
@@ -936,7 +936,7 @@ QVector<AxLine> AxShape::straight_skeletton()
             }
         }
 
-        Vertice newVertice=(Vertice(AxLine(bisection_intersection_list[0].get_cross_point(),QPointF(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2()));
+        Vertice newVertice=(Vertice(AxLine(bisection_intersection_list[0].get_cross_point(),QPoint(x3,y3)), bisection_intersection_list[0].get_vertice1().get_edge1(),bisection_intersection_list[0].get_vertice2().get_edge2()));
 
         q1=Vertice_list.indexOf(bisection_intersection_list[0].get_vertice1());
         q0=previous_pt(q1,Vertice_list);
@@ -978,31 +978,31 @@ QVector<AxLine> AxShape::straight_skeletton()
 
             if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==1))
             {
-//                cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
-//                cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+//                cross_distance1=distance(QPoint(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+//                cross_distance2=distance(QPoint(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
 
 
-                cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),newVertice.get_bisection().p1());
-                cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),newVertice.get_bisection().p1());
+                cross_distance1=distance(QPoint(cross_test1[1][0],cross_test1[1][1]),newVertice.get_bisection().p1());
+                cross_distance2=distance(QPoint(cross_test2[1][0],cross_test2[1][1]),newVertice.get_bisection().p1());
 
                 if (cross_distance1<cross_distance2)
                 {
-                    bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+                    bisection_intersection_list.append(bisection_intersection(cross_distance1,QPoint(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
                 }
                 else
                 {
-                    bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+                    bisection_intersection_list.append(bisection_intersection(cross_distance2,QPoint(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
                 }
             }
             else if ((cross_test1[0][0]==1)&&(cross_test2[0][0]==0))
             {
-                cross_distance1=distance(QPointF(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
-                bisection_intersection_list.append(bisection_intersection(cross_distance1,QPointF(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
+                cross_distance1=distance(QPoint(cross_test1[1][0],cross_test1[1][1]),Vertice_list[k1].get_bisection().p1());
+                bisection_intersection_list.append(bisection_intersection(cross_distance1,QPoint(cross_test1[1][0],cross_test1[1][1]),new Vertice(Vertice_list[k1]),new Vertice(Vertice_list[k2])));
             }
             else if ((cross_test1[0][0]==0)&&(cross_test2[0][0]==1))
             {
-                cross_distance2=distance(QPointF(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
-                bisection_intersection_list.append(bisection_intersection(cross_distance2,QPointF(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
+                cross_distance2=distance(QPoint(cross_test2[1][0],cross_test2[1][1]),Vertice_list[k1].get_bisection().p1());
+                bisection_intersection_list.append(bisection_intersection(cross_distance2,QPoint(cross_test2[1][0],cross_test2[1][1]),new Vertice(Vertice_list[k0]),new Vertice(Vertice_list[k1])));
             }
         }
         Skeletton.append(bisection1);
@@ -1029,13 +1029,13 @@ AxShape AxShape::expand_unfinished(qreal R)
 
         //   le programme aggrandis d'un rayon R la forme
 
-        QPointF pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
+        QPoint pm, p1, p2,p1_para,p2_para,pm_line,closest_cross,center_,p1_extend,p2_extend;
         AxLine segment, segment1, segment2, segment_previous, segment_next;
         qreal a,b,a_para,b_para,D,R_;
         QVector<QVector<qreal>>cross_test,cross_med,cross_test1,cross_test2;
         AxShape stock_parallels,expand, brut_expland;
-        QVector<QPointF> cross_pts,cross_pts1,cross_pts2;
-        QLineF arc_limits_,med;
+        QVector<QPoint> cross_pts,cross_pts1,cross_pts2;
+        QLine arc_limits_,med;
         //            QVector<bool> yolo(20);
         //            yolo[8]=true;
         //            qDebug() << "yolo" << yolo;
@@ -1083,7 +1083,7 @@ AxShape AxShape::expand_unfinished(qreal R)
                 // define a new arc between the two segment
                 if (not_equal(brut_segment_1->p2(), brut_segment_2->p1()))
                 {
-                    arc_limits_=QLineF(brut_segment_1->p2(),brut_segment_2->p1());
+                    arc_limits_=QLine(brut_segment_1->p2(),brut_segment_2->p1());
                     center_=convexe[n][k]->p1();
                     R_=distance(brut_segment_1->p2(),center_);
                     clockwise_=1;
@@ -1126,8 +1126,8 @@ AxShape AxShape::expand_unfinished(qreal R)
                     {
                         // redéfinir les segments
 
-                        brut_segment_1->setP2(QPointF(cross_test[1][0],cross_test[1][1]));
-                        brut_segment_2->setP1(QPointF(cross_test[1][0],cross_test[1][1]));
+                        brut_segment_1->setP2(QPoint(cross_test[1][0],cross_test[1][1]));
+                        brut_segment_2->setP1(QPoint(cross_test[1][0],cross_test[1][1]));
                     }
                     else
                     {
@@ -1135,7 +1135,7 @@ AxShape AxShape::expand_unfinished(qreal R)
 
                         if (not_equal(brut_segment_1->p2(), brut_segment_2->p1()))
                         {
-                            arc_limits_=QLineF(brut_segment_1->p2(),brut_segment_2->p1());
+                            arc_limits_=QLine(brut_segment_1->p2(),brut_segment_2->p1());
                             center_=concave[n][k]->p1();
                             R_=distance(brut_segment_1->p2(),center_);
                             clockwise_=1;
@@ -1165,7 +1165,7 @@ AxShape AxShape::expand_unfinished(qreal R)
 
                 cross_test=intersect_lignes(brut_segment_1,brut_segment_2);
 
-                bisectrice_list.append(AxLine(concave[n][k]->p1(),QPointF(cross_test[1][0],cross_test[1][1])));
+                bisectrice_list.append(AxLine(concave[n][k]->p1(),QPoint(cross_test[1][0],cross_test[1][1])));
 
                 brut_segment_1=brut_segment_2;
             }
@@ -1187,11 +1187,11 @@ AxShape AxShape::expand_unfinished(qreal R)
                  k2=next_pt(k1,bisectrice_list);
                  {
                      cross_test=intersect_demi_lines(bisectrice_list[k1],bisectrice_list[k2]);
-                     cross_distance=distance(QPointF(cross_test[1][0],cross_test[1][1]),bisectrice_list[k1].p1());
+                     cross_distance=distance(QPoint(cross_test[1][0],cross_test[1][1]),bisectrice_list[k1].p1());
 
                      if ((cross_test[0][0]==1) && (cross_distance<closest_distance))
                      {
-                         closest_cross=QPointF(cross_test[1][0],cross_test[1][1]);
+                         closest_cross=QPoint(cross_test[1][0],cross_test[1][1]);
                          closest_distance=cross_distance;
                          k1_cross=k1;
                          k2_cross=k2;
@@ -1229,11 +1229,11 @@ AxShape AxShape::expand_unfinished(qreal R)
 //    // renvoie le numéro de ligne du premier bord externe de l'axShape que l'on détecte
 //    // cad le bord dont au moins le p1 est à l'extérieur
 //    int left_cross,right_cross;
-//    QPointF p1,p2,pp1,pp2,pm;
+//    QPoint p1,p2,pp1,pp2,pm;
 //    AxLine segment;
-//    QLineF med;
+//    QLine med;
 //    QVector<QVector<qreal>>cross_test;
-//    QVector<QPointF> cross_pts;
+//    QVector<QPoint> cross_pts;
 
 //    for (int n=0;n<shape.size();n++)// for all border of form
 //    {
@@ -1262,7 +1262,7 @@ AxShape AxShape::expand_unfinished(qreal R)
 //                     // if border = line
 //                     if (shape[k]->getObjectType()==0)
 //                     {
-//                        cross_test=intersect_line_segment(med,QLineF(shape[k]->p1(),shape[k]->p2()));
+//                        cross_test=intersect_line_segment(med,QLine(shape[k]->p1(),shape[k]->p2()));
 //                     }
 //                     // if border = arc
 //                     else
@@ -1325,7 +1325,7 @@ QVector<AxShape> AxShape::expand(qreal D)
 
     AxShape shape, transit_shape;
     QVector<AxShape> expanded_shape;
-    QVector<QPointF>shape_const ;
+    QVector<QPoint>shape_const ;
     QVector<QVector<qreal>> cross_test;
     int next_o;
     QPoint p1,p2;
@@ -1406,12 +1406,12 @@ void AxShape::affiche(QPaintDevice *device, int width, const QColor &color)
 }
 
 
-bool AxShape::contain(QPointF pm)
+bool AxShape::contain(QPoint pm)
 {
     AxShape form=*this;
     QVector<QVector<qreal>>cross_test;
     int left_cross=0;
-    QPointF pm_line=QPointF(pm.x()+10.0,pm.y()+10.0);
+    QPoint pm_line=QPoint(pm.x()+10.0,pm.y()+10.0);
 
     for (int k=0;k<form.size();k++)
     {
@@ -1421,12 +1421,12 @@ bool AxShape::contain(QPointF pm)
             // if border = line
             if (form[k]->getObjectType()==0)
             {
-               cross_test=intersect_line_segment(QLineF(pm,pm_line),QLineF(form[k]->p1(),form[k]->p2()));
+               cross_test=intersect_line_segment(QLine(pm,pm_line),QLine(form[k]->p1(),form[k]->p2()));
             }
             // if border = arc
             else
             {
-                cross_test=intersect(QLineF(pm,pm_line),AxArc(form[k]));
+                cross_test=intersect(QLine(pm,pm_line),AxArc(form[k]));
             }
             if (cross_test[0][0]==1)
             {

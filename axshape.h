@@ -66,10 +66,10 @@ class AxShape
         AxBorder* segment_brut_intern_expand(AxBorder *border, qreal R);
         // return the associated expanded border out of the shape with a distance of R (note : the border must be part of the shape)
 
-        QVector<QPointF> from_shape_to_pts();
+        QVector<QPoint> from_shape_to_pts();
         // convert the shape to a polygon : the arcs are converted to lines
 
-        bool contain(QPointF p);
+        bool contain(QPoint p);
         // return true if the point is inside the figure, return false else
 
         int bord_externe(); //determine if the border is outside the figure

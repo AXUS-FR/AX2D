@@ -10,13 +10,13 @@ using namespace std;
 
 AxArc:: AxArc()
 {
-    limits=QLineF();
-    C=QPointF(0,0);
+    limits=QLine();
+    C=QPoint(0,0);
     R=0;
     clockwise=0;
 };
 
-AxArc:: AxArc(QLineF _limits, QPointF _center, qreal _R, int _clockwise)
+AxArc:: AxArc(QLine _limits, QPoint _center, qreal _R, int _clockwise)
 {
     limits=_limits;
     C=_center;
@@ -36,20 +36,20 @@ AxArc::AxArc(AxBorder *border)
 
 }
 
-AxArc::AxArc(QPointF _center, qreal _R)
+AxArc::AxArc(QPoint _center, qreal _R)
 {
     C=_center;
     R=_R;
     clockwise=0;
-    limits=QLineF();
+    limits=QLine();
 }
-QPointF AxArc::middle_point()
+QPoint AxArc::middle_point()
 {
     // return the point in the middle of the arc
     // error if circle
-    QPointF p1=get_limits().p1();
-    QPointF p2=get_limits().p2();
-    QVector<QPointF> cross_pts;
+    QPoint p1=get_limits().p1();
+    QPoint p2=get_limits().p2();
+    QVector<QPoint> cross_pts;
 
     AxLine segment=AxLine(p1,p2);
 
@@ -60,7 +60,7 @@ QPointF AxArc::middle_point()
 
     else
     {
-        QVector<QVector<qreal>> cross_med=intersect_arc_line(QLineF(C,segment.center()),AxArc(*this));
+        QVector<QVector<qreal>> cross_med=intersect_arc_line(QLine(C,segment.center()),AxArc(*this));
 
         cross_pts=intersecting_points(cross_med);
         if (p1!=p2)
@@ -92,7 +92,7 @@ AxArc:: ~AxArc()
 {
 };
 
-QPointF AxArc :: get_center()
+QPoint AxArc :: get_center()
 {
     return C;
 }
@@ -118,7 +118,7 @@ void AxArc::set_cw(bool way)
 {
     if (this->is_cw()!= way)
     {
-     limits = QLineF(limits.p2(),limits.p1()) ;
+     limits = QLine(limits.p2(),limits.p1()) ;
 
     }
     clockwise = way;
@@ -130,7 +130,7 @@ void AxArc::set_ccw(bool way)
     way = !way;
     if (this->is_cw()!= way)
     {
-     limits = QLineF(limits.p2(),limits.p1()) ;
+     limits = QLine(limits.p2(),limits.p1()) ;
 
     }
     clockwise = way;
@@ -142,9 +142,9 @@ void AxArc :: affiche(QPaintDevice *device, int width, const QColor &color)
     // affiche l'arc associé
 
     qreal startAngle,spanAngle,teta1,teta2;
-    QPointF p1=limits.p1();
-    QPointF p2=limits.p2();
-    QPointF pc=C;
+    QPoint p1=limits.p1();
+    QPoint p2=limits.p2();
+    QPoint pc=C;
 
     if (p1==p2) // les deux points sont les memes
     {
@@ -240,9 +240,9 @@ QDebug operator<<(QDebug dbg, const AxArc &type)
     return dbg.maybeSpace();
 }
 
-qreal AxArc :: angle(QPointF p)// Calculate the positive angle of the point based on the certer of my arc
+qreal AxArc :: angle(QPoint p)// Calculate the positive angle of the point based on the certer of my arc
 {
-    QPointF pc = this->get_center();
+    QPoint pc = this->get_center();
     qreal teta;
 
     // I calculate my reals angle in positive
@@ -266,13 +266,13 @@ qreal AxArc :: angle(QPointF p)// Calculate the positive angle of the point base
 }
 
 
-int AxArc :: arc_test(QPointF px)// test si l'angle d'un point selon l'arc de cercle est compris dans l'angle des 2 points d'un arc
+int AxArc :: arc_test(QPoint px)// test si l'angle d'un point selon l'arc de cercle est compris dans l'angle des 2 points d'un arc
 {
 
     // prend un un arc de cercle et un point appartement au cercle en argument et défini si le point se situe sur l'arc
     qreal teta1, teta2, tetax;
-    QPointF p1= limits.p1();
-    QPointF p2= limits.p2();
+    QPoint p1= limits.p1();
+    QPoint p2= limits.p2();
     int clockwise = this->is_clockwise();
     // les deux points formant l'arc sont les mêmes ?
     if (p1==p2)
@@ -332,10 +332,10 @@ int AxArc :: arc_test(QPointF px)// test si l'angle d'un point selon l'arc de ce
 }
 
 
-QLineF AxArc::get_mediatrice()
+QLine AxArc::get_mediatrice()
 {
-    QLineF line(limits);
-    QPointF pp1((line.p1().x()+line.p2().x())/2,((line.p1().y()+line.p2().y())/2));
-    QPointF pp2(this->middle_point());
-    return (QLineF(pp1,pp2));
+    QLine line(limits);
+    QPoint pp1((line.p1().x()+line.p2().x())/2,((line.p1().y()+line.p2().y())/2));
+    QPoint pp2(this->middle_point());
+    return (QLine(pp1,pp2));
 }

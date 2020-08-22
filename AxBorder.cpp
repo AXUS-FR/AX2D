@@ -16,12 +16,12 @@ void AxBorder::f(QDebug &dbg) const
 int AxBorder::getObjectType()
 {}
 
-QPointF AxBorder::p1() const
+QPoint AxBorder::p1() const
 {
     return limits.p1();
 }
 
-QPointF AxBorder::p2() const
+QPoint AxBorder::p2() const
 {
     return limits.p2();
 }
@@ -46,37 +46,37 @@ qreal AxBorder::y2() const
     return limits.p2().y();
 }
 
-QPointF AxBorder::center() const
+QPoint AxBorder::center() const
 {
     return limits.center();
 }
 
-void AxBorder::setLimits(QLineF _border)
+void AxBorder::setLimits(QLine _border)
 {
     limits=_border;
 }
 
-void AxBorder::setP1(QPointF p)
+void AxBorder::setP1(QPoint p)
 {
     limits.setP1(p);
 }
 
-void AxBorder::setP2(QPointF p)
+void AxBorder::setP2(QPoint p)
 {
     limits.setP2(p);
 }
 
-QLineF AxBorder::get_limits()
+QLine AxBorder::get_limits()
 {
     return limits;
 }
 
-QPointF AxBorder::middle_point()
+QPoint AxBorder::middle_point()
 {
 }
 
 
-QLineF AxBorder::get_mediatrice()
+QLine AxBorder::get_mediatrice()
 {
 }
 

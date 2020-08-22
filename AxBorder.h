@@ -3,7 +3,7 @@
 
 #include <QDebug>
 #include <QStyle>
-#include <QLineF>
+#include <QLine>
 
 class AxBorder
 {
@@ -11,13 +11,13 @@ public:
 
     // GETTERS
 
-    QLineF get_limits();
+    QLine get_limits();
     //return the 2 points compasing the border
 
-    QPointF p1() const;
+    QPoint p1() const;
     // return the 1st point of the border
 
-    QPointF p2() const;
+    QPoint p2() const;
     // return the 2nd point of the border
 
     qreal x1() const;
@@ -32,13 +32,13 @@ public:
     qreal y2() const;
     // return the y coordinate of the 2st point of the border
 
-    QPointF center() const;
+    QPoint center() const;
     // return the center of the segment associated with the border limits
 
-    virtual QPointF middle_point();
+    virtual QPoint middle_point();
     // return the middle point of the border (if arc : middle point part of arc)
 
-    virtual QLineF get_mediatrice();
+    virtual QLine get_mediatrice();
     //return the mediatrice of the object
 
     virtual int getObjectType();
@@ -47,13 +47,13 @@ public:
 
     // SETTERS
 
-    void setLimits(QLineF limits);
+    void setLimits(QLine limits);
     // change the value of limits
 
-    void setP1(QPointF p);
+    void setP1(QPoint p);
     // change the value of the 1st border point
 
-    void setP2(QPointF p);
+    void setP2(QPoint p);
     // change the value of the 2nd border point
 
 
@@ -73,7 +73,7 @@ public:
 
 protected:
 
-    QLineF limits;
+    QLine limits;
 
 };
 

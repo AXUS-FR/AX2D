@@ -4,7 +4,7 @@ bisection_intersection::bisection_intersection()
 {
 }
 
-bisection_intersection::bisection_intersection(qreal _distance, QPointF _cross_point, Vertice *_vertice1, Vertice *_vertice2)
+bisection_intersection::bisection_intersection(qreal _distance, QPoint _cross_point, Vertice *_vertice1, Vertice *_vertice2)
 {
     cross_point=_cross_point;
     distance=_distance;
@@ -27,7 +27,7 @@ Vertice bisection_intersection::get_vertice2() const
     return *vertice2;
 }
 
-QPointF bisection_intersection::get_cross_point() const
+QPoint bisection_intersection::get_cross_point() const
 {
     return cross_point;
 }

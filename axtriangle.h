@@ -5,20 +5,20 @@
 #include <axcircle.h>
 #include <QDebug>
 
-class AxTriangle : public QPolygonF
+class AxTriangle : public QPolygon
 {
     public:
 
         //constructor
 
         AxTriangle();
-        AxTriangle(QPointF _p1, QPointF _p2, QPointF p3);
+        AxTriangle(QPoint _p1, QPoint _p2, QPoint p3);
 
         //getters
 
-        QPointF getp1();
-        QPointF getp2();
-        QPointF getp3();
+        QPoint getp1();
+        QPoint getp2();
+        QPoint getp3();
         AxLine getline1();
         AxLine getline2();
         AxLine getline3();
@@ -32,9 +32,9 @@ class AxTriangle : public QPolygonF
 
     private:
 
-        QPointF p1;
-        QPointF p2;
-        QPointF p3;
+        QPoint p1;
+        QPoint p2;
+        QPoint p3;
 
 };
 

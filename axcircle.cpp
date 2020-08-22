@@ -2,11 +2,11 @@
 
 AxCircle::AxCircle()
 {
-    center=QPointF(0,0);
+    center=QPoint(0,0);
     R=0;
 }
 
-AxCircle::AxCircle(qreal _R,QPointF _center)
+AxCircle::AxCircle(qreal _R,QPoint _center)
 {
     R=_R;
     center=_center;
@@ -16,7 +16,7 @@ AxCircle:: ~AxCircle()
 {
 };
 
-QPointF AxCircle :: get_center()
+QPoint AxCircle :: get_center()
 {
     return center;
 }
