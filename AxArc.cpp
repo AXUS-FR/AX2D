@@ -28,8 +28,9 @@ AxArc:: AxArc(QLine _limits, QPoint _center, int _R, int _clockwise)
 AxArc:: AxArc(QLine _limits, int _R, bool _clockwise)
 {
     pocket = true;
-
-    qDebug() << "axarc" << is_cw();
+    qDebug() << "points" << _limits;
+    qDebug() << "radius" << _R;
+    qDebug() << "axarc" << _clockwise;
 
     bool cw = _clockwise;
 

@@ -1507,11 +1507,12 @@ void AxShape::link()
                // calculate radius of arc
 
                int radius =shape[i]->get_last_offset();
+               QPoint center = shape[i]->get_last_p1();
 
 
 
                AxArc *firsta= new AxArc(QLine(shape[last]->p2(),
-                                        shape[i]->p1()),radius,false);
+                                        shape[i]->p1()),center,radius,false);
 
 
 
