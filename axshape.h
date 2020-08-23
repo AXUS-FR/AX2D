@@ -127,6 +127,7 @@ class AxShape
 
     private:
         QVector<AxBorder*> shape;
+        int last_offset;
 
 };
 

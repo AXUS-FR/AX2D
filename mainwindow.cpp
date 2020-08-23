@@ -100,7 +100,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     poly2.analyse_dir();
 
 
-    poly2.offset(10);
+    poly2.offset(-40);
 
     qDebug() <<"poly2 size";
     qDebug() <<poly2.size();

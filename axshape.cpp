@@ -1472,7 +1472,9 @@ void AxShape::link()
     {
        qDebug() << "-----------------Segment "<<i;
 
-           //qDebug() << "for----------------------";
+
+
+
            int last,next ;
            if (i == shape.size()-1) next = 0;
            else next = i+1;
@@ -1480,60 +1482,144 @@ void AxShape::link()
            if (i != 0) last = i-1;
            else last = shape.size()-1;
 
-
-
-
-
-
-
-           if (shape[i]->get_p1_dir() == 1
-                && shape[last]->getObjectType()==0
-                && shape[i]->getObjectType()==0)//---------------first edge go left
+           if (last_offset >0)
            {
-               qDebug() << "if 1";
-               AxLine *first= new AxLine(shape[i]->get_last_p1(),shape[i]->p1());
+               if (shape[i]->get_p1_dir() == 1
+                    && shape[last]->getObjectType()==0
+                    && shape[i]->getObjectType()==0)//---------------first edge go left
+               {
+                   qDebug() << "if 1";
+                   AxLine *first= new AxLine(shape[i]->get_last_p1(),shape[i]->p1());
 
 
 
-               shape2.append(first);
+                   shape2.append(first);
+               }
+
+               else if (shape[i]->get_p1_dir() == 2
+                    && shape[last]->getObjectType()==0
+                    && shape[i]->getObjectType()==0)//---------------first edge go right
+               {
+                   qDebug() << "if 1-2";
+
+
+
+                   int radius =last_offset;
+                   QPoint center = shape[i]->get_last_p1();
+
+
+
+                   AxArc *firsta= new AxArc(QLine(shape[last]->p2(),
+                                            shape[i]->p1()),center,radius,false);
+
+
+
+                   shape2.append(firsta);
+               }
+
+               else if (shape[last]->getObjectType()==1
+                    && shape[i]->getObjectType()==0)//---------------first edge come from arc
+               {
+                   AxArc *ar = new AxArc(static_cast<AxArc>(shape[last]));
+
+                   if (ar->get_R() == 0)
+                   {
+                       AxLine *first= new AxLine(ar->get_center(),shape[i]->p1());
+
+                       shape2.append(first);
+
+                   }
+
+               }
+
+               shape2.append(shape[i]);
+
+    //-----------------second edge-------------------------------------------------------------------
+
+               if (shape[next]->get_p1_dir() == 1
+                    && shape[next]->getObjectType()==0
+                    && shape[i]->getObjectType()==0)//---------------second edge go left
+               {
+                   qDebug() << "if 2";
+
+                   AxLine *second= new AxLine(shape[i]->p2(),shape[i]->get_last_p2());
+
+                   shape2.append(second);
+
+               }
+
+               if (shape[next]->getObjectType()==1
+                    && shape[i]->getObjectType()==0)//---------------second edge join to arc
+               {
+                   AxArc *ar = new AxArc(static_cast<AxArc>(shape[next]));
+
+                   if (ar->get_R() == 0)
+                   {
+                       AxLine *second= new AxLine(shape[i]->p2(),ar->get_center());
+
+                       shape2.append(second);
+
+                   }
+
+
+               }
+
            }
 
-           else if (shape[i]->get_p1_dir() == 2
-                && shape[last]->getObjectType()==0
-                && shape[i]->getObjectType()==0)//---------------first edge go right
-           {
-               qDebug() << "if 1-2";
+            if (last_offset<0)
+            {
+                if (shape[i]->get_p1_dir() == 2
+                     && shape[last]->getObjectType()==0
+                     && shape[i]->getObjectType()==0)//---------------first edge go right
+                {
 
-               // calculate radius of arc
-
-               int radius =shape[i]->get_last_offset();
-               QPoint center = shape[i]->get_last_p1();
+                    AxLine *first= new AxLine(shape[i]->get_last_p1(),shape[i]->p1());
 
 
 
-               AxArc *firsta= new AxArc(QLine(shape[last]->p2(),
-                                        shape[i]->p1()),center,radius,false);
+                    shape2.append(first);
+                }
+
+
+            else if (shape[i]->get_p1_dir() == 1
+                 && shape[last]->getObjectType()==0
+                 && shape[i]->getObjectType()==0)//---------------first edge go left
+            {
 
 
 
-               shape2.append(firsta);
+
+                int radius =last_offset;
+                QPoint center = shape[i]->get_last_p1();
+
+
+
+                AxArc *firsta= new AxArc(QLine(shape[last]->p2(),
+                                         shape[i]->p1()),center,radius,true);
+
+
+
+                shape2.append(firsta);
+            }
+
+            shape2.append(shape[i]);
+
+//-----------------second edge-------------------------------------------------------------------
+
+            if (shape[next]->get_p1_dir() == 2
+                 && shape[next]->getObjectType()==0
+                 && shape[i]->getObjectType()==0)//---------------second edge go right
+            {
+                qDebug() << "if 2";
+
+                AxLine *second= new AxLine(shape[i]->p2(),shape[i]->get_last_p2());
+
+                shape2.append(second);
+
+            }
+
            }
 
-           shape2.append(shape[i]);
-
-
-
-           if (shape[next]->get_p1_dir() == 1
-                && shape[next]->getObjectType()==0
-                && shape[i]->getObjectType()==0)//---------------second edge go left
-           {
-               qDebug() << "if 2";
-
-               AxLine *second= new AxLine(shape[i]->p2(),shape[i]->get_last_p2());
-
-               shape2.append(second);
-
-           }
 
 
 
@@ -1619,6 +1705,7 @@ bool AxShape::contain(QPoint pm)
 void AxShape::offset(int dec)
 {
 
+    last_offset = dec;
 
     for(int i =0;i<shape.size();i++)
     {
