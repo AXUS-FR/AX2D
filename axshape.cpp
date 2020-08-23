@@ -1586,9 +1586,6 @@ void AxShape::link()
                  && shape[i]->getObjectType()==0)//---------------first edge go left
             {
 
-
-
-
                 int radius =last_offset;
                 QPoint center = shape[i]->get_last_p1();
 
@@ -1631,8 +1628,43 @@ void AxShape::link()
    shape2.swap(shape);
 
 }
+
 void AxShape::separate()
 {
+    //delete arc with radius = zero
+
+    for (int i=0;i<shape.size();i++)
+    {
+        if(shape[i]->getObjectType()==1)
+        {
+
+            AxArc *ar = new AxArc(static_cast<AxArc>(shape[i]));
+
+            if (ar->get_R() == 0)
+            {
+                shape.takeAt(i);
+                i--;
+
+            }
+
+        }
+
+    }
+
+    //separate line linked edge first -> add attributes in axarc and axline for note linked edges.
+
+    // checke toutes les intersection et "splite" les segments
+    // note les points d'intersection dans une liste
+
+
+
+    //charge le shape dans une liste de shape
+
+    //tant qe la liste de shape contient des shape avec intersection
+
+        // balaye jusqu'a trouver une intersection
+        //copie tout les segments suivants dans le buffer jusqu'a revenir dans l'intersection
+        //charge le buffer dans la liste de shape
 
 }
 void AxShape::classify()
