@@ -530,18 +530,26 @@ bool equal(AxBorder *border1, AxBorder *border2)
 
 }
 
-int angle(AxBorder *border1, AxBorder *border2)
+double angle(AxBorder *border1, AxBorder *border2)
 {
+    qDebug() << "in angle" ;
+
     QPoint p11 = border1->p1();
     QPoint p12 = border1->p2();
     QPoint p21 = border2->p1();
     QPoint p22 = border2->p2();
 
-    int teta1,teta2,teta;
+    double teta1,teta2,teta;
 
     // I calculate my reals angle in positive
 
-    teta1=atan((p11.y()-p12.y())/(p11.x()-p12.x()));
+    double a,b;
+
+    a=(p11.y()-p12.y());
+    b=(p11.x()-p12.x());
+
+
+    teta1=atan(a/b);
     if (p11.x()-p12.x()<0)
     {
         teta1=teta1+M_PI;
@@ -554,7 +562,10 @@ int angle(AxBorder *border1, AxBorder *border2)
         teta1=teta1+2*M_PI;
     }
 
-    teta2=atan((p21.y()-p22.y())/(p21.x()-p22.x()));
+    a =(p21.y()-p22.y());
+    b=(p21.x()-p22.x());
+
+    teta2=atan(a/b);
     if (p21.x()-p22.x()<0)
     {
         teta2=teta2+M_PI;
@@ -572,6 +583,9 @@ int angle(AxBorder *border1, AxBorder *border2)
     {
         teta=teta+2*M_PI;
     }
+
+    qDebug() << "teta=" << teta;
+
     return teta;
 }
 
@@ -603,7 +617,7 @@ int angle(AxBorder *border1, AxBorder *border2)
 //               }
 //            }
 //     }
-////                nombre pair de croisement à gauche ?
+//                nombre pair de croisement à gauche ?
 //      if (left_cross%2==0)
 //      //aller à gauche
 //      {

@@ -51,6 +51,9 @@ class AxShape
 
         //TO IMPLEMENT
 
+        void analyse_dir();
+        //analyse the direction of each corner
+
         void offset(int offset);
         //translate all AxLine/AxArc of offset value (can be positive or negative)
 
@@ -66,12 +69,15 @@ class AxShape
         void clean();
         // keep only Axshape with winding number == 1, -1/-2/-3 are erased, 0 is outside
 
+        void set_cw(bool);
+
+        void set_ccw(bool);
 
 
 
         // FUNCTIONS
 
-        QVector<AxShape> expand(int offset);
+        void expand(int offset);
         // return a QVector of AxShape composed of the expantion of the shape :
         // Warning the final Shape is composed of lines only.
         // There can be arc in the initial shape but their previous and next border must be AxLine and they must cross in arc direction

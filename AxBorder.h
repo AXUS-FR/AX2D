@@ -42,10 +42,22 @@ public:
     //return the mediatrice of the object
 
     virtual int getObjectType();
-    // return border type : if (border==line) return 0 if (border==arc) return 0
+    // return border type : if (border==line) return 0 if (border==arc) return 1
 
-    void set_cw(bool);
-    void set_ccw(bool);
+    virtual void set_cw(bool);
+    virtual void set_ccw(bool);
+    void set_pocket();
+    void set_island();
+    void set_p1_dir(int);
+    void set_p2_dir(int);
+    bool is_pocket();
+    bool is_island();
+    int get_p1_dir();
+    int get_p2_dir();
+    QPoint get_last_p1();
+    QPoint get_last_p2();
+    int get_last_offset();
+
 
     // SETTERS
 
@@ -84,8 +96,12 @@ public:
 
 protected:
 
+    int p1_dir;//0 is colinear,1 is left, 2 is right;
+    int p2_dir;
     QLine limits;
     QLine last;
+    bool pocket;
+    int last_offset;
 
 };
 

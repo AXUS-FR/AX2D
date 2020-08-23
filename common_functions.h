@@ -24,7 +24,7 @@ AxLine bisectrice(AxLine line1, AxLine line2);
 int border_sens(AxBorder *border);
 // return 1 if(p1.x<p2.x) OR if(p1.x<p2.x && p1.y<p2.y), return 0 else.
 
-int angle(AxBorder *border1, AxBorder *border2);
+double angle(AxBorder *border1, AxBorder *border2);
 // return the angle between the two arc moving clockwise (border1.p2 must be equal to border2.p1)
 
 AxCircle cercle_inscrit(QPoint p1, QPoint p2, QPoint p3);

@@ -14,8 +14,8 @@ greaterThan(QT_MAJOR_VERSION,4):QT += widgets printsupport
 												  
 
 CONFIG += c++11
-CONFIG += console
-CONFIG -= app_bundle
+//CONFIG += console
+//CONFIG -= app_bundle
 
 INCLUDEPATH += D:\opencv\build\include
 INCLUDEPATH += D:\SFML\SFML-2.5.1\include

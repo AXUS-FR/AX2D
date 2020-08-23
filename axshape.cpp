@@ -1323,8 +1323,19 @@ int AxShape::previous_point(int n)
     return n2;
 }
 
-QVector<AxShape> AxShape::expand(int offset)
+void AxShape::expand(int dec)
 {
+    offset(dec);
+
+    link();
+
+    separate();
+
+    classify();
+
+    clean();
+
+
 
 /*
     AxShape shape, transit_shape;
@@ -1400,6 +1411,155 @@ QVector<AxShape> AxShape::expand(int offset)
 */
 }
 
+void AxShape::analyse_dir()
+{
+    for (int i = 0;i< shape.size();i++)
+    {
+        qDebug() << "-----------------Segment "<<i;
+        int last,next ;
+        if (i == shape.size()-1) next = 0;
+        else next = i+1;
+
+        if (i != 0) last = i-1;
+        else last = shape.size()-1;
+
+        if (shape[last]->getObjectType() == 0)// if last is line
+        {
+            if (angle(shape[last],shape[i])>M_PI)
+            {
+                shape[i]->set_p1_dir(2);
+                qDebug() << "--------2 ";
+            }
+            else if (angle(shape[last],shape[i])<M_PI)
+            {
+                shape[i]->set_p1_dir(1);
+                qDebug() << "--------1 ";
+            }
+            else
+                shape[i]->set_p1_dir(0);
+
+            qDebug() << "----------------------------------- ";
+            if (angle(shape[i],shape[next])>M_PI)
+            {
+                shape[i]->set_p2_dir(2);
+                 qDebug() << "--------2 ";
+            }
+            else if (angle(shape[i],shape[next])<M_PI)
+            {
+                shape[i]->set_p2_dir(1);
+                 qDebug() << "--------1 ";
+            }
+            else shape[i]->set_p2_dir(0);
+
+            qDebug() << "dir1" << shape[i]->get_p1_dir();
+            qDebug() << "dir2" << shape[i]->get_p2_dir();
+            qDebug() << "------------------------------";
+        }
+
+
+    }
+
+}
+
+void AxShape::link()
+{
+    QVector<AxBorder*> shape2;
+
+    qDebug() << "inside link";
+
+
+   for (int i = 0;i< shape.size();i++)
+    {
+       qDebug() << "-----------------Segment "<<i;
+
+           //qDebug() << "for----------------------";
+           int last,next ;
+           if (i == shape.size()-1) next = 0;
+           else next = i+1;
+
+           if (i != 0) last = i-1;
+           else last = shape.size()-1;
+
+
+
+
+
+
+
+           if (shape[i]->get_p1_dir() == 1
+                && shape[last]->getObjectType()==0
+                && shape[i]->getObjectType()==0)//---------------first edge go left
+           {
+               qDebug() << "if 1";
+               AxLine *first= new AxLine(shape[i]->get_last_p1(),shape[i]->p1());
+
+
+
+               shape2.append(first);
+           }
+
+           else if (shape[i]->get_p1_dir() == 2
+                && shape[last]->getObjectType()==0
+                && shape[i]->getObjectType()==0)//---------------first edge go right
+           {
+               qDebug() << "if 1-2";
+
+               // calculate radius of arc
+
+               int radius =shape[i]->get_last_offset();
+
+
+
+               AxArc *firsta= new AxArc(QLine(shape[last]->p2(),
+                                        shape[i]->p1()),radius,false);
+
+
+
+               shape2.append(firsta);
+           }
+
+           shape2.append(shape[i]);
+
+
+
+           if (shape[next]->get_p1_dir() == 1
+                && shape[next]->getObjectType()==0
+                && shape[i]->getObjectType()==0)//---------------second edge go left
+           {
+               qDebug() << "if 2";
+
+               AxLine *second= new AxLine(shape[i]->p2(),shape[i]->get_last_p2());
+
+               shape2.append(second);
+
+           }
+
+
+
+
+
+
+    }
+
+   shape2.swap(shape);
+
+}
+void AxShape::separate()
+{
+
+}
+void AxShape::classify()
+{
+
+}
+void AxShape::clean()
+{
+
+}
+
+
+
+
 
 void AxShape::display(QPaintDevice *device, int width, const QColor &color)
 {
@@ -1455,9 +1615,38 @@ bool AxShape::contain(QPoint pm)
       }
 }
 
-//AxShape AxShape::operator=(const int k)
-//{
-//}
+void AxShape::offset(int dec)
+{
+
+
+    for(int i =0;i<shape.size();i++)
+    {
+        shape[i]->translate(dec);
+    }
+
+
+
+
+
+}
+
+void AxShape::set_cw(bool c)
+{
+
+    for(int i =0;i<shape.size();i++)
+    {
+        shape[i]->set_cw(c);
+    }
+}
+
+void AxShape::set_ccw(bool c)
+{
+
+    for(int i =0;i<shape.size();i++)
+    {
+        shape[i]->set_cw(!c);
+    }
+}
 
 QDebug operator<<(QDebug dbg, const AxShape &type)
 {

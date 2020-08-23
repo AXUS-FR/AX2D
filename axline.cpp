@@ -12,23 +12,31 @@
 
 AxLine::AxLine(AxBorder *border)
 {
+    pocket = true;
+
     limits=QLine(border->x1(),border->y1(),border->x2(),border->y2());
 
 }
 
 AxLine::AxLine(QLine _line)
 {
+    pocket = true;
+
     limits=_line;
 }
 
 AxLine ::AxLine(int x1, int y1, int x2, int y2)
 {
+    pocket = true;
+
     QLine line_trans(x1,y1,x2,y2);
     limits=line_trans;
 }
 
 AxLine::AxLine(const QPoint &p1, const QPoint &p2)
 {
+    pocket = true;
+
     QLine line_trans(p1,p2);
     limits=line_trans;
 }
@@ -49,7 +57,7 @@ QLine AxLine::get_mediatrice()
     pp2.setX((-c-b*pp2.y())/a);
     return QLine(pp1,pp2);
 }
-
+/*
 bool AxLine::is_cw()
 {
     return cw;
@@ -62,11 +70,7 @@ bool AxLine::is_ccw()
 
 void AxLine::set_cw(bool way)
 {
-    if (this->is_cw()!= way)
-    {
-     limits = QLine(limits.p2(),limits.p1()) ;
 
-    }
     cw = way;
 
 }
@@ -74,120 +78,104 @@ void AxLine::set_cw(bool way)
 void AxLine::set_ccw(bool way)
 {
     way = !way;
-    if (this->is_cw()!= way)
-    {
-     limits = QLine(limits.p2(),limits.p1()) ;
 
-    }
     cw = way;
 
-}
+}*/
+
+
 
 void AxLine::translate(int offset)
 {
+    last_offset = offset;
+    if (is_island())offset = -offset;
 
-    qDebug() << cw ;
+
     // process offset x and y value
     int x_offset = abs(dy()*offset);
     int y_offset = abs(dx()*offset);
 
-    qDebug() << "x" << x_offset;
-    qDebug() << "y" << y_offset;
-
-    qDebug() << "p1:" << this->p1();
-    qDebug() << "p2:" << this->p2();
-
-
-    qDebug() << "dx" << dx();
-    qDebug() << "dy" << dy();
-
-
     if (dx() > 0 && dy() == 0)
     {
-        //qDebug() << "1" ;
 
         x_offset = 0;
         y_offset = - y_offset;
     }
 
+
+
     else if (dx() < 0 && dy() == 0)
     {
-        //qDebug() << "2" ;
         x_offset = 0;
-        //y_offset = - y_offset;
+        y_offset = + y_offset;
     }
+
+
 
     else if (dx() == 0 && dy() > 0)
     {
-        //qDebug() << "3" ;
-        x_offset = x_offset;
+        x_offset = +x_offset;
         y_offset = 0;
     }
 
+
     else if (dx() == 0 && dy() < 0)
     {
-        //qDebug() << "4" ;
         x_offset = -x_offset;
         y_offset = 0;
     }
 
+
+
     else if (dx() > 0 && dy() > 0)
     {
-        //qDebug() << "5" ;
         x_offset = +x_offset;
         y_offset = -y_offset;
     }
 
+
+
+
     else if (dx() > 0 && dy() < 0)
     {
-        //qDebug() << "6" ;
         x_offset = -x_offset;
         y_offset = -y_offset;
     }
 
+
+
     else if (dx() < 0 && dy() > 0)
     {
-        //qDebug() << "7" ;
-        x_offset = x_offset;
-        y_offset = y_offset;
+        x_offset = +x_offset;
+        y_offset = +y_offset;
     }
+
 
     else if (dx() < 0 && dy() < 0)
     {
-        //qDebug() << "8" ;
         x_offset = -x_offset;
-        y_offset = y_offset;
+        y_offset = +y_offset;
     }
 
-    qDebug() << "x" << x_offset;
-    qDebug() << "y" << y_offset;
 
-    //----------------------------------------------------------------
-    if (this->is_ccw())
+
+    if (offset <0)
     {
-       qDebug() << "9" ;
+
         x_offset = - x_offset;
         y_offset = - y_offset;
     }
 
     int l = sqrt(dx()*dx()+dy()*dy());
 
-    qDebug() << "l" << l;
 
     x_offset = x_offset / l;
     y_offset = y_offset / l;
 
-    qDebug() << "x" << x_offset;
-    qDebug() << "y" << y_offset;
-
-
 
     translate(x_offset,y_offset);
 
-    qDebug() << "p1:" << this->p1();
-    qDebug() << "p2:" << this->p2();
 
-    qDebug() << "------------------------------" ;
 
 
 }
@@ -196,14 +184,6 @@ void AxLine::translate(int x,int y)
 {
     last = limits; // save position before move
     limits.translate(x,y);
-
-
-    //limits.p1().setX(limits.p1().x()+x);
-    //limits.p1().setY(limits.p1().y()+y);
-    //limits.p2().setX(limits.p2().x()+x);
-   // limits.p2().setY(limits.p2().y()+y);
-
-    //limits.setLine(limits.p1().x()+x,limits.p1().y()+y,limits.p2().x()+x,limits.p2().y()+y);
 
 
 }

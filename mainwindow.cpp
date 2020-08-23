@@ -72,51 +72,47 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
     poly.append(new AxLine(QPoint(20,100),QPoint(80,160)));
     poly.append(new AxLine(QPoint(80,160),QPoint(20,260)));
-    poly.append(new AxLine(QPoint(20,260),QPoint(540,260)));
-    poly.append(new AxLine(QPoint(540,260),QPoint(540,200)));
+    poly.append(new AxLine(QPoint(20,260),QPoint(520,260)));
+    poly.append(new AxArc(QLine(QPoint(520,260),QPoint(540,240)),20,true));
+    poly.append(new AxLine(QPoint(540,240),QPoint(540,200)));
     poly.append(new AxLine(QPoint(540,200),QPoint(380,200)));
     poly.append(new AxLine(QPoint(380,200),QPoint(380,100)));
     poly.append(new AxLine(QPoint(380,100),QPoint(440,40)));
     poly.append(new AxLine(QPoint(440,40),QPoint(100,40)));
     poly.append(new AxLine(QPoint(100,40),QPoint(20,100)));
 
-    poly.display(this,5,"red");
+    poly.display(this,2,"red");
 
     poly2.append(new AxLine(QPoint(20,100),QPoint(80,160)));
     poly2.append(new AxLine(QPoint(80,160),QPoint(20,260)));
-    poly2.append(new AxLine(QPoint(20,260),QPoint(540,260)));
-    poly2.append(new AxLine(QPoint(540,260),QPoint(540,200)));
+    poly2.append(new AxLine(QPoint(20,260),QPoint(520,260)));
+    poly2.append(new AxArc(QLine(QPoint(520,260),QPoint(540,240)),20,true));
+    poly2.append(new AxLine(QPoint(540,240),QPoint(540,200)));
     poly2.append(new AxLine(QPoint(540,200),QPoint(380,200)));
     poly2.append(new AxLine(QPoint(380,200),QPoint(380,100)));
     poly2.append(new AxLine(QPoint(380,100),QPoint(440,40)));
     poly2.append(new AxLine(QPoint(440,40),QPoint(100,40)));
     poly2.append(new AxLine(QPoint(100,40),QPoint(20,100)));
 
-    poly2[0]->set_cw(true);
-    poly2[1]->set_cw(true);
-    poly2[2]->set_cw(true);
-    poly2[3]->set_cw(true);
-    poly2[4]->set_cw(true);
-    poly2[5]->set_cw(true);
-    poly2[6]->set_cw(true);
-    poly2[7]->set_cw(true);
-    poly2[8]->set_cw(true);
+    //poly2.set_cw(true);
+    //poly2[3]->set_cw(false);
+
+    poly2.analyse_dir();
 
 
-    poly2[0]->translate(20);
-    poly2[1]->translate(20);
-    poly2[2]->translate(20);
-    poly2[3]->translate(20);
-    poly2[4]->translate(20);
-    poly2[5]->translate(20);
-    poly2[6]->translate(20);
-    poly2[7]->translate(20);
-    poly2[8]->translate(20);
+    poly2.offset(10);
+
+    qDebug() <<"poly2 size";
+    qDebug() <<poly2.size();
+
+    poly2.link();
+
+    qDebug() <<"poly2 size";
+    qDebug()<< poly2;
 
 
-    qDebug() << poly2[0];
 
-    poly2.display(this,5,"black");
+    poly2.display(this,3,"black");
 
 
     /*AxArc arc(QPoint(200,200),100);

@@ -22,10 +22,213 @@ AxArc:: AxArc(QLine _limits, QPoint _center, int _R, int _clockwise)
     C=_center;
     R=_R;
     clockwise=_clockwise;
+    pocket = true;
+}
+
+AxArc:: AxArc(QLine _limits, int _R, bool _clockwise)
+{
+    pocket = true;
+
+    qDebug() << "axarc" << is_cw();
+
+    bool cw = _clockwise;
+
+    clockwise=cw;
+
+    limits=_limits;
+    R=_R;
+
+
+
+    AxArc c1(_limits.p1(),_R);
+    AxArc c2(_limits.p2(),_R);
+
+    QVector <QVector<int>> result;
+
+    QPoint center1, center2;
+
+    // calculate 2 possible center
+    result = intersect(c1,c2);
+
+
+
+    if(result[0][0] == 1)
+    {
+
+
+        center1 = QPoint(result[1][0],result[1][1]);
+        center2 = QPoint(result[2][0],result[2][1]);
+    }
+
+    else qDebug() << "radius is too small, arc dont exist";
+
+
+    // choose center folowing cw/ccw
+
+    QLine cd = QLine(center1,center2);
+
+
+
+    int abx,aby, cdx, cdy,cent;
+
+
+
+    if (limits.dx() > 0) abx = 1;
+    else if (limits.dx() < 0) abx = -1;
+    else abx = 0;
+
+    if (limits.dy() > 0) aby = 1;
+    else if (limits.dy() < 0) aby = -1;
+    else aby = 0;
+
+    if (cd.dx() > 0) cdx = 1;
+    else if (cd.dx() < 0) cdx = -1;
+    else cdx = 0;
+
+    if (cd.dy() > 0) cdy = 1;
+    else if (cd.dy() < 0) cdy = -1;
+    else cdy = 0;
+
+
+    // if ab horizontal
+
+    if (abx > 0 && aby == 0)
+    {
+        if (cdy < 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdy > 0 )
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+    else if (abx < 0 && aby == 0)
+    {
+        if (cdy > 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdy < 0 )
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+    // if ab vertical
+
+    else if (abx == 0 && aby < 0)
+    {
+        if (cdx < 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdx > 0 )
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+    else if (abx == 0 && aby > 0)
+    {
+        if (cdx > 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdx < 0 )
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+
+    // if abx+ & aby+ or abx- & aby-
+
+    else if (abx > 0 && aby > 0)  //abx+ & aby+
+    {
+        if (cdx > 0 && cdy < 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdx < 0  && cdy > 0)
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+    else if (abx < 0 && aby < 0)    //abx- & aby-
+    {
+        if (cdx < 0 && cdy > 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdx > 0 && cdy < 0)
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+    // if abx+ & aby- or abx- & aby+
+
+    else if (abx > 0 && aby < 0)  //abx+ & aby-
+    {
+        if (cdx < 0 && cdy < 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdx > 0  && cdy > 0)
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+    else if (abx < 0 && aby > 0)    //abx- & aby+
+    {
+        if (cdx < 0 && cdy < 0 )
+        {
+            if (cw) cent = 2;
+            else cent = 1;
+        }
+
+        if (cdx > 0 && cdy > 0)
+        {
+            if (cw) cent = 1;
+            else cent = 2;
+        }
+    }
+
+    if (cent ==1) C = center1;
+    else if (cent ==2) C = center2;
+
+
 }
 
 AxArc::AxArc(AxBorder *border)
 {
+    pocket = true;
+
     AxArc *arc;
     arc=dynamic_cast<AxArc*>(border);
 
@@ -38,6 +241,8 @@ AxArc::AxArc(AxBorder *border)
 
 AxArc::AxArc(QPoint _center, int _R)
 {
+    pocket = true;
+
     C=_center;
     R=_R;
     clockwise=0;
@@ -116,11 +321,11 @@ bool AxArc::is_ccw()
 
 void AxArc::set_cw(bool way)
 {
-    if (this->is_cw()!= way)
+    /*if (this->is_cw()!= way)
     {
      limits = QLine(limits.p2(),limits.p1()) ;
 
-    }
+    }*/
     clockwise = way;
 
 }
@@ -128,11 +333,11 @@ void AxArc::set_cw(bool way)
 void AxArc::set_ccw(bool way)
 {
     way = !way;
-    if (this->is_cw()!= way)
+    /*if (this->is_cw()!= way)
     {
      limits = QLine(limits.p2(),limits.p1()) ;
 
-    }
+    }*/
     clockwise = way;
 
 }
@@ -141,10 +346,16 @@ void AxArc :: display(QPaintDevice *device, int width, const QColor &color)
 {
     // display l'arc associé
 
-    int startAngle,spanAngle,teta1,teta2;
+    qDebug() << "center" << C;
+    qDebug() << "radius" << R;
+    qDebug() << "cw" << is_cw();
+
+
+    double startAngle,spanAngle,teta1,teta2;
     QPoint p1=limits.p1();
     QPoint p2=limits.p2();
     QPoint pc=C;
+
 
     if (p1==p2) // les deux points sont les memes
     {
@@ -159,11 +370,14 @@ void AxArc :: display(QPaintDevice *device, int width, const QColor &color)
     teta1=this->angle(p1);
     teta2=this->angle(p2);
 
+
+
         //Sens de l'arc ?
 
         // sens anti horaire
         if (clockwise==0)
         {
+
             startAngle = -16*(teta2)*180/(M_PI);
             if (teta2>teta1)
             {
@@ -177,6 +391,7 @@ void AxArc :: display(QPaintDevice *device, int width, const QColor &color)
         // Sens horaire
         else
         {
+
             startAngle = -16*(teta1)*180/(M_PI);
             if (teta2>teta1)
             {
@@ -188,6 +403,8 @@ void AxArc :: display(QPaintDevice *device, int width, const QColor &color)
             }
         }
     }
+
+
     QRectF rectangle(pc.x()-R, pc.y()-R, 2*R, 2*R);
 
     QVector<int> rect_angle;
@@ -199,11 +416,16 @@ void AxArc :: display(QPaintDevice *device, int width, const QColor &color)
     rect_angle.append(startAngle);
     rect_angle.append(spanAngle);
 
+
+
     QPainter painter(device);
     QPen pen;
     pen.setWidth(width);
     pen.setColor(color);
     painter.setPen(pen);
+
+
+
     painter.drawArc(rect_angle[0],rect_angle[1],rect_angle[2],rect_angle[3], rect_angle[4], rect_angle[5]);
 
    // return(rect_angle);
@@ -223,6 +445,48 @@ void AxArc::f(QDebug& dbg) const
 
 void AxArc::translate(int offset)
 {
+    last_offset = offset;
+    last = limits;
+    if (offset>0)
+    {
+        if (is_island())
+        {
+            qDebug() << "1";
+            R=R+abs(offset);
+
+
+        }
+
+        if (is_pocket())
+        {
+            qDebug() << "2";
+            if (offset<R)R=R-abs(offset);
+            else R =0;
+
+        }
+
+    }
+
+    if (offset<0)
+    {
+        if (is_island())
+        {
+            qDebug() << "3";
+            if (offset<R)R=R-abs(offset);
+            else R =0;
+
+
+
+        }
+
+        if (is_pocket())
+        {
+            qDebug() << "4";
+            R=R+abs(offset);
+
+        }
+
+    }
 
 }
 
@@ -244,14 +508,27 @@ QDebug operator<<(QDebug dbg, const AxArc &type)
     return dbg.maybeSpace();
 }
 
-int AxArc :: angle(QPoint p)// Calculate the positive angle of the point based on the certer of my arc
+double AxArc :: angle(QPoint p)// Calculate the positive angle of the point based on the certer of my arc
 {
+
+
     QPoint pc = this->get_center();
-    int teta;
+
+
+
+    double teta;
 
     // I calculate my reals angle in positive
 
-    teta=atan((p.y()-pc.y())/(p.x()-pc.x()));
+
+
+    double a = (p.y()-pc.y());
+    double b = (p.x()-pc.x());
+
+
+
+    teta=atan(a/b);
+
 
 
     if (p.x()-pc.x()<0)
@@ -259,12 +536,19 @@ int AxArc :: angle(QPoint p)// Calculate the positive angle of the point based o
         teta=teta+M_PI;
     }
 
+
+
     // If angle négative => positive
 
     if (teta<0)
     {
         teta=teta+2*M_PI;
     }
+
+
+
+
+
     return teta;
 
 }

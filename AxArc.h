@@ -17,6 +17,7 @@ class AxArc : public AxBorder
 
         AxArc();
         AxArc(QLine _arc_limits, QPoint _center, int _R, int clockwise);
+        AxArc(QLine _arc_limits, int r, bool c);
         AxArc(AxBorder *border);
         AxArc(QPoint _center, int _R);
 
@@ -47,12 +48,14 @@ class AxArc : public AxBorder
 
        void translate(int offset);
 
+
+
         // FUNCTIONS
 
         int arc_test(QPoint px);
         // check if px is on arc (WARNING check only angles)
 
-        int angle(QPoint p);
+        double angle(QPoint p);
         // calculate the angle of p based on the center of the arc clockwise
 
 

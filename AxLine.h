@@ -36,10 +36,10 @@ class AxLine : public AxBorder
         virtual int getObjectType();
         // return 0
 		
-		void set_cw(bool);
-        void set_ccw(bool);
-        bool is_cw();
-        bool is_ccw();
+        //void set_cw(bool);
+        //void set_ccw(bool);
+        //bool is_cw();
+        //bool is_ccw();
 
 
         int dx();
