@@ -16,10 +16,10 @@ class AxArc : public AxBorder
         // CONSTRUCTOR
 
         AxArc();
-        AxArc(QLine _arc_limits, QPoint _center, int _R, int clockwise);
-        AxArc(QLine _arc_limits, int r, bool c);
+        AxArc(QLine _arc_limits, QPoint _center, int _R, int clockwise, int _kind=0);
+        AxArc(QLine _arc_limits, int r, bool c, int _kind=0);
         AxArc(AxBorder *border);
-        AxArc(QPoint _center, int _R);
+        AxArc(QPoint _center, int _R, int _kind=0);
 
 
         //GETTERS

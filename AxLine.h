@@ -19,9 +19,9 @@ class AxLine : public AxBorder
 
         //AxLine(const QLine &line);
         AxLine(AxBorder *border);
-        AxLine(QLine _line);
-        AxLine(int x1, int y1, int x2, int y2);
-        AxLine(const QPoint &p1, const QPoint &p2);
+        AxLine(QLine _line, int _kind=0);
+        AxLine(int x1, int y1, int x2, int y2, int _kind=0);
+        AxLine(const QPoint &p1, const QPoint &p2, int _kind=0);
         AxLine();
 
 

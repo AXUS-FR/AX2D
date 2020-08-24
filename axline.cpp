@@ -15,28 +15,28 @@ AxLine::AxLine(AxBorder *border)
     pocket = true;
 
     limits=QLine(border->x1(),border->y1(),border->x2(),border->y2());
-
+    kind=border->get_kind();
 }
 
-AxLine::AxLine(QLine _line)
+AxLine::AxLine(QLine _line, int _kind)
 {
     pocket = true;
-
+    kind=_kind;
     limits=_line;
 }
 
-AxLine ::AxLine(int x1, int y1, int x2, int y2)
+AxLine ::AxLine(int x1, int y1, int x2, int y2, int _kind)
 {
     pocket = true;
-
+    kind=_kind;
     QLine line_trans(x1,y1,x2,y2);
     limits=line_trans;
 }
 
-AxLine::AxLine(const QPoint &p1, const QPoint &p2)
+AxLine::AxLine(const QPoint &p1, const QPoint &p2, int _kind)
 {
     pocket = true;
-
+    kind=_kind;
     QLine line_trans(p1,p2);
     limits=line_trans;
 }
@@ -204,6 +204,7 @@ AxLine :: AxLine()
 {
     QLine line_trans;
     limits=line_trans;
+    kind=0;
 }
 
 

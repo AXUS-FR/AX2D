@@ -51,6 +51,11 @@ QPoint AxBorder::center() const
     return limits.center();
 }
 
+void AxBorder:: set_kind(int _kind)
+{
+    kind = _kind;
+}
+
 void AxBorder::setLimits(QLine _border)
 {
     limits=_border;
@@ -64,6 +69,11 @@ void AxBorder::setP1(QPoint p)
 void AxBorder::setP2(QPoint p)
 {
     limits.setP2(p);
+}
+
+int AxBorder::get_kind()
+{
+    return kind;
 }
 
 QLine AxBorder::get_limits()

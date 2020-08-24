@@ -11,6 +11,9 @@ public:
 
     // GETTERS
 
+    int get_kind();
+    //return the kind of element : -1=construction / 0=piece / 1=brut
+
     QLine get_limits();
     //return the 2 points compasing the border
 
@@ -61,6 +64,9 @@ public:
 
     // SETTERS
 
+    void set_kind(int _kind);
+    //set the kind of the element : -1=construction / 0=pièce / 1=brut
+
     void setLimits(QLine limits);
     // change the value of limits
 
@@ -102,6 +108,7 @@ protected:
     QLine last;
     bool pocket;
     int last_offset;
+    int kind;   //kind of element : brut, contruction, piece
 
 };
 

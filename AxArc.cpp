@@ -14,18 +14,20 @@ AxArc:: AxArc()
     C=QPoint(0,0);
     R=0;
     clockwise=0;
+    kind=0;
 };
 
-AxArc:: AxArc(QLine _limits, QPoint _center, int _R, int _clockwise)
+AxArc:: AxArc(QLine _limits, QPoint _center, int _R, int _clockwise, int _kind)
 {
     limits=_limits;
     C=_center;
     R=_R;
     clockwise=_clockwise;
     pocket = true;
+    kind=_kind;
 }
 
-AxArc:: AxArc(QLine _limits, int _R, bool _clockwise)
+AxArc:: AxArc(QLine _limits, int _R, bool _clockwise, int _kind)
 {
     pocket = true;
     qDebug() << "points" << _limits;
@@ -33,7 +35,7 @@ AxArc:: AxArc(QLine _limits, int _R, bool _clockwise)
     qDebug() << "axarc" << _clockwise;
 
     bool cw = _clockwise;
-
+    kind = _kind;
     clockwise=cw;
 
     limits=_limits;
@@ -237,10 +239,11 @@ AxArc::AxArc(AxBorder *border)
     C=arc->get_center();
     R=arc->get_R();
     clockwise=arc->is_clockwise();
+    kind=border->get_kind();
 
 }
 
-AxArc::AxArc(QPoint _center, int _R)
+AxArc::AxArc(QPoint _center, int _R, int _kind)
 {
     pocket = true;
 
@@ -248,6 +251,7 @@ AxArc::AxArc(QPoint _center, int _R)
     R=_R;
     clockwise=0;
     limits=QLine();
+    kind=_kind;
 }
 QPoint AxArc::middle_point()
 {
