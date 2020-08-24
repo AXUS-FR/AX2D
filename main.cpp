@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
 //    QLine line1,line2;
 
-//    QPoint p1,p2,p3,p4,pc;
+//    QPoint p1,p2,p3,p4,pc;-
 
 //    p1 = QPoint(0,0);
 //    p2 = QPoint(3,3);
