@@ -1324,7 +1324,7 @@ int AxShape::previous_point(int n)
 }
 
 void AxShape::expand(int dec)
-{
+{/*
     offset(dec);
 
     link();
@@ -1335,7 +1335,7 @@ void AxShape::expand(int dec)
 
     clean();
 
-
+*/
 
 /*
     AxShape shape, transit_shape;
