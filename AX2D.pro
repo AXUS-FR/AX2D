@@ -40,7 +40,10 @@ SOURCES += \
     AxArc.cpp \
     AxBorder.cpp \
     AxCircle.cpp \
+    AxCode.cpp \
+    AxGCode.cpp \
     AxLine.cpp \
+    AxPath.cpp \
     AxShape.cpp \
     AxTriangle.cpp \
     Vertice.cpp \
@@ -55,7 +58,10 @@ HEADERS += \
     AxArc.h \
     AxBorder.h \
     AxCircle.h \
+    AxCode.h \
+    AxGCode.h \
     AxLine.h \
+    AxPath.h \
     AxShape.h \
     AxTriangle.h \
     Vertice.h \
