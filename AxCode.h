@@ -23,11 +23,12 @@ public:
     //constructor
     AxCode(AxPath _path, int _label=0);
 
+
     // operator overloading
     friend QDebug operator<<(QDebug dbg, AxCode _axcode);
 
 
-private:
+private:    //axe x=-Z axe y=x
     AxPath path;    //coordinates of the point on x,y,z,A,B,C,U,W,I,K
     int label;      //type of movement to get to this point (fast, slow, clokwise, no-clokwise,....)
 

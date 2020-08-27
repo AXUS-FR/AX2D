@@ -51,7 +51,7 @@ public:
     // operator overloading
     friend QDebug operator<<(QDebug dbg, const AxPath _axpath);
 
-private:
+private:    //axe x=-Z axe y=x
    int *x;
    int *y;
    int *z;

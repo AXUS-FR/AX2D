@@ -13,9 +13,19 @@ public:
     void set_gcode(QVector<AxCode> _gcode);
     int size();
     void append(AxCode _code);
+
+    //function
+    AxShape get_piece(AxShape _shape);
+    AxShape get_brut(AxShape _shape);
+    AxShape fix(AxShape _shape);
+        void tour_ebauche(AxShape _shape, int _passe);  //rempli gcode avec coordonnées
+                    //bien que composée du même code que tour_ebauche_shape, impossible de récuperer correctement les coordonées
+        AxShape tour_ebauche_shape(AxShape _shape, int _passe); //renvoie une shape composée d'AxLine des passages de l'outil
+        //ne fonctionne pas à cause des int dans les fonctions intersect qui empeche de repérer certaines colisions
+
     //contructor
-    void generate(AxShape shape, int ep1=0, int ep2=0);
-    AxGCode(AxShape shape, int ep1=0, int ep2=0);
+    void generate(AxShape shape,  int passe=1, int ep1=0, int ep2=0);
+    AxGCode(AxShape shape,  int passe=1, int ep1=0, int ep2=0);
     AxGCode();
 
 
@@ -24,7 +34,7 @@ public:
     AxCode operator[](int i) const;
 private:
 
-    QVector<AxCode> gcode;
+    QVector<AxCode> gcode;  //axe x=-Z axe y=x
 
 };
 
