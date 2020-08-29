@@ -140,7 +140,7 @@ void AxGCode:: tour_ebauche(AxShape _shape, int _passe)    //replie AxGCode avec
                     line->setP2(_shape[i]->p1());
                     continue;
                 }
-                cross=intersect(*line,static_cast<AxLine>(_shape[i]));//(AxLine) _shape[i]);
+                cross=intersect(*line,static_cast<AxLine>(_shape[i]));
                 if(cross[0][0]==1)
                 {
                     line->setP2(QPoint(cross[1][0],cross[1][1]));

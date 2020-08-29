@@ -73,6 +73,7 @@ AxArc:: AxArc(QLine _limits, int _R, bool _clockwise, int _kind)
 
 
     int abx,aby, cdx, cdy,cent;
+    cent = 0;
 
 
 
@@ -418,8 +419,8 @@ void AxArc :: display(QPaintDevice *device, int width, const QColor &color)
     rect_angle.append(pc.y()-R);
     rect_angle.append(2*R);
     rect_angle.append(2*R);
-    rect_angle.append(startAngle);
-    rect_angle.append(spanAngle);
+    rect_angle.append(int(startAngle));
+    rect_angle.append(int(spanAngle));
 
 
 
@@ -575,9 +576,9 @@ int AxArc :: arc_test(QPoint px)// test si l'angle d'un point selon l'arc de cer
     }
     else
     {
-        teta1=this->angle(p1);
-        teta2=this->angle(p2);
-        tetax=this->angle(px);
+        teta1=int(this->angle(p1));
+        teta2=int(this->angle(p2));
+        tetax=int(this->angle(px));
 
         //methode Charles
 
