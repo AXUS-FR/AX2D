@@ -27,9 +27,9 @@ AxLine bisectrice(AxLine line1, AxLine line2)
     if (cross_test0[0][0]==1)
     {
         QPoint pp2,pp1;
-        int a,b,c;
+        //int a,b,c;
 
-        qDebug()<<"yatta"<<line1;
+        //qDebug()<<"yatta"<<line1;
         if (distance(line1.p1(),QPoint(cross_test0[1][0],cross_test0[1][1]))<(distance(line1.p2(),QPoint(cross_test0[1][0],cross_test0[1][1]))))
         {
             line1.setP1(QPoint(cross_test0[1][0],cross_test0[1][1]));
@@ -232,7 +232,7 @@ int toggle(int a)
 
 int distance(QPoint p1, QPoint p2)
 {
-    return(sqrt(pow((p1.x()-p2.x()),2)+pow((p1.y()-p2.y()),2)));
+    return(int(sqrt(pow((p1.x()-p2.x()),2)+pow((p1.y()-p2.y()),2))));
 }
 
 int sign(int a)
@@ -312,9 +312,9 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
     else
     {
         int tetax, dteta;
-        int teta1=AxArc(border).angle(border->p1());
+        int teta1=int(AxArc(border).angle(border->p1()));
 
-        tetax=AxArc(border).angle(cross_list[0]);
+        tetax=int(AxArc(border).angle(cross_list[0]));
 
         if (AxArc(border).is_clockwise()==0)
         {
@@ -325,7 +325,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
             }
             else
             {
-                closest_distance=(tetax-teta1)+2*M_PI;
+                closest_distance=int((tetax-teta1)+2*M_PI);
                 closest_pos=0;
             }
         }
@@ -342,7 +342,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
             }
             else
             {
-                closest_distance=(teta1-tetax)+2*M_PI;
+                closest_distance=int((teta1-tetax)+2*M_PI);
                 closest_pos=0;
             }
 
@@ -351,7 +351,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
         // test
         for (int k=1;k<cross_list.size();k++)
         {
-            tetax=AxArc(border).angle(cross_list[k]);
+            tetax=int(AxArc(border).angle(cross_list[k]));
 
             if (AxArc(border).is_clockwise()==0)
             {
@@ -361,7 +361,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
                 }
                 else
                 {
-                    dteta=(tetax-teta1)+2*M_PI;                            ;
+                    dteta=int((tetax-teta1)+2*M_PI);                            ;
                 }
             }
             // clockwise=1
@@ -373,7 +373,7 @@ int closest_pt_to_p1_border(QVector<QPoint> cross_list, AxBorder *border)
                 }
                 else
                 {
-                    dteta=(teta1-tetax)+2*M_PI;
+                    dteta=int((teta1-tetax)+2*M_PI);
                 }
             }
             if (dteta<closest_distance)
@@ -412,9 +412,9 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
     else
     {
         int tetax, dteta;
-        int teta1=AxArc(border).angle(border->p1());
+        int teta1=int(AxArc(border).angle(border->p1()));
 
-        tetax=AxArc(border).angle(cross_list[0]);
+        tetax=int(AxArc(border).angle(cross_list[0]));
 
         if (AxArc(border).is_clockwise()==1)
         {
@@ -425,7 +425,7 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
             }
             else
             {
-                closest_distance=(tetax-teta1)+2*M_PI;
+                closest_distance=int((tetax-teta1)+2*M_PI);
                 closest_pos=0;
             }
         }
@@ -442,7 +442,7 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
             }
             else
             {
-                closest_distance=(teta1-tetax)+2*M_PI;
+                closest_distance=int((teta1-tetax)+2*M_PI);
                 closest_pos=0;
             }
 
@@ -451,7 +451,7 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
         // test
         for (int k=1;k<cross_list.size();k++)
         {
-            tetax=AxArc(border).angle(cross_list[k]);
+            tetax=int(AxArc(border).angle(cross_list[k]));
 
             if (AxArc(border).is_clockwise()==1)
             {
@@ -461,7 +461,7 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
                 }
                 else
                 {
-                    dteta=(tetax-teta1)+2*M_PI;                            ;
+                    dteta=int((tetax-teta1)+2*M_PI);                            ;
                 }
             }
             // clockwise=1
@@ -473,7 +473,7 @@ int closest_pt_to_p2_border(QVector<QPoint> cross_list, AxBorder *border)
                 }
                 else
                 {
-                    dteta=(teta1-tetax)+2*M_PI;
+                    dteta=int((teta1-tetax)+2*M_PI);
                 }
             }
             if (dteta<closest_distance)
@@ -589,47 +589,7 @@ double angle(AxBorder *border1, AxBorder *border2)
     return teta;
 }
 
-//int inside_form(QPoint pm, AxShape form)
-//{
-//    QPoint p2=QPoint(pm.x(),pm.y());
-//    QVector<QVector<int>>cross_test;
-//    int left_cross=0;
-//    // count the number of time the segment pm-p2 cross the object
 
-//    for (int k=0;k<form.size();k++)
-//    {
-//        // if border = line
-//        if (form[k]->getObjectType()==0)
-//        {
-//        cross_test=intersect_line_segment(QLine(pp1,pp2),QLine(form[k]->p1(),form[k]->p2()));
-//        }
-//        // if border = arc
-//        else
-//            {
-//                cross_test=intersect(QLine(pp1,pp2),AxArc(form[k]));
-//            }
-//            if (cross_test[0][0]==1)
-//            {
-//                //add ont to left cross for each intersection
-//               if (cross_test[1][0]>pm.x())
-//               {
-//                   left_cross++;
-//               }
-//            }
-//     }
-//                nombre pair de croisement à gauche ?
-//      if (left_cross%2==0)
-//      //aller à gauche
-//      {
-//           sens=1;
-//      }
-//      else
-//      //aller à droite
-//      {
-//          sens=-1;
-//      }
-
-//}
 
 QVector<QVector<int>> intersect_arc_line(AxLine line, AxArc arc)
 {
@@ -650,7 +610,7 @@ QVector<QVector<int>> intersect_arc_line(AxLine line, AxArc arc)
     int a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment almost vertical ?
-     if (float(x2)==float(x1))
+     if (x2==x1)
     {
         // calcul coeficient directeur impossible donc methode géométrique
         X1=x1;
@@ -658,8 +618,8 @@ QVector<QVector<int>> intersect_arc_line(AxLine line, AxArc arc)
 
         if (pow(R,2)-pow((X1-xc),2)>0)
         {
-            Y1=sqrt(pow(R,2)-pow((x1-xc),2))+yc;
-            Y2=-sqrt(pow(R,2)-pow((x1-xc),2))+yc;
+            Y1=int(sqrt(pow(R,2)-pow((x1-xc),2))+yc);
+            Y2=int(-sqrt(pow(R,2)-pow((x1-xc),2))+yc);
 
 
             if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
@@ -691,16 +651,16 @@ QVector<QVector<int>> intersect_arc_line(AxLine line, AxArc arc)
         a = (y2-y1)/(x2-x1);
         b=y1-(a*x1);
 
-        A=1+(pow(a,2));
-        B=2*(-xc+(a*b)-(a*yc));
-        C=(pow(xc,2))+(pow((b-yc),2))-(pow(R,2));
+        A=int(1+(pow(a,2)));
+        B=int(2*(-xc+(a*b)-(a*yc)));
+        C=int((pow(xc,2))+(pow((b-yc),2))-(pow(R,2)));
 
-        delta=(pow(B,2))-(4*A*C);
+        delta=int((pow(B,2))-(4*A*C));
 
         if (delta>0) // 2 pt d'intersection entre le cercle et la droite asociée ?
         {
-            X1=(-B-sqrt(delta))/(2*A);
-            X2=(-B+sqrt(delta))/(2*A);
+            X1=int((-B-sqrt(delta))/(2*A));
+            X2=int((-B+sqrt(delta))/(2*A));
 
             Y1=a*X1+b;
             Y2=a*X2+b;
@@ -780,8 +740,8 @@ QVector<QVector<int>> intersect_arc_demi_line(AxLine line, AxArc arc)
 
         if (pow(R,2)-pow((X1-xc),2)>0)
         {
-            Y1=sqrt(pow(R,2)-pow((x1-xc),2))+yc;
-            Y2=-sqrt(pow(R,2)-pow((x1-xc),2))+yc;
+            Y1=int(sqrt(pow(R,2)-pow((x1-xc),2))+yc);
+            Y2=int(-sqrt(pow(R,2)-pow((x1-xc),2))+yc);
 
 
             if (arc.arc_test(QPoint(X1,Y1))) // point de croisement 1 sur arc de cercle ?
@@ -814,16 +774,16 @@ QVector<QVector<int>> intersect_arc_demi_line(AxLine line, AxArc arc)
         a = (y2-y1)/(x2-x1);
         b=y1-(a*x1);
 
-        A=1+(pow(a,2));
+        A=int(1+(pow(a,2)));
         B=2*(-xc+(a*b)-(a*yc));
-        C=(pow(xc,2))+(pow((b-yc),2))-(pow(R,2));
+        C=int((pow(xc,2))+(pow((b-yc),2))-(pow(R,2)));
 
-        delta=(pow(B,2))-(4*A*C);
+        delta=int((pow(B,2))-(4*A*C));
 
         if (delta>0) // 2 pt d'intersection entre le cercle et la droite asociée ?
         {
-            X1=(-B-sqrt(delta))/(2*A);
-            X2=(-B+sqrt(delta))/(2*A);
+            X1=int((-B-sqrt(delta))/(2*A));
+            X2=int((-B+sqrt(delta))/(2*A));
 
             Y1=a*X1+b;
             Y2=a*X2+b;
@@ -2220,7 +2180,7 @@ AxCircle cercle_inscrit(QPoint p1, QPoint p2, QPoint p3)
     pm2.setY(100);
     a=2*(p2.x()-p1.x());
     b=2*(p2.y()-p1.y());
-    c=pow(p1.x(),2)+pow(p1.y(),2)-pow(p2.x(),2)-pow(p2.y(),2);
+    c=int(pow(p1.x(),2)+pow(p1.y(),2)-pow(p2.x(),2)-pow(p2.y(),2));
     pm2.setX((-c-b*pm2.y())/a);
 
 // mediatrice 2:
@@ -2228,7 +2188,7 @@ AxCircle cercle_inscrit(QPoint p1, QPoint p2, QPoint p3)
     pm4.setY(100);
     a=2*(p2.x()-p3.x());
     b=2*(p2.y()-p3.y());
-    c=pow(p3.x(),2)+pow(p3.y(),2)-pow(p2.x(),2)-pow(p2.y(),2);
+    c=int(pow(p3.x(),2)+pow(p3.y(),2)-pow(p2.x(),2)-pow(p2.y(),2));
     pm4.setX((-c-b*pm4.y())/a);
 
     cross_med=intersect_lignes(QLine(pm1,pm2),QLine(pm3,pm4));
@@ -2257,7 +2217,7 @@ QVector<QVector<int>> intersect(QLine line,AxArc arc)
     int a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment vertical ?
-    if (float(x2)==float(x1))
+    if (x2==x1)
     {
         // calcul coeficient directeur impossible donc methode géométrique
         X1=x1;
@@ -2265,8 +2225,8 @@ QVector<QVector<int>> intersect(QLine line,AxArc arc)
 
         if (pow(R,2)-pow((X1-xc),2)>0)
         {
-            Y1=sqrt(pow(R,2)-pow((x1-xc),2))+yc;
-            Y2=-sqrt(pow(R,2)-pow((x1-xc),2))+yc;
+            Y1=int(sqrt(pow(R,2)-pow((x1-xc),2))+yc);
+            Y2=int(-sqrt(pow(R,2)-pow((x1-xc),2))+yc);
             qDebug() << "Y1=" << Y1 << "pow(R,2)-pow((x1-xc),2)"<< pow(R,2)-pow((x1-xc),2) << endl;
             qDebug() << "Y2=" << Y2 << endl;
 
@@ -2301,16 +2261,16 @@ QVector<QVector<int>> intersect(QLine line,AxArc arc)
         a = (y2-y1)/(x2-x1);
         b=y1-(a*x1);
 
-        A=1+(pow(a,2));
+        A=int(1+(pow(a,2)));
         B=2*(-xc+(a*b)-(a*yc));
-        C=(pow(xc,2))+(pow((b-yc),2))-(pow(R,2));
+        C=int((pow(xc,2))+(pow((b-yc),2))-(pow(R,2)));
 
-        delta=(pow(B,2))-(4*A*C);
+        delta=int((pow(B,2))-(4*A*C));
 
         if (delta>0) // 2 pt d'intersection entre le cercle et la droite asociée ?
         {
-            X1=(-B-sqrt(delta))/(2*A);
-            X2=(-B+sqrt(delta))/(2*A);
+            X1=int((-B-sqrt(delta))/(2*A));
+            X2=int((-B+sqrt(delta))/(2*A));
 
             Y1=a*X1+b;
             Y2=a*X2+b;
@@ -2380,7 +2340,7 @@ QVector<QVector<int>> intersect(AxLine line,AxArc arc)
     int a, b, A, B, C, delta, X1, X2,Y1,Y2,X,Y;
 
     // segment vertical ?
-    if (float(x2)==float(x1))
+    if (x2==x1)
     {
         // calcul coeficient directeur impossible donc methode géométrique
         X1=x1;
@@ -2388,8 +2348,8 @@ QVector<QVector<int>> intersect(AxLine line,AxArc arc)
 
         if (pow(R,2)-pow((X1-xc),2)>0)
         {
-            Y1=sqrt(pow(R,2)-pow((x1-xc),2))+yc;
-            Y2=-sqrt(pow(R,2)-pow((x1-xc),2))+yc;
+            Y1=int(sqrt(pow(R,2)-pow((x1-xc),2))+yc);
+            Y2=int(-sqrt(pow(R,2)-pow((x1-xc),2))+yc);
             qDebug() << "Y1=" << Y1 << "pow(R,2)-pow((x1-xc),2)"<< pow(R,2)-pow((x1-xc),2) << endl;
             qDebug() << "Y2=" << Y2 << endl;
 
@@ -2424,16 +2384,16 @@ QVector<QVector<int>> intersect(AxLine line,AxArc arc)
         a = (y2-y1)/(x2-x1);
         b=y1-(a*x1);
 
-        A=1+(pow(a,2));
+        A=int(1+(pow(a,2)));
         B=2*(-xc+(a*b)-(a*yc));
-        C=(pow(xc,2))+(pow((b-yc),2))-(pow(R,2));
+        C=int((pow(xc,2))+(pow((b-yc),2))-(pow(R,2)));
 
-        delta=(pow(B,2))-(4*A*C);
+        delta=int((pow(B,2))-(4*A*C));
 
         if (delta>0) // 2 pt d'intersection entre le cercle et la droite asociée ?
         {
-            X1=(-B-sqrt(delta))/(2*A);
-            X2=(-B+sqrt(delta))/(2*A);
+            X1=int((-B-sqrt(delta))/(2*A));
+            X2=int((-B+sqrt(delta))/(2*A));
 
             Y1=a*X1+b;
             Y2=a*X2+b;
@@ -2507,12 +2467,12 @@ QVector<QVector<int>> intersect(AxArc arc1, AxArc arc2)
         else
         {
             int a = abs(Xc1-Xc2);
-            int XIa = XIb = ((pow(Rc2,2)-pow(a,2)-pow(Rc1,2))/(-2*a))+min(Xc1,Xc2);
+            int XIa = XIb = int(((pow(Rc2,2)-pow(a,2)-pow(Rc1,2))/(-2*a))+min(Xc1,Xc2));
 
             if (pow(Rc1,2)-pow(XIa-Xc1,2)>0)
             {
-                int YIa = Yc1+sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
-                int YIb = Yc1-sqrt(pow(Rc1,2)-pow(XIa-Xc1,2));
+                int YIa =int( Yc1+sqrt(pow(Rc1,2)-pow(XIa-Xc1,2)));
+                int YIb = int(Yc1-sqrt(pow(Rc1,2)-pow(XIa-Xc1,2)));
                 if (arc1.arc_test(QPoint(XIa,YIa)) && arc2.arc_test(QPoint(XIa,YIa))) // if cross point inside both arc
                 {
                     cross=1;
@@ -2531,7 +2491,7 @@ QVector<QVector<int>> intersect(AxArc arc1, AxArc arc2)
                 }
 
             }
-            if (pow(Rc1,2)-pow(XIa-Xc1,2)==0)
+            if (int(pow(Rc1,2)-pow(XIa-Xc1,2))==0)
             {
                 int YI = Yc1;
                 int XI=XIa;
@@ -2552,18 +2512,18 @@ QVector<QVector<int>> intersect(AxArc arc1, AxArc arc2)
     }
     else // ...sinon, un peu de trigo des familles !
     {
-        int a = (-pow(Xc1,2)-pow(Yc1,2)+pow(Xc2,2)+pow(Yc2,2)+pow(Rc1,2)-pow(Rc2,2))/(2*(Yc2-Yc1));
+        int a = int((-pow(Xc1,2)-pow(Yc1,2)+pow(Xc2,2)+pow(Yc2,2)+pow(Rc1,2)-pow(Rc2,2))/(2*(Yc2-Yc1)));
         int d = (Xc2-Xc1)/(Yc2-Yc1);
-        int A = pow(d,2)+1;
+        int A =int( pow(d,2)+1);
         int B = -2*Xc1+2*Yc1*d-2*a*d;
-        int C = pow(Xc1,2)+pow(Yc1,2)-2*Yc1*a+pow(a,2)-pow(Rc1,2);
-        int delta = pow(B,2)-4*A*C;
+        int C =int( pow(Xc1,2)+pow(Yc1,2)-2*Yc1*a+pow(a,2)-pow(Rc1,2));
+        int delta = int(pow(B,2)-4*A*C);
         if (delta>0)
         {
-            int XIa = (-B+sqrt(delta))/(2*A);
-            int XIb = (-B-sqrt(delta))/(2*A);
-            int YIa = a-((-B+sqrt(delta))/(2*A))*d;
-            int YIb = a-((-B-sqrt(delta))/(2*A))*d;
+            int XIa = int((-B+sqrt(delta))/(2*A));
+            int XIb = int((-B-sqrt(delta))/(2*A));
+            int YIa = int(a-((-B+sqrt(delta))/(2*A))*d);
+            int YIb = int(a-((-B-sqrt(delta))/(2*A))*d);
 
 
             if (arc1.arc_test(QPoint(XIa,YIa)) && arc2.arc_test(QPoint(XIa,YIa))) // if cross point inside both arc
@@ -2733,7 +2693,7 @@ QVector<QVector<int> > intersect_demi_lines(AxLine demi_line1, AxLine demi_line2
 //-----------------------------------------------------------------------------------------------------------------------
 // Delaunay
 
-QVector<AxTriangle> delaunay(QVector<QPoint> nuage, int a)
+QVector<AxTriangle> delaunay(QVector<QPoint> nuage, int )
 {
     // Je suppose que form est un tableau qui confient une liste de points selon la forme :
 //    [p1
@@ -2888,7 +2848,7 @@ QVector<AxTriangle> delaunay(QPolygon nuage)
 //   le programme applique la methode de delaunay au nuage de pts
 
     // cercle instrit
-    QPoint p1,p2,p3,pc,pm1,pm2,pm3,p_grav;
+    QPoint p1,p2,p3,pc,pm1,pm3,p_grav;
     AxCircle cercle_inscrit_test;
     QVector <QVector<QPoint>> triangle_list;
     QVector<QPoint> triangle;
