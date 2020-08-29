@@ -53,7 +53,7 @@ QLine AxLine::get_mediatrice()
     pp2.setY(100+pp1.y());
     a=2*(limits.p2().x()-limits.p1().x());
     b=2*(limits.p2().y()-limits.p1().y());
-    c=pow(limits.p1().x(),2)+pow(limits.p1().y(),2)-pow(limits.p2().x(),2)-pow(limits.p2().y(),2);
+    c=int(pow(limits.p1().x(),2)+pow(limits.p1().y(),2)-pow(limits.p2().x(),2)-pow(limits.p2().y(),2));
     pp2.setX((-c-b*pp2.y())/a);
     return QLine(pp1,pp2);
 }
@@ -166,7 +166,7 @@ void AxLine::translate(int offset)
         y_offset = - y_offset;
     }
 
-    int l = sqrt(dx()*dx()+dy()*dy());
+    int l = int(sqrt(dx()*dx()+dy()*dy()));
 
 
     x_offset = x_offset / l;
