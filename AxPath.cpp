@@ -127,40 +127,40 @@ void AxPath::set_K(int _K)
 void AxPath::flush()
 {
     delete x;
-    x=0;
+    x=nullptr;
     delete y;
-    y=0;
+    y=nullptr;
     delete z;
-    z=0;
+    z=nullptr;
     delete A;
-    A=0;
+    A=nullptr;
     delete B;
-    B=0;
+    B=nullptr;
     delete C;
-    C=0;
+    C=nullptr;
     delete U;
-    U=0;
+    U=nullptr;
     delete W;
-    W=0;
+    W=nullptr;
     delete I;
-    I=0;
+    I=nullptr;
     delete K;
-    K=0;
+    K=nullptr;
 };
 //constructor
 
 AxPath::AxPath()
 {
-  x=0;
-  y=0;
-  z=0;
-  A=0;
-  B=0;
-  C=0;
-  U=0;
-  W=0;
-  I=0;
-  K=0;
+  *x=0;
+  *y=0;
+  *z=0;
+  *A=0;
+  *B=0;
+  *C=0;
+  *U=0;
+  *W=0;
+  *I=0;
+  *K=0;
 };
 
 // operator overloading
@@ -172,7 +172,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
         switch (i) {
         case(0):
             pointer=_axpath.get_pointer_x();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "x= ";
                 dbg.nospace() << *pointer << endl;
@@ -180,7 +180,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(1):
             pointer=_axpath.get_pointer_y();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "y= ";
                 dbg.nospace() << *pointer << endl;
@@ -188,7 +188,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(2):
             pointer=_axpath.get_pointer_z();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "z= ";
                 dbg.nospace() << *pointer << endl;
@@ -196,7 +196,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(3):
             pointer=_axpath.get_pointer_A();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "A= ";
                 dbg.nospace() << *pointer << endl;
@@ -204,7 +204,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(4):
             pointer=_axpath.get_pointer_B();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "B= ";
                 dbg.nospace() << *pointer << endl;
@@ -212,7 +212,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(5):
             pointer=_axpath.get_pointer_C();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "C= ";
                 dbg.nospace() << *pointer << endl;
@@ -220,7 +220,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(6):
             pointer=_axpath.get_pointer_U();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "U= ";
                 dbg.nospace() << *pointer << endl;
@@ -228,7 +228,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(7):
             pointer=_axpath.get_pointer_W();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "W= ";
                 dbg.nospace() << *pointer << endl;
@@ -236,7 +236,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(8):
             pointer=_axpath.get_pointer_I();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "I= ";
                 dbg.nospace() << *pointer << endl;
@@ -244,7 +244,7 @@ QDebug operator<<(QDebug dbg, const AxPath _axpath)
             break;
         case(9):
             pointer=_axpath.get_pointer_K();
-            if(pointer!=NULL)
+            if(pointer!=nullptr)
             {
                 dbg.nospace() << "K= ";
                 dbg.nospace() << *pointer << endl;
