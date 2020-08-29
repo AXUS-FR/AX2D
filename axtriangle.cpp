@@ -1,6 +1,6 @@
-#include "axtriangle.h"
-#include "math.h"
-#include "common_functions.h"
+#include <AxTriangle.h>
+#include <math.h>
+#include <common_functions.h>
 #include <QPainter>
 
 AxTriangle::AxTriangle()
@@ -60,7 +60,7 @@ AxCircle AxTriangle::cercle_inscrit()
     pm2.setY(100);
     a=2*(p2.x()-p1.x());
     b=2*(p2.y()-p1.y());
-    c=pow(p1.x(),2)+pow(p1.y(),2)-pow(p2.x(),2)-pow(p2.y(),2);
+    c=int(pow(p1.x(),2)+pow(p1.y(),2)-pow(p2.x(),2)-pow(p2.y(),2));
     pm2.setX((-c-b*pm2.y())/a);
 
     // mediatrice 2:
@@ -68,7 +68,7 @@ AxCircle AxTriangle::cercle_inscrit()
     pm4.setY(100);
     a=2*(p2.x()-p3.x());
     b=2*(p2.y()-p3.y());
-    c=pow(p3.x(),2)+pow(p3.y(),2)-pow(p2.x(),2)-pow(p2.y(),2);
+    c=int(pow(p3.x(),2)+pow(p3.y(),2)-pow(p2.x(),2)-pow(p2.y(),2));
     pm4.setX((-c-b*pm4.y())/a);
 
     cross_med=intersect_lignes(QLine(pm1,pm2),QLine(pm3,pm4));
