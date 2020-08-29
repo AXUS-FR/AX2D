@@ -166,7 +166,7 @@ AxPath::AxPath()
 // operator overloading
 QDebug operator<<(QDebug dbg, const AxPath _axpath)
 {
-    int* pointer(0);
+    int* pointer(nullptr);
     for(int i=0; i<10; ++i)
     {
         switch (i) {
