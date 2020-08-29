@@ -4,17 +4,21 @@
 AxBorder:: ~AxBorder()
 {};
 
-void AxBorder::display(QPaintDevice *device, int width, const QColor &color)
-{}
+void AxBorder::display(QPaintDevice *, int , const QColor &)
+{
 
-void AxBorder::f(QDebug &dbg) const
+}
+
+void AxBorder::f(QDebug &) const
 {
 
 }
 
 
 int AxBorder::getObjectType()
-{}
+{
+    return 0;
+}
 
 QPoint AxBorder::p1() const
 {
@@ -138,27 +142,29 @@ bool AxBorder::is_island()
     return !pocket;
 }
 
-void AxBorder::set_cw(bool c)
+void AxBorder::set_cw(bool )
 {
 
 }
 
-void AxBorder::set_ccw(bool c)
+void AxBorder::set_ccw(bool )
 {
 
 }
 
 QPoint AxBorder::middle_point()
 {
+    return QPoint();
 }
 
-void AxBorder::translate(int offset)
+void AxBorder::translate(int )
 {
 
 }
 
 QLine AxBorder::get_mediatrice()
 {
+    return QLine();
 }
 
 
